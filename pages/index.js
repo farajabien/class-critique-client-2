@@ -30,6 +30,8 @@ export default function Home() {
 	const totalReviews = 0
 	const totalStudents = 0
 
+	//if loading
+
 	return (
 		<div className='min-h-screen bg-gray-100'>
 			<main className='container mx-auto px-4 sm:px-6 lg:px-8'>
@@ -63,7 +65,7 @@ export default function Home() {
 				{searchQuery !== '' ? (
 					<div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4'>
 						{filteredUniversities.map((uni) => (
-							<UniversityCard key={uni.id} uni={uni} />
+							<UniversityCard key={uni._id} uni={uni} />
 						))}
 					</div>
 				) : (

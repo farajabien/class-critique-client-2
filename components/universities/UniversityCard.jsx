@@ -10,7 +10,9 @@ const UniversityCard = ({ uni }) => {
 				<div className='flex justify-between items-center'>
 					<h3 className='text-2xl font-bold text-teal-500'>{uni.name}</h3>
 					<div className='bg-teal-500 text-white py-2 px-4 rounded-full'>
-						<Link href={`/${uni._id}`} className='flex items-center'>
+						<Link
+							href={`/universities/${uni._id}`}
+							className='flex items-center'>
 							Visit <RiArrowRightSLine className='ml-2' />
 						</Link>
 					</div>

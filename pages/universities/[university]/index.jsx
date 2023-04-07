@@ -1,119 +1,82 @@
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import { useSelector } from 'react-redux'
-import {
-	FaSearch,
-	FaUniversity,
-	FaUserGraduate,
-	FaChalkboardTeacher,
-} from 'react-icons/fa'
-import CourseCard from '../../components/universities/CourseCard'
-import SearchBar from '../../components/molecules/SearchBar'
+import { useDispatch, useSelector } from 'react-redux'
+import { getCoursesByUni } from '../../../actions/courseActions'
+import { getLecturersByUni } from '../../../actions/lecturerActions'
+import SearchBar from '../../../components/molecules/SearchBar'
+import { FaSearch } from 'react-icons/fa'
+import UniversityInfo from '../../../components/universities/UniversityInfo'
+import CourseList from '../../../components/courses/CourseList'
+import LecturerList from '../../../components/lecturers/LecturerList'
 
 export default function UniversityDetails() {
 	const router = useRouter()
-	const { id } = router.query
-
-	const universities = useSelector((state) => state.uniReducer.unis)
-	const selectedUniversity = universities.find((uni) => uni.id === Number(id))
-
+	const { university: uniId } = router.query
 	const [searchQuery, setSearchQuery] = useState('')
+	const [viewMode, setViewMode] = useState('courses')
+	const dispatch = useDispatch()
+	const courses = useSelector((state) => state.courseReducer.uniCourses)
+	const lecturers = useSelector((state) => state.lecturerReducer.uniLecturers)
+	const loading = useSelector((state) => state.courseReducer.loading)
+	const error = useSelector((state) => state.courseReducer.error)
 
 	useEffect(() => {
-		if (!id || !selectedUniversity) {
-			router.push('/')
+		if (uniId) {
+			dispatch(getCoursesByUni(uniId))
+			dispatch(getLecturersByUni(uniId))
 		}
-	}, [id, selectedUniversity, router])
+	}, [dispatch, uniId])
 
 	const handleSearch = (query) => {
 		setSearchQuery(query)
 	}
 
-	// Filter courses by search query
-	const filteredCourses = selectedUniversity?.courses.filter(
-		(course) =>
-			course.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-			course.code.toLowerCase().includes(searchQuery.toLowerCase())
+	const handleViewMode = (mode) => {
+		setViewMode(mode)
+	}
+
+	const filteredCourses = courses.filter((course) =>
+		course.name.toLowerCase().includes(searchQuery.toLowerCase())
+	)
+	const filteredLecturers = lecturers.filter((lecturer) =>
+		lecturer.name.toLowerCase().includes(searchQuery.toLowerCase())
 	)
 
 	return (
 		<div className='min-h-screen bg-gray-100'>
-			<main className='container mx-auto px-4 sm:px-6 lg:px-8'>
-				<div className='py-12 text-center'>
-					<h1 className='text-5xl font-bold mb-4 text-teal-500'>
-						{selectedUniversity?.name}
-					</h1>
-					<p className='text-xl text-center mb-8'>
-						{selectedUniversity?.description}
-					</p>
-					<div className='my-8 flex justify-center'>
-						<div className='w-full sm:w-1/2 md:w-1/3'>
-							<SearchBar
-								placeholder='Search for courses'
-								searchIcon={<FaSearch className='h-6 w-6 m-auto' />}
-								onChange={handleSearch}
-								className='w-full'
-							/>
-							{searchQuery.length > 0 && (
-								<p className='my-2 text-normal text-center'>
-									{filteredCourses?.length} courses found.
-								</p>
-							)}
-						</div>
-					</div>
+			<div className='px-4 py-8 md:flex md:justify-between'>
+				<div className='mb-8 md:mb-0 lg:w-1/3'>
+					<UniversityInfo uniId={uniId} />
 				</div>
-
-				<div className='flex justify-evenly items-center flex-wrap'>
-					<div className='p-8'>
-						<div className='text-4xl text-teal-500 mb-2'>
-							<FaUniversity />
-						</div>
-						<div className='text-lg text-gray-700 font-medium mb-2'>
-							Location
-						</div>
-						<div className='text-gray-700 mb-2'>
-							{selectedUniversity?.location}
-						</div>
-					</div>
-
-					<div className='p-8'>
-						<div className='text-4xl text-teal-500 mb-2'>
-							<FaUserGraduate />
-						</div>
-						<div className='text-lg text-gray-700 font-medium mb-2'>
-							Number of students
-						</div>
-						<div className='text-gray-700 mb-2'>
-							{selectedUniversity?.numberOfStudents}
-						</div>
-					</div>
-
-					<div className='p-8'>
-						<div className='text-4xl text-teal-500 mb-2'>
-							<FaChalkboardTeacher />
-						</div>
-						<div className='text-lg text-gray-700 font-medium mb-2'>
-							Faculty
-						</div>
-						<div className='text-gray-700 mb-2'>
-							{selectedUniversity?.faculty}
-						</div>
-					</div>
+				<div className='lg:w-2/3'>
+					<SearchBar
+						placeholder='Search for courses or lecturers'
+						searchIcon={<FaSearch className='h-6 w-6 m-auto' />}
+						onChange={handleSearch}
+						value={searchQuery}
+					/>
+					{searchQuery.length > 0 && (
+						<p className='my-2 text-normal text-center'>
+							{viewMode === 'courses'
+								? `${filteredCourses.length} courses found.`
+								: `${filteredLecturers.length} lecturers found.`}
+						</p>
+					)}
+					{loading ? (
+						<p className='text-center my-8'>Loading...</p>
+					) : error ? (
+						<p className='text-center my-8'>{error}</p>
+					) : viewMode === 'courses' ? (
+						<>
+							<CourseList courses={filteredCourses} />
+						</>
+					) : (
+						<>
+							<LecturerList lecturers={filteredLecturers} />
+						</>
+					)}
 				</div>
-				<h2 className='text-2xl font-bold mt-16 mb-4 text-teal-500'>Courses</h2>
-
-				{filteredCourses?.length > 0 ? (
-					<div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8'>
-						{filteredCourses.map((course) => (
-							<CourseCard key={course.id} course={course} />
-						))}
-					</div>
-				) : (
-					<p className='text-lg text-center text-gray-700'>
-						No courses found for your search query.
-					</p>
-				)}
-			</main>
+			</div>
 		</div>
 	)
 }
