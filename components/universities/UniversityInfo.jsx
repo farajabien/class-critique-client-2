@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useRouter } from 'next/router'
-import { FaUniversity } from 'react-icons/fa'
+import { FaLocationArrow, FaUniversity } from 'react-icons/fa'
 import { getUniversity } from '../../actions/uniActions'
 
 export default function UniversityInfo({ uniId }) {
@@ -31,22 +31,10 @@ export default function UniversityInfo({ uniId }) {
 					</div>
 					<div className='flex flex-col space-y-4'>
 						<div>
-							<h3 className='text-lg font-semibold text-gray-800 mb-2'>
-								Location
-							</h3>
-							<p className='text-gray-700'>{uni.location}</p>
-						</div>
-						<div>
-							<h3 className='text-lg font-semibold text-gray-800 mb-2'>
-								Description
-							</h3>
-							<p className='text-gray-700'>{uni.description}</p>
-						</div>
-						<div>
-							<h3 className='text-lg font-semibold text-gray-800 mb-2'>
-								Contact
-							</h3>
-							<p className='text-gray-700'>{uni.contact ?? '07XX-XXX-XXX'}</p>
+							<p className='text-gray-700'>
+								<FaLocationArrow className='text-teal-500 text-normal mr-2 inline-block' />
+								{uni.location}
+							</p>
 						</div>
 					</div>
 				</>

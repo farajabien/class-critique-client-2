@@ -1,21 +1,25 @@
+// LecturerList.js
 import React from 'react'
 import LecturerCard from './LecturerCard'
 
-const LecturerList = ({ lecturers }) => {
+export default function LecturerList({ lecturers, loading, error }) {
+	if (loading) {
+		return <div>Loading...</div>
+	}
+
+	if (error) {
+		return <div>Error: {error.message}</div>
+	}
+
+	if (lecturers.length === 0) {
+		return <div>No lecturers found.</div>
+	}
+
 	return (
-		<div className='bg-gray-100'>
-			<h2 className='text-3xl font-bold mb-8 text-teal-600'>lecturers</h2>
-			{lecturers.length === 0 ? (
-				<p className='text-lg text-center'>No lecturers found.</p>
-			) : (
-				<div className='grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-5 px-4'>
-					{lecturers.map((lecturer) => (
-						<LecturerCard key={lecturer._id} lecturer={lecturer} />
-					))}
-				</div>
-			)}
+		<div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
+			{lecturers.map((lecturer) => (
+				<LecturerCard key={lecturer.id} lecturer={lecturer} />
+			))}
 		</div>
 	)
 }
-
-export default LecturerList

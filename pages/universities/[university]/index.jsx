@@ -4,10 +4,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getCoursesByUni } from '../../../actions/courseActions'
 import { getLecturersByUni } from '../../../actions/lecturerActions'
 import SearchBar from '../../../components/molecules/SearchBar'
-import { FaSearch } from 'react-icons/fa'
 import UniversityInfo from '../../../components/universities/UniversityInfo'
 import CourseList from '../../../components/courses/CourseList'
 import LecturerList from '../../../components/lecturers/LecturerList'
+import { IoMdSchool, IoMdPeople } from 'react-icons/io'
+import { FaSearch } from 'react-icons/fa'
 
 export default function UniversityDetails() {
 	const router = useRouter()
@@ -43,39 +44,59 @@ export default function UniversityDetails() {
 	)
 
 	return (
-		<div className='min-h-screen bg-gray-100'>
-			<div className='px-4 py-8 md:flex md:justify-between'>
-				<div className='mb-8 md:mb-0 lg:w-1/3'>
+		<div className='bg-gray-100 min-h-screen'>
+			<div className='bg-white py-6'>
+				<div className='container mx-auto px-4'>
 					<UniversityInfo uniId={uniId} />
+					<div className='mt-8'>
+						<SearchBar
+							onChange={handleSearch}
+							placeholder={`Search ${
+								viewMode === 'courses' ? 'Courses' : 'Lecturers'
+							}`}
+							Icon={FaSearch}
+						/>
+					</div>
+					<div className='mt-8'>
+						<div className='flex justify-between items-center'>
+							<button
+								className={`px-4 py-2 font-medium text-sm rounded-md mr-2 ${
+									viewMode === 'courses'
+										? 'bg-teal-500 text-white'
+										: 'text-gray-500'
+								}`}
+								onClick={() => handleViewMode('courses')}>
+								<IoMdSchool className='inline-block mr-2 text-lg' />
+								Courses
+							</button>
+							<button
+								className={`px-4 py-2 font-medium text-sm rounded-md ${
+									viewMode === 'lecturers'
+										? 'bg-teal-500 text-white'
+										: 'text-gray-500'
+								}`}
+								onClick={() => handleViewMode('lecturers')}>
+								<IoMdPeople className='inline-block mr-2 text-lg' />
+								Lecturers
+							</button>
+						</div>
+					</div>
 				</div>
-				<div className='lg:w-2/3'>
-					<SearchBar
-						placeholder='Search for courses or lecturers'
-						searchIcon={<FaSearch className='h-6 w-6 m-auto' />}
-						onChange={handleSearch}
-						value={searchQuery}
+			</div>
+			<div className='container mx-auto px-4 mt-8'>
+				{viewMode === 'courses' ? (
+					<CourseList
+						courses={filteredCourses}
+						loading={loading}
+						error={error}
 					/>
-					{searchQuery.length > 0 && (
-						<p className='my-2 text-normal text-center'>
-							{viewMode === 'courses'
-								? `${filteredCourses.length} courses found.`
-								: `${filteredLecturers.length} lecturers found.`}
-						</p>
-					)}
-					{loading ? (
-						<p className='text-center my-8'>Loading...</p>
-					) : error ? (
-						<p className='text-center my-8'>{error}</p>
-					) : viewMode === 'courses' ? (
-						<>
-							<CourseList courses={filteredCourses} />
-						</>
-					) : (
-						<>
-							<LecturerList lecturers={filteredLecturers} />
-						</>
-					)}
-				</div>
+				) : (
+					<LecturerList
+						lecturers={filteredLecturers}
+						loading={loading}
+						error={error}
+					/>
+				)}
 			</div>
 		</div>
 	)

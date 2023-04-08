@@ -46,16 +46,14 @@ export const getAllCourses = async () => {
 }
 
 export const getCoursesByUniId = async (uniId) => {
-	if (uniId) {
-		try {
-			const response = await axios.get(
-				`${API_BASE_URL}/universities/${uniId}/courses`
-			)
-			return response.data
-		} catch (error) {
-			console.error('Error while fetching courses', error)
-			throw error
-		}
+	try {
+		const response = await axios.get(
+			`${API_BASE_URL}/universities/${uniId}/courses`
+		)
+		return response.data
+	} catch (error) {
+		console.error('Error while fetching courses', error)
+		throw error
 	}
 }
 
@@ -82,6 +80,37 @@ export const getLecturersByUniId = async (uniId) => {
 			return response.data
 		} catch (error) {
 			console.error('Error while fetching lecturers', error)
+			throw error
+		}
+	}
+}
+
+//RATINGS
+// getAllRatingsForCourse
+export const getAllRatingsForCourse = async (courseId) => {
+	if (courseId) {
+		try {
+			const response = await axios.get(
+				`${API_BASE_URL}/ratings/courses/${courseId}`
+			)
+			return response.data
+		} catch (error) {
+			console.error('Error while fetching ratings for course', error)
+			throw error
+		}
+	}
+}
+
+// getAllRatingsForLecturer
+export const getAllRatingsForLecturer = async (lecturerId, courseId) => {
+	if (courseId && lecturerId) {
+		try {
+			const response = await axios.get(
+				`${API_BASE_URL}/ratings/lecturers/${lecturerId}`
+			)
+			return response.data
+		} catch (error) {
+			console.error('Error while fetching ratings for lec', error)
 			throw error
 		}
 	}

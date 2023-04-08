@@ -47,8 +47,8 @@ export default function Home() {
 							<SearchBar
 								placeholder='Search for universities'
 								searchIcon={<FaSearch className='h-6 w-6 m-auto' />}
-								onChange={handleSearch}
 								className='w-full'
+								onChange={handleSearch}
 							/>
 							{searchQuery.length > 0 && (
 								<p className='my-2 text-normal text-center'>

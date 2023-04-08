@@ -10,7 +10,7 @@ export const getUniversities = () => async (dispatch) => {
 	} catch (error) {
 		dispatch({
 			type: uniActionTypes.GET_UNIS_FAILURE,
-			payload: error.response.data.message,
+			payload: error.response?.data?.message ?? 'Something went wrong',
 		})
 	}
 }
@@ -24,7 +24,7 @@ export const getUniversity = (id) => async (dispatch) => {
 	} catch (error) {
 		dispatch({
 			type: uniActionTypes.GET_UNI_FAILURE,
-			payload: error.response.data.message,
+			payload: error.response?.data?.message ?? 'Something went wrong',
 		})
 	}
 }

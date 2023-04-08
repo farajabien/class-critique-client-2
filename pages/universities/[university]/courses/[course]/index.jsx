@@ -2,35 +2,35 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getCourseByUniCourse } from '../../../../../actions/courseActions'
-import LecturerCard from '../../../../../components/lecturers/LecturerCard'
-import LecturerRatings from '../../../../../components/lecturers/LecturerRatings'
-// import LecturerRatings from './LecturerRatings'
-// import LecturerDetails from './LecturerDetails'
-// import Rankings from './Rankings'
 
-export default function CourseDetails() {
+import SearchBar from '../../../../../components/molecules/SearchBar'
+import { FaSearch } from 'react-icons/fa'
+import { getUniversity } from '../../../../../actions/uniActions'
+import Rankings from '../../../../../components/lecturers/Rankings'
+
+const CourseDetails = () => {
 	const router = useRouter()
 	const { university: uniId, course: courseId } = router.query
 	const [searchQuery, setSearchQuery] = useState('')
-	const [viewMode, setViewMode] = useState('ratings')
 	const dispatch = useDispatch()
 	const course = useSelector((state) => state.courseReducer.selectedUniCourse)
-	const lecturers = useSelector((state) => state.lecturerReducer.uniLecturers)
+	const university = useSelector((state) => state.uniReducer.selectedUni)
+	const lecturers = useSelector(
+		(state) => state.lecturerReducer.courseLecturers
+	)
 	const loading = useSelector((state) => state.courseReducer.loading)
 	const error = useSelector((state) => state.courseReducer.error)
 
 	useEffect(() => {
 		if (uniId && courseId) {
 			dispatch(getCourseByUniCourse(uniId, courseId))
+			//lecs
+			dispatch(getUniversity(uniId))
 		}
 	}, [courseId, dispatch, uniId])
 
 	const handleSearch = (query) => {
 		setSearchQuery(query)
-	}
-
-	const handleViewMode = (mode) => {
-		setViewMode(mode)
 	}
 
 	if (loading) {
@@ -42,100 +42,119 @@ export default function CourseDetails() {
 	}
 
 	return (
-		<main className='max-w-7xl mx-auto py-12 sm:px-6 lg:px-8'>
-			{/* Course header */}
-			<div className='bg-white rounded-lg shadow-md p-6 mb-6'>
-				<h1 className='text-3xl font-bold'>{course?.name}</h1>
-				<p className='text-lg text-gray-500 mb-4'>{course?.code}</p>
-				<div className='grid grid-cols-2 gap-4'>
-					<div>
-						<p className='font-semibold'>Number of Lectures:</p>
-						<p>{course?.numLectures}</p>
-					</div>
-					<div>
-						<p className='font-semibold'>Credits:</p>
-						<p>{course?.credits}</p>
+		<div className='bg-gray-100 min-h-screen'>
+			<div className='bg-white py-6'>
+				<div className='container mx-auto px-4'>
+					<h1 className='text-3xl font-bold text-gray-800'>{course?.name}</h1>
+					<p className='text-sm font-medium text-gray-500'>
+						{university?.name?.toUpperCase()}
+					</p>
+					<div className='flex justify-between items-center mt-4'>
+						<div className='flex items-center space-x-4'>
+							<p className='text-sm font-medium text-teal-500'>
+								{course?.code}
+							</p>
+							<div className='flex items-center space-x-2'>
+								<span className='text-sm font-medium text-gray-500'>
+									Average rating:
+								</span>
+								<div className='flex items-center space-x-1'>
+									<svg
+										xmlns='http://www.w3.org/2000/svg'
+										className='h-4 w-4 text-teal-500'
+										viewBox='0 0 20 20'
+										fill='currentColor'>
+										<path
+											fillRule='evenodd'
+											d='M17.156,8.988l1.844-.283a1.162,1.162,0,0,1,1.355,1.355l-.283,1.844a1.162,1.162,0,0,1-1.1.941l-1.912.285-.862,1.746a1.162,1.162,0,0,1-2.077,0l-.862-1.746-1.912-.285a1.162,1.162,0,0,1-1.1-.941l-.283-1.844a1.162,1.162,0,0,1,1.355-1.355l1.844.283.862-1.746a1.162,1.162,0,0,1,2.077,0l.862,1.746,1.912.285A1.162,1.162,0,0,1,17.156,8.988ZM10,13.347a3.347,3.347,0,1,0-3.347-3.347A3.347,3.347,0,0,0,10,13.347Z'
+										/>
+									</svg>
+									<span className='text-sm font-medium text-gray-500'>
+										{course?.average_rating?.toFixed(1)}
+									</span>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
+			{/* GRID  */}
 
-			{/* Lecturer search */}
-			<div className='mb-6'>
-				<input
-					type='text'
-					className='w-full px-4 py-2 rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent'
-					placeholder='Search lecturers'
-					value={searchQuery}
-					onChange={(e) => handleSearch(e.target.value)}
-				/>
-			</div>
-
-			{/* View mode buttons */}
-			<div className='flex mb-6'>
-				<button
-					className={`mr-2 ${
-						viewMode === 'ratings'
-							? 'bg-indigo-500 text-white'
-							: 'bg-gray-300 text-gray-700'
-					} px-4 py-2 rounded-md`}
-					onClick={() => handleViewMode('ratings')}>
-					Ratings
-				</button>
-				<button
-					className={`mr-2 ${
-						viewMode === 'rankings'
-							? 'bg-indigo-500 text-white'
-							: 'bg-gray-300 text-gray-700'
-					} px-4 py-2 rounded-md`}
-					onClick={() => handleViewMode('rankings')}>
-					Rankings
-				</button>
-				<button
-					className={`mr-2 ${
-						viewMode === 'details'
-							? 'bg-indigo-500 text-white'
-							: 'bg-gray-300 text-gray-700'
-					} px-4 py-2 rounded-md`}
-					onClick={() => handleViewMode('details')}>
-					Details
-				</button>
-			</div>
-			{/* Main content */}
-			{loading ? (
-				<p>Loading...</p>
-			) : error ? (
-				<p>Error: {error}</p>
-			) : (
-				<>
-					{viewMode === 'ratings' && (
-						<LecturerRatings lecturers={lecturers} searchQuery={searchQuery} />
-					)}
-					{viewMode === 'rankings' && (
-						// <Rankings />
-						<p>Rankings</p>
-					)}
-					{viewMode === 'details' && (
-						// <LecturerDetails />
-						<p>Lecturer details</p>
-					)}
-					<div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'>
-						{lecturers
-							.filter((lecturer) =>
-								`${lecturer.firstName} ${lecturer.lastName}`
-									.toLowerCase()
-									.includes(searchQuery.toLowerCase())
-							)
-							.map((lecturer) => (
-								<>
-									<LecturerCard key={lecturer._id} lecturer={lecturer} />
-									<LecturerCard key={lecturer._id} lecturer={lecturer} />
-									<LecturerCard key={lecturer._id} lecturer={lecturer} />
-									<LecturerCard key={lecturer._id} lecturer={lecturer} />
-								</>
-							))}
+			<div className='container mx-auto px-4'>
+				<div className='grid grid-cols-12 gap-4 mt-8'>
+					<div className='col-span-12 lg:col-span-5'>
+						<div className='bg-white rounded-lg shadow-lg p-4'>
+							<SearchBar
+								placeholder='Search lecturers...'
+								onChange={handleSearch}
+								searchIcon={<FaSearch className='h-6 w-6 m-auto' />}
+							/>
+							<div className='container mx-auto px-4 mt-3'>
+								<h2 className='text-xl font-bold text-gray-800 mb-1'>
+									Lecturers
+								</h2>
+								<Rankings
+									lecturers={[
+										{
+											id: 1,
+											name: 'John Smith',
+											university: 'University of California, Los Angeles',
+											course: 'Introduction to Computer Science',
+											ratings: [
+												{
+													_id: '642df5cda90dcd394cd8b87e',
+													user: '642da71d294890cef1f19300',
+													course: '642da9a66ebd1ed02c74e79e',
+													lecturer: '642dbab7889102a224dfbf1f',
+													knowledge: 80,
+													communication: 76,
+													organization: 70,
+													feedback: 90,
+													engagement: 40,
+													professionalism: 60,
+													technology: 80,
+													grading: 60,
+													inclusivity: 100,
+													classroom: 80,
+													comment: 'Great course, would take again!',
+												},
+											],
+										},
+										{
+											id: 1,
+											name: 'Diego Smith',
+											university: 'University of California, Los Angeles',
+											course: 'DST3021',
+											ratings: [
+												{
+													_id: '642df5cda90dcd394cd8b87e',
+													user: '642da71d294890cef1f19300',
+													course: '642da9a66ebd1ed02c74e79e',
+													lecturer: '642dbab7889102a224dfbf1f',
+													knowledge: 80,
+													communication: 76,
+													organization: 70,
+													feedback: 90,
+													engagement: 40,
+													professionalism: 60,
+													technology: 80,
+													grading: 60,
+													inclusivity: 100,
+													classroom: 80,
+													comment: 'Too shaby!',
+												},
+											],
+										},
+									]}
+									searchQuery={searchQuery}
+								/>
+							</div>
+						</div>
 					</div>
-				</>
-			)}
-		</main>
+				</div>
+			</div>
+		</div>
 	)
 }
+
+export default CourseDetails

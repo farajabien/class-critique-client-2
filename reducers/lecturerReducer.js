@@ -6,7 +6,7 @@ import { lecturerActionTypes } from '../constants'
 export const initialState = {
 	courses: [],
 	uniLecturers: [],
-	lecturerCourses: [],
+	courseLecturers: [],
 	selectedLecturer: null,
 	selectedUniLecturer: null,
 	loading: false,
@@ -40,7 +40,7 @@ const lecturerReducer = (state = initialState, action) => {
 		case lecturerActionTypes.GET_LECTURER_FOR_COURSE_SUCCESS:
 			return {
 				...state,
-				lecturerCourses: action.payload,
+				courseLecturers: action.payload,
 				loading: false,
 			}
 		case lecturerActionTypes.GET_LECTURER_SUCCESS:
