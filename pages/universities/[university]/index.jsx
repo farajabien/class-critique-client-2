@@ -9,6 +9,7 @@ import CourseList from '../../../components/courses/CourseList'
 import LecturerList from '../../../components/lecturers/LecturerList'
 import { IoMdSchool, IoMdPeople } from 'react-icons/io'
 import { FaSearch } from 'react-icons/fa'
+import LoadingScreen from '../../../components/molecules/LoadingScreen'
 
 export default function UniversityDetails() {
 	const router = useRouter()
@@ -18,7 +19,9 @@ export default function UniversityDetails() {
 	const dispatch = useDispatch()
 	const courses = useSelector((state) => state.courseReducer.uniCourses)
 	const lecturers = useSelector((state) => state.lecturerReducer.uniLecturers)
-	const loading = useSelector((state) => state.courseReducer.loading)
+	const courseLoading = useSelector((state) => state.courseReducer.loading)
+	const lecLoading = useSelector((state) => state.lecturerReducer.loading)
+
 	const error = useSelector((state) => state.courseReducer.error)
 
 	useEffect(() => {
@@ -50,11 +53,11 @@ export default function UniversityDetails() {
 					<UniversityInfo uniId={uniId} />
 					<div className='mt-8'>
 						<SearchBar
-							onChange={handleSearch}
 							placeholder={`Search ${
 								viewMode === 'courses' ? 'Courses' : 'Lecturers'
 							}`}
-							Icon={FaSearch}
+							onChange={handleSearch}
+							searchIcon={<FaSearch className='h-6 w-6 m-auto' />}
 						/>
 					</div>
 					<div className='mt-8'>
@@ -85,17 +88,29 @@ export default function UniversityDetails() {
 			</div>
 			<div className='container mx-auto px-4 mt-8'>
 				{viewMode === 'courses' ? (
-					<CourseList
-						courses={filteredCourses}
-						loading={loading}
-						error={error}
-					/>
+					<>
+						{courseLoading ? (
+							<LoadingScreen />
+						) : (
+							<CourseList
+								courses={filteredCourses}
+								loading={courseLoading}
+								error={error}
+							/>
+						)}
+					</>
 				) : (
-					<LecturerList
-						lecturers={filteredLecturers}
-						loading={loading}
-						error={error}
-					/>
+					<>
+						{lecLoading ? (
+							<LoadingScreen />
+						) : (
+							<LecturerList
+								lecturers={filteredLecturers}
+								loading={lecLoading}
+								error={error}
+							/>
+						)}
+					</>
 				)}
 			</div>
 		</div>

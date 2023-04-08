@@ -12,41 +12,46 @@ const LecturerRankingCard = ({ lecturer, rank }) => {
 
 	return (
 		<div
-			className={`shadow-md rounded-lg p-4 mb-2 ${
+			className={`shadow-lg rounded-lg p-4 mb-2 ${
 				rank === 1 ? 'bg-teal-500' : 'bg-white'
 			}`}>
-			<div
-				className={`flex justify-between items-center ${
-					rank === 1 ? 'text-white' : 'bg-white'
-				}`}>
-				<div className='flex items-center'>
-					<div className='text-2xl mr-2'>{rank}.</div>
-					<div>
-						<h2 className='text-lg font-medium'>{lecturer.name}</h2>
-						<div className='flex items-center text-gray-600 text-sm ml-1'>
+			<div className='flex flex-col lg:flex-row justify-between items-center'>
+				<div className='flex items-center mb-2 lg:mb-0'>
+					<div
+						className={`font-bold mr-2 ${
+							rank === 1 ? 'text-3xl' : 'text-2xl'
+						}`}>
+						{rank}.
+					</div>
+					<div className='flex flex-col justify-center'>
+						<h2 className={`font-bold ${rank === 1 ? 'text-lg' : 'text-base'}`}>
+							{lecturer.name}
+						</h2>
+						<div
+							className={`flex items-center text-gray-500 text-sm ml-1 ${
+								rank === 1 ? 'text-white' : ''
+							}`}>
+							<FaUser className='inline mr-1' />
 							{lecturer.numRatings ?? 0} ratings
 						</div>
 					</div>
 				</div>
+				<div className='flex flex-col items-center mb-2 lg:mb-0'>
+					<span className='text-yellow-400 text-2xl mb-1'>
+						<FaStar />
+					</span>
+					<p className={`font-bold ${rank === 1 ? 'text-lg' : 'text-base'}`}>
+						{lecturer.averageRating.toFixed(1)}
+					</p>
+				</div>
 				<button
-					className={`text-teal-500  focus:outline-none ${
-						rank === 1
-							? ' text-gray-50 hover:text-teal-100'
-							: 'hover:text-teal-700'
+					className={`bg-teal-500 text-white text-sm px-3 py-2 rounded-full focus:outline-none ml-0 lg:ml-4 ${
+						rank === 1 ? 'hover:text-teal-100' : 'hover:text-teal-700'
 					}`}
 					onClick={handleModal}>
 					<FaCommentAlt className='inline mr-1' /> View (
 					{lecturer.numRatings ?? 0})
 				</button>
-			</div>
-			<div
-				className={`flex items-center ${
-					rank === 1 ? 'text-white' : 'bg-white'
-				}`}>
-				<span className='text-yellow-400 mr-1'>
-					<FaStar />
-				</span>
-				<p className='font-medium'>{lecturer.averageRating.toFixed(1)}</p>
 			</div>
 			{showModal && (
 				<LecturerModal

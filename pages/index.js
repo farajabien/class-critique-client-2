@@ -65,7 +65,7 @@ export default function Home() {
 				{searchQuery !== '' ? (
 					<div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4'>
 						{filteredUniversities.map((uni) => (
-							<UniversityCard key={uni._id} uni={uni} />
+							<UniversityCard key={uni._id} uni={uni} loading={loading} />
 						))}
 					</div>
 				) : (

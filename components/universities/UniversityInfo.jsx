@@ -3,26 +3,23 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useRouter } from 'next/router'
 import { FaLocationArrow, FaUniversity } from 'react-icons/fa'
 import { getUniversity } from '../../actions/uniActions'
+import LoadingScreen from '../molecules/LoadingScreen'
 
 export default function UniversityInfo({ uniId }) {
 	const dispatch = useDispatch()
 	const uni = useSelector((state) => state.uniReducer.selectedUni)
 	const loading = useSelector((state) => state.uniReducer.loading)
 
-	//useffect get uni
 	useEffect(() => {
 		if (uniId) {
 			dispatch(getUniversity(uniId))
 		}
 	}, [dispatch, uniId])
 
-	if (loading) {
-		return <p>Loading...</p>
-	}
-
 	return (
 		<div className='bg-gray-100 p-8 rounded-lg shadow-md'>
-			{uni && (
+			{loading && <LoadingScreen />}
+			{!loading && uni && (
 				<>
 					{' '}
 					<div className='flex items-center mb-8'>
