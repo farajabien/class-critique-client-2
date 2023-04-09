@@ -70,7 +70,7 @@ export default function UniversityDetails() {
 								}`}
 								onClick={() => handleViewMode('courses')}>
 								<IoMdSchool className='inline-block mr-2 text-lg' />
-								Courses
+								Courses ({courses?.length ?? 0})
 							</button>
 							<button
 								className={`px-4 py-2 font-medium text-sm rounded-md ${
@@ -80,7 +80,7 @@ export default function UniversityDetails() {
 								}`}
 								onClick={() => handleViewMode('lecturers')}>
 								<IoMdPeople className='inline-block mr-2 text-lg' />
-								Lecturers
+								Lecturers ({lecturers?.length ?? 0})
 							</button>
 						</div>
 					</div>
