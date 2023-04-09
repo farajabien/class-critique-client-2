@@ -9,6 +9,7 @@ import { getUniversity } from '../../../../../actions/uniActions'
 import Rankings from '../../../../../components/lecturers/Rankings'
 import CourseSummary from '../../../../../components/courses/CourseSummary'
 import LoadingScreen from '../../../../../components/molecules/LoadingScreen'
+import Link from 'next/link'
 
 const CourseDetails = () => {
 	const router = useRouter()
@@ -48,9 +49,11 @@ const CourseDetails = () => {
 				) : (
 					<div className='container mx-auto px-4'>
 						<h1 className='text-3xl font-bold text-gray-800'>{course?.name}</h1>
-						<p className='text-sm font-medium text-gray-500'>
-							{university?.name?.toUpperCase()}
-						</p>
+						<Link href={`/universities/${university?._id}`}>
+							<p className='text-sm font-medium text-gray-500'>
+								{university?.name?.toUpperCase()}
+							</p>
+						</Link>
 						<div className='flex justify-between items-center mt-4'>
 							<div className='flex items-center space-x-4'>
 								<p className='text-sm font-medium text-teal-500'>

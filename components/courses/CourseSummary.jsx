@@ -64,162 +64,110 @@ function CourseSummary({
 	const [showReviews, setShowReviews] = useState(false)
 
 	return (
-		<div>
-			<div
-				className='bg-white rounded-lg p-6 max-w-3xl w-full overflow-hidden'
-				onClick={(e) => e.stopPropagation()}>
-				{loading ? (
-					<LoadingScreen />
-				) : (
-					<>
-						{' '}
-						<div className='flex justify-between items-center mb-4'>
-							<h2 className='text-2xl font-medium'>{lecturer?.name}</h2>
+		<div
+			className='bg-white rounded-lg p-6 max-w-3xl w-full overflow-hidden'
+			onClick={(e) => e.stopPropagation()}>
+			{loading ? (
+				<LoadingScreen />
+			) : (
+				<>
+					{' '}
+					<div className='flex justify-between items-center mb-4'>
+						<h2 className='text-2xl font-medium'>{lecturer?.name}</h2>
+						<button
+							className='text-gray-500 hover:text-gray-800 focus:outline-none'
+							onClick={handleCloseModal}>
+							<FaTimes />
+						</button>
+					</div>
+					{/* COURSE SUMMARY */}
+					<div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
+						<div>
+							<h3 className='text-lg font-medium mb-4'>
+								Overall Lecturer Quality: {average.toFixed(1)}
+							</h3>
+							<div className='w-48 h-48 mx-auto relative'>
+								<CircularProgressbar
+									value={average * 10}
+									text={`${average.toFixed(1)}`}
+									strokeWidth={10}
+									styles={{
+										root: {
+											width: '100%',
+											height: '100%',
+										},
+										path: {
+											stroke: '#26A69A',
+											strokeLinecap: 'round',
+										},
+										text: {
+											fill: '#26A69A',
+											fontSize: '24px',
+											fontWeight: 'bold',
+											textAnchor: 'middle',
+											dy: '0.35em',
+										},
+										trail: {
+											stroke: '#D9D9D9',
+											strokeLinecap: 'round',
+										},
+									}}
+								/>
+							</div>
+						</div>
+						<div>
+							<h3 className='text-lg font-medium mb-4'>Attributes</h3>
+							{courseSummaryData.map((item) => (
+								<div
+									key={item.label}
+									className='flex items-center justify-between mb-2'>
+									<div className='flex items-center'>
+										<div
+											className='w-8 h-8 flex items-center justify-center rounded-full mr-3'
+											style={{ backgroundColor: item.color }}>
+											{item.icon}
+										</div>
+										<span>{item.label}</span>
+									</div>
+									<span className='font-medium'>{item.value.toFixed(1)}</span>
+								</div>
+							))}
+						</div>
+					</div>
+					{/* REVIEWS */}
+					<div className='mt-8'>
+						<div className='flex items-center justify-between mb-4'>
+							<h3 className='text-lg font-medium'>Reviews</h3>
 							<button
 								className='text-gray-500 hover:text-gray-800 focus:outline-none'
-								onClick={handleCloseModal}>
-								<FaTimes />
-							</button>
-						</div>
-						{/* COURSE SUMMARY */}
-						<div className='grid grid-cols-2 gap-6'>
-							<div>
-								<h3 className='text-lg font-medium mb-4'>
-									Overall Lecturer Quality: {average.toFixed(1)}
-								</h3>
-								<div className='w-48 h-48 mx-auto relative'>
-									<CircularProgressbar
-										value={average * 10}
-										text={`${average.toFixed(1)}`}
-										strokeWidth={10}
-										styles={{
-											root: {
-												width: '100%',
-												height: '100%',
-											},
-											path: {
-												stroke: '#26A69A',
-												strokeLinecap: 'round',
-											},
-											text: {
-												fill: '#26A69A',
-												fontSize: '24px',
-												fontWeight: 'bold',
-												textAnchor: 'middle',
-												dy: '0.35em',
-											},
-											trail: {
-												stroke: '#D9D9D9',
-												strokeLinecap: 'round',
-											},
-											background: {
-												fill: '#F5F5F5',
-											},
-										}}
-									/>
-									<div className='absolute top-0 left-0 w-full h-full flex items-center justify-center'>
-										<div className='flex items-center'>
-											<div>
-												{/* <span className='font-bold text-2xl'>
-													{Math.round(average * 10)}
-												</span> */}
-												<br />
-												<span className='text-xs font-light'>Out of 10</span>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div className='mt-4'>
-								<h4 className='text-gray-600 font-medium mb-2'>
-									Attribute Ratings
-								</h4>
-								<div className='flex items-center mb-2'>
-									<div className='w-6 h-6 rounded-full bg-gray-300 mr-2'></div>
-									<div className='w-1/2'>
-										<div className='bg-gray-100 rounded-full h-2'></div>
-									</div>
-									<div className='w-1/2 text-right text-gray-500 font-medium'>
-										Communication
-									</div>
-								</div>
-								<div className='flex items-center mb-2'>
-									<div className='w-6 h-6 rounded-full bg-green-300 mr-2'></div>
-									<div className='w-1/2'>
-										<div className='bg-green-100 rounded-full h-2'></div>
-									</div>
-									<div className='w-1/2 text-right text-gray-500 font-medium'>
-										Preparation
-									</div>
-								</div>
-								<div className='flex items-center mb-2'>
-									<div className='w-6 h-6 rounded-full bg-yellow-300 mr-2'></div>
-									<div className='w-1/2'>
-										<div className='bg-yellow-100 rounded-full h-2'></div>
-									</div>
-									<div className='w-1/2 text-right text-gray-500 font-medium'>
-										Engagement
-									</div>
-								</div>
-								<div className='flex items-center mb-2'>
-									<div className='w-6 h-6 rounded-full bg-blue-300 mr-2'></div>
-									<div className='w-1/2'>
-										<div className='bg-blue-100 rounded-full h-2'></div>
-									</div>
-									<div className='w-1/2 text-right text-gray-500 font-medium'>
-										Knowledge
-									</div>
-								</div>
-								<div className='flex items-center mb-2'>
-									<div className='w-6 h-6 rounded-full bg-purple-300 mr-2'></div>
-									<div className='w-1/2'>
-										<div className='bg-purple-100 rounded-full h-2'></div>
-									</div>
-									<div className='w-1/2 text-right text-gray-500 font-medium'>
-										Organization
-									</div>
-								</div>
-								<div className='flex items-center mb-2'>
-									<div className='w-6 h-6 rounded-full bg-pink-300 mr-2'></div>
-									<div className='w-1/2'>
-										<div className='bg-pink-100 rounded-full h-2'></div>
-									</div>
-									<div className='w-1/2 text-right text-gray-500 font-medium'>
-										Helpfulness
-									</div>
-								</div>
-							</div>
-						</div>
-						{/* AVERAGE */}
-						<div className='grid grid-cols-2 gap-6'></div>
-						{/* REVIEWS */}
-						<div className='flex justify-between items-center mt-6'>
-							<div className='flex items-center'>
-								<h3 className='text-lg font-medium mr-2'>Reviews</h3>
-								<button
-									className='text-gray-500 hover:text-gray-800 focus:outline-none'
-									onClick={() => setShowReviews(!showReviews)}>
-									{showReviews ? 'Hide' : 'Show'}
-								</button>
-							</div>
-							<button
-								className='bg-teal-500 hover:bg-teal-600 text-white py-2 px-4 rounded-full text-sm focus:outline-none'
-								onClick={handleWriteReview}>
-								Write a review
+								onClick={() => setShowReviews(!showReviews)}>
+								{showReviews ? 'Hide' : 'Show'} Reviews ({comments.length})
 							</button>
 						</div>
 						{showReviews && (
-							<div className='mt-4'>
-								{comments.length > -1 ? (
-									<CommentElement />
+							<>
+								{comments.length > 0 ? (
+									comments.map((comment) => (
+										<CommentElement
+											key={comment.id}
+											username={comment.username}
+											text={comment.text}
+											date={comment.date}
+										/>
+									))
 								) : (
-									<p className='text-gray-500'>No comments yet</p>
+									<p>No reviews yet.</p>
 								)}
-							</div>
+								<button
+									className='mt-4 py-2 px-4 bg-green-500 hover:bg-green-600 text-white rounded-md focus:outline-none'
+									onClick={handleWriteReview}>
+									Write a Review
+								</button>
+							</>
 						)}
-					</>
-				)}
-			</div>
+					</div>
+				</>
+			)}
 		</div>
 	)
 }

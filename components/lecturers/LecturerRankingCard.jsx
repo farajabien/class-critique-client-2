@@ -17,11 +17,8 @@ const LecturerRankingCard = ({ lecturer, rank }) => {
 			}`}>
 			<div className='flex flex-col lg:flex-row justify-between items-center'>
 				<div className='flex items-center mb-2 lg:mb-0'>
-					<div
-						className={`font-bold mr-2 ${
-							rank === 1 ? 'text-3xl' : 'text-2xl'
-						}`}>
-						{rank}.
+					<div className='flex-shrink-0 font-bold mr-4 text-lg bg-gray-200 rounded-full py-2 px-4'>
+						{rank}
 					</div>
 					<div className='flex flex-col justify-center'>
 						<h2 className={`font-bold ${rank === 1 ? 'text-lg' : 'text-base'}`}>

@@ -8,6 +8,7 @@ import {
 	FaTwitter,
 	FaUser,
 } from 'react-icons/fa'
+import CommentElement from '../molecules/CommentElement'
 
 function LecturerModal({ lecturer, handleCloseModal, handleWriteReview }) {
 	return (
@@ -20,16 +21,16 @@ function LecturerModal({ lecturer, handleCloseModal, handleWriteReview }) {
 				<div className='flex justify-between items-center mb-4'>
 					<h2 className='text-2xl font-medium'>{lecturer.name}</h2>
 					<button
-						className='text-gray-500 hover:text-gray-800 focus:outline-none'
+						className='text-gray-500 hover:text-gray-800 focus:outline-none ml-auto'
 						onClick={handleCloseModal}>
 						<FaTimes />
 					</button>
 				</div>
-				<div className='grid grid-cols-2 gap-6'>
-					<div>
+				<div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
+					<div className='mb-4 md:mb-0'>
 						<h3 className='text-lg font-medium mb-2'>Lecturer Info</h3>
 						<div className='flex items-center mb-2'>
-							<span className='text-yellow-400 mr-1'>
+							<span className='text-teal-400 mr-1'>
 								<FaStar />
 							</span>
 							<p className='font-medium'>{lecturer.averageRating.toFixed(1)}</p>
@@ -45,6 +46,13 @@ function LecturerModal({ lecturer, handleCloseModal, handleWriteReview }) {
 								<FaCommentAlt />
 							</span>
 							<p className='font-medium'>{lecturer.numReviews} reviews</p>
+						</div>
+						<div className='flex items-center justify-center'>
+							<button
+								className='bg-teal-400 hover:bg-teal-500 text-white font-medium px-4 py-2 rounded-lg focus:outline-none'
+								onClick={handleWriteReview}>
+								Write a Review
+							</button>
 						</div>
 					</div>
 					<div>
@@ -65,41 +73,49 @@ function LecturerModal({ lecturer, handleCloseModal, handleWriteReview }) {
 							<div className='w-20 mr-4'>
 								<p className='text-sm text-gray-600'>Communication</p>
 							</div>
-							<div className='bg-teal-400 h-3 w-12 rounded-full'></div>
+							<div className='bg-teal-400 h-3 w-24 rounded-full'></div>
 						</div>
 						<div className='flex items-center mb-2'>
 							<div className='w-20 mr-4'>
-								<p className='text-sm text-gray-600'>Passion</p>
+								<p className='text-sm text-gray-600'>Feedback</p>
 							</div>
-							<div className='bg-red-400 h-3 w-8 rounded-full'></div>
-						</div>
-						<div className='flex items-center mb-2'>
-							<div className='w-20 mr-4'>
-								<p className='text-sm text-gray-600'>Punctuality</p>
-							</div>
-							<div className='bg-purple-400 h-3 w-4 rounded-full'></div>
+							<div className='bg-red-400 h-3 w-12 rounded-full'></div>
 						</div>
 					</div>
 				</div>
-				<div className='flex items-center justify-between mt-6'>
-					<button
-						className='bg-teal-500 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded focus:outline-none focus:shadow-outline-teal'
-						onClick={handleWriteReview}>
-						Write a review
-					</button>
+				<div className='mt-6'>
+					<h3 className='text-lg font-medium mb-2'>
+						Reviews ({lecturer.numReviews ?? 0})
+					</h3>
+					{lecturer.reviews?.map((review) => (
+						<CommentElement key={review.id} review={review} />
+					))}
+					<CommentElement />
+				</div>
+				<div className='mt-6'>
+					<h3 className='text-lg font-medium mb-2'>Share</h3>
 					<div className='flex items-center'>
-						<p className='text-gray-400 text-sm mr-2'>Share:</p>
-						<div className='flex items-center'>
-							<a href='#' className='text-gray-500 hover:text-gray-800'>
-								<FaFacebook />
-							</a>
-							<a href='#' className='text-gray-500 hover:text-gray-800 ml-2'>
-								<FaTwitter />
-							</a>
-							<a href='#' className='text-gray-500 hover:text-gray-800 ml-2'>
-								<FaLinkedin />
-							</a>
-						</div>
+						<a
+							// href={https://www.facebook.com/sharer/sharer.php?u=${window.location.href}}
+							target='_blank'
+							rel='noopener noreferrer'
+							className='text-gray-600 hover:text-gray-800 mr-4'>
+							<FaFacebook />
+						</a>
+						<a
+							// href={https://twitter.com/intent/tweet?url=${window.location.href}}
+							target='_blank'
+							rel='noopener noreferrer'
+							className='text-gray-600 hover:text-gray-800 mr-4'>
+							<FaTwitter />
+						</a>
+						<a
+							// href={https://www.linkedin.com/sharing/share-offsite/?url=${window.location.href}}
+							target='_blank'
+							rel='noopener noreferrer'
+							className='text-gray-600 hover:text-gray-800'>
+							<FaLinkedin />
+						</a>
 					</div>
 				</div>
 			</div>
