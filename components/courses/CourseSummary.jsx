@@ -143,10 +143,10 @@ function CourseSummary({
 								{showReviews && (
 									<>
 										{reviews.length > 0 ? (
-											reviews.map((review) => (
+											reviews.map((review, idx) => (
 												<ReviewElement
-													key={review._id}
-													username='Diego Bvert'
+													key={review._id ?? idx}
+													username='Placeholder'
 													targetLec={
 														review.lecturer ? getLecName(review.lecturer) : ''
 													}

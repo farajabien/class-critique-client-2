@@ -22,6 +22,7 @@ const reviewReducer = (state = initialState, action) => {
 		case reviewActionTypes.GET_REVIEW_FOR_COURSE_REQUEST:
 		case reviewActionTypes.GET_REVIEW_FOR_LECTURER_REQUEST:
 		case reviewActionTypes.GET_REVIEW_REQUEST:
+		case reviewActionTypes.CREATE_REVIEW_REQUEST:
 			return {
 				...state,
 				loading: true,
@@ -75,11 +76,18 @@ const reviewReducer = (state = initialState, action) => {
 				selectedReview: action.payload,
 				loading: false,
 			}
+		case reviewActionTypes.CREATE_REVIEW_SUCCESS:
+			return {
+				...state,
+				loading: false,
+			}
+
 		case reviewActionTypes.GET_ALL_REVIEWS_FAILURE:
 		case reviewActionTypes.GET_REVIEW_FOR_UNI_FAILURE:
 		case reviewActionTypes.GET_REVIEW_FOR_COURSE_FAILURE:
 		case reviewActionTypes.GET_REVIEW_FOR_LECTURER_FAILURE:
 		case reviewActionTypes.GET_REVIEW_FAILURE:
+		case reviewActionTypes.CREATE_REVIEW_FAILURE:
 			return {
 				...state,
 				loading: false,

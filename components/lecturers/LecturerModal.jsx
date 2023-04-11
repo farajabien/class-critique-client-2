@@ -11,18 +11,15 @@ import {
 import ReviewElement from '../molecules/ReviewElement'
 import WriteReviewModal from '../atoms/WriteReviewModal'
 import RatingComponent from './RatingComponent'
+import { useDispatch, useSelector } from 'react-redux'
+import { getReviewsForCourse, addReview } from '../../actions/reviewActions'
 
-function LecturerModal({
-	lecturer,
-	handleCloseModal,
-	writeReview,
-	handleWriteReview,
-	reviews,
-	course,
-}) {
+function LecturerModal({ lecturer, handleCloseModal, reviews, course }) {
+	const dispatch = useDispatch()
 	const lecReviews = reviews?.filter(
 		(review) => review.lecturer === lecturer._id && review.course === course._id
 	)
+	const { user, token, error } = useSelector((state) => state.authReducer)
 
 	// Calculate average rating for each attribute
 	const ratings = [
@@ -76,7 +73,14 @@ function LecturerModal({
 		'font-bold text-sm text-gray-600 z-10 flex justify-center items-center'
 
 	const handleSubmitReview = (newReview) => {
-		console.log('NEW', newReview)
+		const review = {
+			...newReview,
+			lecturerId: lecturer._id,
+		}
+
+		const courseId = course._id.toString()
+
+		dispatch(addReview(courseId, review, token))
 	}
 
 	return (
@@ -160,6 +164,7 @@ function LecturerModal({
 					<RatingComponent
 						onSubmit={handleSubmitReview}
 						lecturerName={lecturer.name}
+						attributeNames={ratings}
 					/>
 				</div>
 				<div className='mb-4'>
@@ -167,8 +172,8 @@ function LecturerModal({
 					{lecReviews.length === 0 && (
 						<p className='text-gray-500'>No reviews yet.</p>
 					)}
-					{lecReviews.map((review) => (
-						<ReviewElement key={review._id} review={review} />
+					{lecReviews.map((review, idx) => (
+						<ReviewElement key={review._id ?? idx} review={review} />
 					))}
 				</div>
 			</div>

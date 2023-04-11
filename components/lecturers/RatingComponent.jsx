@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { FaStar, FaCheck, FaComment, FaThumbsUp } from 'react-icons/fa'
 import { RiArrowGoBackLine } from 'react-icons/ri'
 
-function RatingComponent({ onSubmit, lecturerName }) {
+function RatingComponent({ onSubmit, lecturerName, attributeNames }) {
 	// Use object destructuring to initialize ratings state
 	const [ratings, setRatings] = useState({
 		coolness: 0,
@@ -29,11 +29,9 @@ function RatingComponent({ onSubmit, lecturerName }) {
 
 	const handleSubmit = (event) => {
 		event.preventDefault()
-		onSubmit({ ratings, comment })
+		onSubmit({ ratings, text: comment })
 		setSubmitted(true)
 	}
-
-	const attributeNames = ['Coolness', 'Grading', 'Workload', 'Expertise', 'RWA']
 
 	const ratingLevels = ['Poor', 'Fair', 'Average', 'Good', 'Excellent']
 
@@ -123,7 +121,7 @@ function RatingComponent({ onSubmit, lecturerName }) {
 							<span className='text-xl font-medium text-gray-800'>
 								Overall rating:
 							</span>
-							<div className='flex items-center justify-center space-x-1 mt-1'>
+							<div className='flex items-center justify-center space-x-1 mt-1 mb-5'>
 								<div
 									className={`px-5 py-2 text-white rounded-full text-lg font-medium ${
 										getOverallRating() < 1
@@ -138,7 +136,7 @@ function RatingComponent({ onSubmit, lecturerName }) {
 									}`}>
 									{getOverallRating().toFixed(1)}
 								</div>
-								<div className='text-gray-500 text-sm font-medium ml-2'>
+								<div className='text-gray-500 text-sm font-medium ml-2 '>
 									{getOverallRating() < 1
 										? 'Poor'
 										: getOverallRating() < 2

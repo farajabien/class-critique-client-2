@@ -51,7 +51,7 @@ const Universities = () => {
 			) : (
 				<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
 					{filteredUniversities.map((uni) => (
-						<UniversityCard key={uni.id} uni={uni} />
+						<UniversityCard key={uni._id} uni={uni} />
 					))}
 				</div>
 			)}

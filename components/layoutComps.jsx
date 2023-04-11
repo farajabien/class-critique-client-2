@@ -1,11 +1,22 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { AiOutlineLogin, AiOutlineUserAdd } from 'react-icons/ai'
 import { HiOutlineUserCircle } from 'react-icons/hi'
 import { FaBars, FaTimes } from 'react-icons/fa'
+import { useDispatch, useSelector } from 'react-redux'
+
+import { useRouter } from 'next/router'
 
 const Header = () => {
 	const [isOpen, setIsOpen] = useState(false)
+	const dispatch = useDispatch()
+	const { user, token, error } = useSelector((state) => state.authReducer)
+	const router = useRouter()
+
+	const handleLogout = () => {
+		dispatch(logout())
+		router.push('/auth/login')
+	}
 
 	const toggleMenu = () => {
 		setIsOpen(!isOpen)
@@ -57,6 +68,7 @@ const Header = () => {
 }
 
 import { FaGithub, FaTwitter } from 'react-icons/fa'
+import { logout } from '../actions/authActions'
 
 const Footer = () => {
 	return (

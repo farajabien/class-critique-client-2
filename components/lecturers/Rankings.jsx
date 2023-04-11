@@ -17,7 +17,7 @@ const Rankings = ({ lecturers, loading, reviews, course }) => {
 				<>
 					{sortedLecturers?.map((lecturer, index) => (
 						<LecturerRankingCard
-							key={lecturer.id}
+							key={lecturer._id}
 							lecturer={lecturer}
 							rank={index + 1}
 							reviews={reviews}

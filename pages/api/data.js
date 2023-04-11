@@ -2,6 +2,39 @@ import axios from 'axios'
 
 const API_BASE_URL = 'http://localhost:3001'
 
+//loginUser
+export const loginUser = async (userData) => {
+	try {
+		const response = await axios.post(`${API_BASE_URL}/auth/login`, userData)
+		return response.data
+	} catch (error) {
+		console.error('Error while logging in', error)
+		throw error
+	}
+}
+
+//registerUser
+export const registerUser = async (userData) => {
+	try {
+		const response = await axios.post(`${API_BASE_URL}/auth/signup`, userData)
+		return response.data
+	} catch (error) {
+		console.error('Error while registering user', error)
+		throw error
+	}
+}
+
+//logout
+export const logoutUser = async () => {
+	try {
+		const response = await axios.post(`${API_BASE_URL}/auth/logout`)
+		return response.data
+	} catch (error) {
+		console.error('Error while logging out', error)
+		throw error
+	}
+}
+
 export const getAllUniversities = async () => {
 	try {
 		const response = await axios.get(`${API_BASE_URL}/universities`)
@@ -113,6 +146,25 @@ export const getAllReviewsForLecturer = async (lecturerId, courseId) => {
 			console.error('Error while fetching reviews for lec', error)
 			throw error
 		}
+	}
+}
+
+//addNewReview
+export const addNewReview = async (courseId, review, token) => {
+	try {
+		const response = await axios.post(
+			`${API_BASE_URL}/reviews/courses/${courseId}`,
+			review,
+			{
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			}
+		)
+		return response.data
+	} catch (error) {
+		console.error('Error while creating review', error)
+		throw error
 	}
 }
 

@@ -4,10 +4,11 @@ import uniReducer from './reducers/uniReducer'
 import courseReducer from './reducers/courseReducer'
 import lecturerReducer from './reducers/lecturerReducer'
 import reviewReducer from './reducers/reviewReducer'
+import authReducer from './reducers/authReducer'
 
 const rootReducer = combineReducers({
 	uniReducer,
-	//authReducer,
+	authReducer,
 	lecturerReducer,
 	courseReducer,
 	reviewReducer,
@@ -20,6 +21,7 @@ export const store = createStore(
 		courseReducer: courseReducer.initialState,
 		lecturerReducer: lecturerReducer.initialState,
 		reviewReducer: reviewReducer.initialState,
+		authReducer: authReducer.initialState,
 	},
 	applyMiddleware(thunkMiddleware)
 )

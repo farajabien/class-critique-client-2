@@ -38,10 +38,6 @@ const CourseDetails = () => {
 		}
 	}, [courseId, dispatch, uniId])
 
-	useEffect(() => {
-		console.log('Okay sawa reviews', reviews)
-	}, [lecturers])
-
 	const handleSearch = (query) => {
 		setSearchQuery(query)
 	}

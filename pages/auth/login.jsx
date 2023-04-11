@@ -1,10 +1,15 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { login } from '../../actions/authActions'
+import { useDispatch, useSelector } from 'react-redux'
+import { useRouter } from 'next/router'
+import Link from 'next/link'
 
 const LoginPage = () => {
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
-	const [confirmPassword, setConfirmPassword] = useState('')
-	const [isNewUser, setIsNewUser] = useState(false)
+	const { user, token, error } = useSelector((state) => state.authReducer)
+	const dispatch = useDispatch()
+	const router = useRouter()
 
 	const handleEmailChange = (event) => {
 		setEmail(event.target.value)
@@ -14,22 +19,34 @@ const LoginPage = () => {
 		setPassword(event.target.value)
 	}
 
-	const handleToggleNewUser = () => {
-		setIsNewUser(!isNewUser)
+	const handleSubmit = async (event) => {
+		event.preventDefault()
+		dispatch(login({ email, password }))
 	}
 
-	const handleSubmit = (event) => {
-		event.preventDefault()
-		console.log('Login form submitted!')
-		// You can add your own logic for authentication here
-	}
+	useEffect(() => {
+		const handleRouteChange = () => {
+			localStorage.setItem('prevPath', router.asPath)
+		}
+		router.events.on('routeChangeStart', handleRouteChange)
+		return () => {
+			router.events.off('routeChangeStart', handleRouteChange)
+		}
+	}, [router])
+
+	useEffect(() => {
+		const prevPath = localStorage.getItem('prevPath') || '/'
+		if (user && token) {
+			router.push(prevPath)
+		}
+	}, [user, token, router])
 
 	return (
 		<div className='flex flex-col items-center justify-center min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8'>
 			<div className='max-w-md w-full'>
 				<div>
 					<h2 className='mt-6 text-center text-3xl leading-9 font-extrabold text-gray-900'>
-						{isNewUser ? 'Register a new account' : 'Log in to your account'}
+						Log in to your account
 					</h2>
 				</div>
 				<form onSubmit={handleSubmit} className='mt-8'>
@@ -59,51 +76,36 @@ const LoginPage = () => {
 								onChange={handlePasswordChange}
 							/>
 						</div>
-						{/* IF NEW USER CONFIRM PASSWORD  */}
-						{isNewUser && (
-							<div className='-mt-px'>
-								<input
-									aria-label='Confirm Password'
-									name='password'
-									type='password'
-									required
-									className='appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:shadow-outline-blue focus:border-blue-300 focus:z-10 sm:text-sm sm:leading-5'
-									placeholder='Password'
-									value={confirmPassword}
-									onChange={setConfirmPassword}
-								/>
-							</div>
-						)}
 					</div>
-
+					{error && (
+						<div className='mt-2 text-red-500 text-sm'>{error.message}</div>
+					)}
 					<div className='mt-6 flex items-center justify-between'>
 						<div className='flex items-center'>
 							<input
 								id='remember_me'
 								type='checkbox'
-								className='form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out'
+								className='form-checkbox h-4 w-4 text-teal-600 transition duration-150 ease-in-out'
 							/>
 							<label
 								htmlFor='remember_me'
 								className='ml-2 block text-sm leading-5 text-gray-900'>
 								Remember me
 							</label>
-						</div>
-
+						</div>{' '}
 						<div className='text-sm leading-5'>
-							<a
-								href='#'
-								className='font-medium text-teal-400 hover:text-teal-500 focus:outline-none focus:underline transition ease-in-out duration-150'>
+							<Link
+								href='/forgot-password'
+								className='font-medium text-teal-600 hover:text-teal-500 focus:outline-none focus:underline transition ease-in-out duration-150'>
 								Forgot your password?
-							</a>
+							</Link>
 						</div>
 					</div>
 
 					<div className='mt-6'>
 						<button
 							type='submit'
-							className='group relative w-full flex justify-center py-2 px-4 border border-transparent text
-							-sm leading-5 font-medium rounded-md text-white bg-teal-600 hover:bg-teal-500 focus:outline-none focus:border-teal-700 focus:shadow-outline-teal active:bg-teal-700 transition duration-150 ease-in-out'>
+							className='group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-teal-600 hover:bg-teal-500 focus:outline-none focus:border-teal-700 focus:shadow-outline-teal active:bg-teal-700 transition duration-150 ease-in-out'>
 							<span className='absolute left-0 inset-y-0 flex items-center pl-3'>
 								<svg
 									className='h-5 w-5 text-teal-500 group-hover:text-teal-400 transition ease-in-out duration-150'
@@ -111,27 +113,15 @@ const LoginPage = () => {
 									viewBox='0 0 20 20'>
 									<path
 										fillRule='evenodd'
-										d='M3 6a3 3 0 0 1 3-3h4a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V6zm3-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1H6z'
+										d='M12.2929,7.29289 C12.6534,6.93241 13.2206,6.90468 13.6129,7.2097 L13.7071,7.29289 L16.7071,10.2929 C17.0976,10.6834 17.0976,11.3166 16.7071,11.7071 L13.7071,14.7071 C13.3466,15.0676 12.7794,15.0953 12.3871,14.7903 L12.2929,14.7071 L9.29289,11.7071 C8.90237,11.3166 8.90237,10.6834 9.29289,10.2929 L12.2929,7.29289 Z M4,10 C4,6.68629 6.68629,4 10,4 C13.3137,4 16,6.68629 16,10 C16,13.3137 13.3137,16 10,16 C6.68629,16 4,13.3137 4,10 Z M10,14 C11.6569,14 13,12.6569 13,11 C13,9.34315 11.6569,8 10,8 C8.34315,8 7,9.34315 7,11 C7,12.6569 8.34315,14 10,14 Z'
 										clipRule='evenodd'
 									/>
-									<path d='M8 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0z' />
 								</svg>
 							</span>
-							{isNewUser ? 'Register' : 'Log in'}
+							Sign in
 						</button>
 					</div>
 				</form>
-				<div className='mt-6'>
-					<button
-						type='button'
-						onClick={handleToggleNewUser}
-						className='group relative w-full flex justify-center py-2 px-4 border border-transparent text
-						-sm leading-5 font-medium rounded-md text-teal-600 bg-white hover:bg-gray-50 focus:outline-none focus:border-teal-700 focus:shadow-outline-teal active:bg-teal-700 transition duration-150 ease-in-out'>
-						{isNewUser
-							? 'Already have an account? Log in'
-							: 'Don’t have an account? Register'}
-					</button>
-				</div>
 			</div>
 		</div>
 	)
