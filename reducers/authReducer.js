@@ -1,6 +1,8 @@
 import { authActionTypes } from '../constants'
+import router from 'next/router'
 
 const initialState = {
+	loading: false,
 	token:
 		typeof window !== 'undefined'
 			? localStorage.getItem('classCritiqueToken')
@@ -23,18 +25,23 @@ export default function authReducer(state = initialState, action) {
 				token: null,
 				user: null,
 				error: null,
+				loading: true,
 			}
 		case authActionTypes.LOGIN_SUCCESS:
 		case authActionTypes.REGISTER_SUCCESS:
-			const expiresAt = action.payload.expiresAt
 			localStorage.setItem('classCritiqueToken', action.payload.token)
-			localStorage.setItem('classCritiqueExpiresAt', expiresAt)
+			localStorage.setItem('classCritiqueExpiresAt', action.payload.expiresAt)
+			// navigate to previous page or home page
+			const prevPath = localStorage.getItem('prevPath')
+			console.log('Prev', prevPath)
+			router.push(prevPath || '/')
 			return {
 				...state,
-				expiresAt,
+				expiresAt: action.payload.expiresAt,
 				token: action.payload.token,
 				user: action.payload.user,
 				error: null,
+				loading: false,
 			}
 		case authActionTypes.LOGIN_FAILURE:
 		case authActionTypes.REGISTER_FAILURE:
@@ -44,6 +51,7 @@ export default function authReducer(state = initialState, action) {
 				token: null,
 				user: null,
 				error: action.payload,
+				loading: false,
 			}
 		case authActionTypes.LOGOUT_SUCCESS:
 			localStorage.removeItem('classCritiqueToken')
@@ -54,6 +62,7 @@ export default function authReducer(state = initialState, action) {
 				user: null,
 				error: null,
 				expiresAt: null,
+				loading: false,
 			}
 		default:
 			return state

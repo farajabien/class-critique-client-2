@@ -8,8 +8,9 @@ export const loginUser = async (userData) => {
 		const response = await axios.post(`${API_BASE_URL}/auth/login`, userData)
 		return response.data
 	} catch (error) {
-		console.error('Error while logging in', error)
-		throw error
+		return {
+			error: error.response?.data?.error ?? 'Something went wrong logging in',
+		}
 	}
 }
 

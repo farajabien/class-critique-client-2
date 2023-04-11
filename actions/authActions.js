@@ -15,7 +15,11 @@ export const signup = (userData) => async (dispatch) => {
 export const login = (userData) => async (dispatch) => {
 	try {
 		dispatch({ type: authActionTypes.LOGIN_REQUEST })
-		const { user, token, expiresAt } = await loginUser(userData)
+		const response = await loginUser(userData)
+		if (response.error) {
+			throw new Error(response.error)
+		}
+		const { user, token, expiresAt } = response
 		dispatch({
 			type: authActionTypes.LOGIN_SUCCESS,
 			payload: { user, token, expiresAt },
@@ -24,7 +28,7 @@ export const login = (userData) => async (dispatch) => {
 		console.log(error)
 		dispatch({
 			type: authActionTypes.LOGIN_FAILURE,
-			payload: error.response?.data?.error ?? 'Something went wrong logging in',
+			payload: error.message ?? 'Something went wrong logging in',
 		})
 	}
 }

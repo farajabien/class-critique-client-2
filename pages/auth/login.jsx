@@ -3,11 +3,12 @@ import { login } from '../../actions/authActions'
 import { useDispatch, useSelector } from 'react-redux'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
+import LoadingScreen from '../../components/molecules/LoadingScreen'
 
 const LoginPage = () => {
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
-	const { user, token, error } = useSelector((state) => state.authReducer)
+	const { error, loading } = useSelector((state) => state.authReducer)
 	const dispatch = useDispatch()
 	const router = useRouter()
 
@@ -25,21 +26,8 @@ const LoginPage = () => {
 	}
 
 	useEffect(() => {
-		const handleRouteChange = () => {
-			localStorage.setItem('prevPath', router.asPath)
-		}
-		router.events.on('routeChangeStart', handleRouteChange)
-		return () => {
-			router.events.off('routeChangeStart', handleRouteChange)
-		}
-	}, [router])
-
-	useEffect(() => {
-		const prevPath = localStorage.getItem('prevPath') || '/'
-		if (user && token) {
-			router.push(prevPath)
-		}
-	}, [user, token, router])
+		console.log('WAAAAh', error)
+	}, [error])
 
 	return (
 		<div className='flex flex-col items-center justify-center min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8'>
@@ -49,7 +37,29 @@ const LoginPage = () => {
 						Log in to your account
 					</h2>
 				</div>
+
 				<form onSubmit={handleSubmit} className='mt-8'>
+					{error && (
+						<div
+							className='mt-2 bg-red-100 border-l-4 border-red-500 text-red-700 p-4'
+							role='alert'>
+							<div className='flex'>
+								<div className='py-1'>
+									<svg
+										className='fill-current h-6 w-6 text-red-500 mr-4'
+										xmlns='http://www.w3.org/2000/svg'
+										viewBox='0 0 20 20'>
+										<path d='M10 0a10 10 0 1 0 10 10A10 10 0 0 0 10 0zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z' />
+									</svg>
+								</div>
+								<div>
+									<p className='font-bold'>Error</p>
+									<p className='text-sm'>{error}</p>
+								</div>
+							</div>
+						</div>
+					)}
+
 					<input type='hidden' name='remember' value='true' />
 					<div className='rounded-md shadow-sm'>
 						<div>
@@ -105,7 +115,8 @@ const LoginPage = () => {
 					<div className='mt-6'>
 						<button
 							type='submit'
-							className='group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-teal-600 hover:bg-teal-500 focus:outline-none focus:border-teal-700 focus:shadow-outline-teal active:bg-teal-700 transition duration-150 ease-in-out'>
+							className='group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-teal-600 hover:bg-teal-500 focus:outline-none focus:border-teal-700 focus:shadow-outline-teal active:bg-teal-700 transition duration-150 ease-in-out'
+							disabled={loading}>
 							<span className='absolute left-0 inset-y-0 flex items-center pl-3'>
 								<svg
 									className='h-5 w-5 text-teal-500 group-hover:text-teal-400 transition ease-in-out duration-150'
@@ -118,7 +129,7 @@ const LoginPage = () => {
 									/>
 								</svg>
 							</span>
-							Sign in
+							{loading ? <LoadingScreen /> : 'Sign in'}
 						</button>
 					</div>
 				</form>
