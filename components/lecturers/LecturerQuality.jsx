@@ -2,7 +2,8 @@ import { FaUsers } from 'react-icons/fa'
 import { CircularProgressbar } from 'react-circular-progressbar'
 import 'react-circular-progressbar/dist/styles.css'
 
-function LecturerQuality({ average }) {
+function LecturerQuality({}) {
+	const average = 4.5
 	return (
 		<div className='grid grid-cols-2 gap-6'>
 			<div>
@@ -41,71 +42,8 @@ function LecturerQuality({ average }) {
 					/>
 					<div className='absolute top-0 left-0 w-full h-full flex items-center justify-center'>
 						<div className='flex items-center'>
-							<FaUsers className='text-teal-500 text-3xl mr-2' />
-							<div>
-								<span className='font-bold text-2xl'>
-									{Math.round(average * 10)}
-								</span>
-								<br />
-								<span className='text-xs font-light'>Out of 100</span>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div className='mt-4'>
-					<h4 className='text-gray-600 font-medium mb-2'>Attribute Ratings</h4>
-					<div className='flex items-center mb-2'>
-						<div className='w-6 h-6 rounded-full bg-gray-300 mr-2'></div>
-						<div className='w-1/2'>
-							<div className='bg-gray-100 rounded-full h-2'></div>
-						</div>
-						<div className='w-1/2 text-right text-gray-500 font-medium'>
-							Communication
-						</div>
-					</div>
-					<div className='flex items-center mb-2'>
-						<div className='w-6 h-6 rounded-full bg-green-300 mr-2'></div>
-						<div className='w-1/2'>
-							<div className='bg-green-100 rounded-full h-2'></div>
-						</div>
-						<div className='w-1/2 text-right text-gray-500 font-medium'>
-							Preparation
-						</div>
-					</div>
-					<div className='flex items-center mb-2'>
-						<div className='w-6 h-6 rounded-full bg-yellow-300 mr-2'></div>
-						<div className='w-1/2'>
-							<div className='bg-yellow-100 rounded-full h-2'></div>
-						</div>
-						<div className='w-1/2 text-right text-gray-500 font-medium'>
-							Engagement
-						</div>
-					</div>
-					<div className='flex items-center mb-2'>
-						<div className='w-6 h-6 rounded-full bg-blue-300 mr-2'></div>
-						<div className='w-1/2'>
-							<div className='bg-blue-100 rounded-full h-2'></div>
-						</div>
-						<div className='w-1/2 text-right text-gray-500 font-medium'>
-							Knowledge
-						</div>
-					</div>
-					<div className='flex items-center mb-2'>
-						<div className='w-6 h-6 rounded-full bg-purple-300 mr-2'></div>
-						<div className='w-1/2'>
-							<div className='bg-purple-100 rounded-full h-2'></div>
-						</div>
-						<div className='w-1/2 text-right text-gray-500 font-medium'>
-							Organization
-						</div>
-					</div>
-					<div className='flex items-center mb-2'>
-						<div className='w-6 h-6 rounded-full bg-pink-300 mr-2'></div>
-						<div className='w-1/2'>
-							<div className='bg-pink-100 rounded-full h-2'></div>
-						</div>
-						<div className='w-1/2 text-right text-gray-500 font-medium'>
-							Helpfulness
+							<FaUsers className='text-teal-500 text-3xl mr-2 mt-16' />
+							<div></div>
 						</div>
 					</div>
 				</div>
@@ -113,3 +51,5 @@ function LecturerQuality({ average }) {
 		</div>
 	)
 }
+
+export default LecturerQuality

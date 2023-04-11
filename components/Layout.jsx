@@ -1,12 +1,13 @@
-//import header and footer
 import { Header, Footer } from './layoutComps'
 
 const Layout = ({ children }) => {
 	return (
-		<div>
+		<div className='flex flex-col min-h-screen'>
 			<Header />
-			{children}
-			<Footer />
+
+			<main className='flex-grow'>{children}</main>
+
+			<Footer className='mt-auto' />
 		</div>
 	)
 }

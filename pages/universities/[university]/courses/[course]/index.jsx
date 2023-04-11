@@ -10,6 +10,8 @@ import Rankings from '../../../../../components/lecturers/Rankings'
 import CourseSummary from '../../../../../components/courses/CourseSummary'
 import LoadingScreen from '../../../../../components/molecules/LoadingScreen'
 import Link from 'next/link'
+import { getCourseLecturers } from '../../../../../actions/lecturerActions'
+import { getReviewsForCourse } from '../../../../../actions/reviewActions'
 
 const CourseDetails = () => {
 	const router = useRouter()
@@ -25,13 +27,20 @@ const CourseDetails = () => {
 	const lecLoading = useSelector((state) => state.lecturerReducer.loading)
 	const error = useSelector((state) => state.courseReducer.error)
 
+	const reviews = useSelector((state) => state.reviewReducer.courseReviews)
+	const reviewLoading = useSelector((state) => state.reviewReducer.loading)
+
 	useEffect(() => {
 		if (uniId && courseId) {
 			dispatch(getCourseByUniCourse(uniId, courseId))
-			//lecs
-			dispatch(getUniversity(uniId))
+			dispatch(getCourseLecturers(uniId, courseId))
+			dispatch(getReviewsForCourse(courseId))
 		}
 	}, [courseId, dispatch, uniId])
+
+	useEffect(() => {
+		console.log('Okay sawa reviews', reviews)
+	}, [lecturers])
 
 	const handleSearch = (query) => {
 		setSearchQuery(query)
@@ -97,66 +106,19 @@ const CourseDetails = () => {
 							/>
 							<div className='container mx-auto px-4 mt-3'>
 								<h2 className='text-xl font-bold text-gray-800 mb-1'>
-									Lecturers Ranking
+									Lecturers Ranking (
+									{lecLoading ? <LoadingScreen /> : lecturers?.length ?? 0})
 								</h2>
 								{lecLoading ? (
 									<LoadingScreen />
 								) : (
 									<Rankings
-										lecturers={[
-											{
-												id: 1,
-												name: 'John Smith',
-												university: 'University of California, Los Angeles',
-												course: 'Introduction to Computer Science',
-												ratings: [
-													{
-														_id: '642df5cda90dcd394cd8b87e',
-														user: '642da71d294890cef1f19300',
-														course: '642da9a66ebd1ed02c74e79e',
-														lecturer: '642dbab7889102a224dfbf1f',
-														knowledge: 80,
-														communication: 76,
-														organization: 70,
-														feedback: 90,
-														engagement: 40,
-														professionalism: 60,
-														technology: 80,
-														grading: 60,
-														inclusivity: 100,
-														classroom: 80,
-														comment: 'Great course, would take again!',
-													},
-												],
-											},
-											{
-												id: 1,
-												name: 'Diego Smith',
-												university: 'University of California, Los Angeles',
-												course: 'DST3021',
-												ratings: [
-													{
-														_id: '642df5cda90dcd394cd8b87e',
-														user: '642da71d294890cef1f19300',
-														course: '642da9a66ebd1ed02c74e79e',
-														lecturer: '642dbab7889102a224dfbf1f',
-														knowledge: 80,
-														communication: 76,
-														organization: 70,
-														feedback: 90,
-														engagement: 40,
-														professionalism: 60,
-														technology: 80,
-														grading: 60,
-														inclusivity: 100,
-														classroom: 80,
-														comment: 'Too shaby!',
-													},
-												],
-											},
-										]}
+										lecturers={lecturers}
 										searchQuery={searchQuery}
 										loading={lecLoading}
+										reviews={reviews}
+										reviewLoading={reviewLoading}
+										course={course}
 									/>
 								)}
 							</div>
@@ -169,8 +131,10 @@ const CourseDetails = () => {
 							<CourseSummary
 								course={course}
 								lecturers={lecturers}
-								loading={courseLoading}
+								courseLoading={courseLoading}
 								error={error}
+								reviewLoading={reviewLoading}
+								reviews={reviews}
 							/>
 						)}
 					</div>

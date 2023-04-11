@@ -2301,6 +2301,11 @@
   dependencies:
     "prop-types" "^15.5.7"
 
+"react-badge@^1.0.0":
+  "integrity" "sha512-BGIFsYiN3WMCqdltPzq5hOXmLdDrmIMuIOmbBHcbiKaU06dOmAA/VjBAfmQepRLI1UJWvPnSgFoKnalXxMSwGg=="
+  "resolved" "https://registry.npmjs.org/react-badge/-/react-badge-1.0.0.tgz"
+  "version" "1.0.0"
+
 "react-chartjs-2@^5.2.0":
   "integrity" "sha512-98iN5aguJyVSxp5U3CblRLH67J8gkfyGNbiK3c+l1QI/G4irHMPQw44aEPmjVag+YKTyQ260NcF82GTQ3bdscA=="
   "resolved" "https://registry.npmjs.org/react-chartjs-2/-/react-chartjs-2-5.2.0.tgz"

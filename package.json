@@ -21,6 +21,7 @@
     "postcss": "^8.4.21",
     "react": "18.2.0",
     "react-apexcharts": "^1.4.0",
+    "react-badge": "^1.0.0",
     "react-chartjs-2": "^5.2.0",
     "react-circular-progressbar": "^2.1.0",
     "react-dom": "18.2.0",

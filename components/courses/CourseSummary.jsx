@@ -1,58 +1,73 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { CircularProgressbar } from 'react-circular-progressbar'
 import {
 	FaClock,
 	FaCommentAlt,
-	FaFacebook,
 	FaHeart,
-	FaLinkedin,
 	FaStar,
 	FaTimes,
-	FaTwitter,
 	FaUser,
-	FaUsers,
 } from 'react-icons/fa'
-import CommentElement from '../molecules/CommentElement'
+import ReviewElement from '../molecules/ReviewElement'
 import LoadingScreen from '../molecules/LoadingScreen'
+import LecturerQuality from '../lecturers/LecturerQuality'
 
 function CourseSummary({
-	lecturer,
+	course,
+	lecturers,
 	handleCloseModal,
 	handleWriteReview,
-	loading,
+	courseLoading,
+	reviews,
+	reviewLoading,
 }) {
-	const [comments, setComments] = useState([])
+	//function to get lec from lecturers array by lecid and return name
+	const getLecName = (lecId) => {
+		const lec = lecturers?.find((lec) => lec._id === lecId)
+		return lec?.name
+	}
+
 	// Sample data for the course summary
 	const courseSummaryData = [
 		{
-			label: 'Knowledge',
-			value: 8.5,
+			label: 'Coolness',
+			value: 4,
 			color: '#66BB6A',
 			icon: <FaStar />,
+			description:
+				'How friendly and approachable was the lecturer? Did they make the class enjoyable?',
 		},
 		{
-			label: 'Teaching',
-			value: 7.5,
+			label: 'Grading',
+			value: 5,
 			color: '#FFD54F',
 			icon: <FaUser />,
+			description:
+				'How well did the lecturer grade assignments and tests? Did they provide helpful feedback?',
 		},
 		{
-			label: 'Communication',
-			value: 9.0,
+			label: 'Workload',
+			value: 3,
 			color: '#26A69A',
 			icon: <FaCommentAlt />,
+			description:
+				'Was the course workload manageable? Did you have enough time to complete assignments and keep up with classwork?',
 		},
 		{
-			label: 'Passion',
-			value: 6.5,
+			label: 'Expertise',
+			value: 4,
 			color: '#EF5350',
 			icon: <FaHeart />,
+			description:
+				'How smart and knowledgeable was the lecturer in the course material? Were they able to explain the tricky stuff in a way that was easy to understand?',
 		},
 		{
-			label: 'Punctuality',
-			value: 8.0,
+			label: 'Real World Application',
+			value: 5,
 			color: '#AB47BC',
 			icon: <FaClock />,
+			description:
+				'How applicable were the course concepts to the real world? Did the lecturer provide examples of how the material can be used in real-life situations?',
 		},
 	]
 
@@ -61,19 +76,21 @@ function CourseSummary({
 	const average = total / courseSummaryData.length
 
 	// State for showing/hiding reviews
-	const [showReviews, setShowReviews] = useState(false)
+	const [showReviews, setShowReviews] = useState(true)
 
 	return (
 		<div
 			className='bg-white rounded-lg p-6 max-w-3xl w-full overflow-hidden'
 			onClick={(e) => e.stopPropagation()}>
-			{loading ? (
+			{courseLoading ? (
 				<LoadingScreen />
 			) : (
 				<>
 					{' '}
 					<div className='flex justify-between items-center mb-4'>
-						<h2 className='text-2xl font-medium'>{lecturer?.name}</h2>
+						<h2 className='text-2xl font-medium'>
+							{course?.code} - {course?.name}
+						</h2>
 						<button
 							className='text-gray-500 hover:text-gray-800 focus:outline-none'
 							onClick={handleCloseModal}>
@@ -82,39 +99,7 @@ function CourseSummary({
 					</div>
 					{/* COURSE SUMMARY */}
 					<div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
-						<div>
-							<h3 className='text-lg font-medium mb-4'>
-								Overall Lecturer Quality: {average.toFixed(1)}
-							</h3>
-							<div className='w-48 h-48 mx-auto relative'>
-								<CircularProgressbar
-									value={average * 10}
-									text={`${average.toFixed(1)}`}
-									strokeWidth={10}
-									styles={{
-										root: {
-											width: '100%',
-											height: '100%',
-										},
-										path: {
-											stroke: '#26A69A',
-											strokeLinecap: 'round',
-										},
-										text: {
-											fill: '#26A69A',
-											fontSize: '24px',
-											fontWeight: 'bold',
-											textAnchor: 'middle',
-											dy: '0.35em',
-										},
-										trail: {
-											stroke: '#D9D9D9',
-											strokeLinecap: 'round',
-										},
-									}}
-								/>
-							</div>
-						</div>
+						<LecturerQuality reviews={reviews} />
 						<div>
 							<h3 className='text-lg font-medium mb-4'>Attributes</h3>
 							{courseSummaryData.map((item) => (
@@ -125,11 +110,18 @@ function CourseSummary({
 										<div
 											className='w-8 h-8 flex items-center justify-center rounded-full mr-3'
 											style={{ backgroundColor: item.color }}>
-											{item.icon}
+											{/* {item.icon} */}
+											<span className='font-medium'>
+												{item.value.toFixed(1)}
+											</span>
 										</div>
-										<span>{item.label}</span>
+										<div>
+											<span className='font-medium'>{item.label}</span>{' '}
+											<p className='text-sm text-gray-500'>
+												{item.description}
+											</p>
+										</div>
 									</div>
-									<span className='font-medium'>{item.value.toFixed(1)}</span>
 								</div>
 							))}
 						</div>
@@ -141,28 +133,31 @@ function CourseSummary({
 							<button
 								className='text-gray-500 hover:text-gray-800 focus:outline-none'
 								onClick={() => setShowReviews(!showReviews)}>
-								{showReviews ? 'Hide' : 'Show'} Reviews ({comments.length})
+								{showReviews ? 'Hide' : 'Show'} Reviews ({reviews.length})
 							</button>
 						</div>
-						{showReviews && (
+						{reviewLoading ? (
+							<LoadingScreen />
+						) : (
 							<>
-								{comments.length > 0 ? (
-									comments.map((comment) => (
-										<CommentElement
-											key={comment.id}
-											username={comment.username}
-											text={comment.text}
-											date={comment.date}
-										/>
-									))
-								) : (
-									<p>No reviews yet.</p>
+								{showReviews && (
+									<>
+										{reviews.length > 0 ? (
+											reviews.map((review) => (
+												<ReviewElement
+													key={review._id}
+													username='Diego Bvert'
+													targetLec={
+														review.lecturer ? getLecName(review.lecturer) : ''
+													}
+													review={review}
+												/>
+											))
+										) : (
+											<p className=' text-gray-500'>No reviews yet.</p>
+										)}
+									</>
 								)}
-								<button
-									className='mt-4 py-2 px-4 bg-green-500 hover:bg-green-600 text-white rounded-md focus:outline-none'
-									onClick={handleWriteReview}>
-									Write a Review
-								</button>
 							</>
 						)}
 					</div>

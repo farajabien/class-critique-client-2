@@ -3,14 +3,14 @@ import thunkMiddleware from 'redux-thunk'
 import uniReducer from './reducers/uniReducer'
 import courseReducer from './reducers/courseReducer'
 import lecturerReducer from './reducers/lecturerReducer'
-import ratingReducer from './reducers/ratingReducer'
+import reviewReducer from './reducers/reviewReducer'
 
 const rootReducer = combineReducers({
 	uniReducer,
 	//authReducer,
 	lecturerReducer,
 	courseReducer,
-	ratingReducer,
+	reviewReducer,
 })
 
 export const store = createStore(
@@ -19,7 +19,7 @@ export const store = createStore(
 		uniReducer: uniReducer.initialState,
 		courseReducer: courseReducer.initialState,
 		lecturerReducer: lecturerReducer.initialState,
-		ratingReducer: ratingReducer.initialState,
+		reviewReducer: reviewReducer.initialState,
 	},
 	applyMiddleware(thunkMiddleware)
 )

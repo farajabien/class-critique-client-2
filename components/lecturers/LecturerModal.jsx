@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
 	FaCommentAlt,
 	FaFacebook,
@@ -8,115 +8,168 @@ import {
 	FaTwitter,
 	FaUser,
 } from 'react-icons/fa'
-import CommentElement from '../molecules/CommentElement'
+import ReviewElement from '../molecules/ReviewElement'
+import WriteReviewModal from '../atoms/WriteReviewModal'
+import RatingComponent from './RatingComponent'
 
-function LecturerModal({ lecturer, handleCloseModal, handleWriteReview }) {
+function LecturerModal({
+	lecturer,
+	handleCloseModal,
+	writeReview,
+	handleWriteReview,
+	reviews,
+	course,
+}) {
+	const lecReviews = reviews?.filter(
+		(review) => review.lecturer === lecturer._id && review.course === course._id
+	)
+
+	// Calculate average rating for each attribute
+	const ratings = [
+		'Coolness',
+		'Grading',
+		'Workload',
+		'Expertise',
+		'Real-world Applicability',
+	]
+	const ratingAverages = {}
+	ratings.forEach((rating) => {
+		const ratingSum = lecReviews.reduce((acc, review) => {
+			return acc + review.rating[rating]
+		}, 0)
+		ratingAverages[rating] = ratingSum / lecReviews.length
+	})
+
+	// Calculate total average rating
+	const totalRatingSum = lecReviews.reduce((acc, review) => {
+		return (
+			acc +
+			Object.values(review.rating).reduce((total, val) => {
+				return total + val
+			}, 0)
+		)
+	}, 0)
+	const totalRatingAvg = totalRatingSum / (lecReviews.length * ratings.length)
+
+	// Define icon styles
+	const iconStyle = 'text-3xl mr-2'
+	const greenIconStyle = `${iconStyle} text-green-500`
+	const yellowIconStyle = `${iconStyle} text-yellow-500`
+	const tealIconStyle = `${iconStyle} text-teal-500`
+	const redIconStyle = `${iconStyle} text-red-500`
+
+	// Define progress bar styles
+	const progressBarStyle = 'h-3 w-full rounded-full bg-gray-200'
+	const greenProgressBarStyle = `${progressBarStyle} bg-green-500`
+	const yellowProgressBarStyle = `${progressBarStyle} bg-yellow-500`
+	const tealProgressBarStyle = `${progressBarStyle} bg-teal-500`
+	const redProgressBarStyle = `${progressBarStyle} bg-red-500`
+
+	// Define circular progress styles
+	const circleStyle =
+		'relative inline-flex rounded-full w-20 h-20 justify-center items-center mr-4'
+	const circleShadowStyle =
+		'absolute inset-0 rounded-full shadow-md bg-gray-100 pointer-events-none'
+	const circlePercentStyle =
+		'absolute inset-0 bg-gradient-to-r from-teal-400 to-purple-600 rounded-full shadow-md'
+	const circleTextStyle =
+		'font-bold text-sm text-gray-600 z-10 flex justify-center items-center'
+
+	const handleSubmitReview = (newReview) => {
+		console.log('NEW', newReview)
+	}
+
 	return (
 		<div
 			className='fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center z-50'
 			onClick={handleCloseModal}>
 			<div
-				className='bg-white rounded-lg p-6 max-w-3xl w-full overflow-hidden'
+				className='bg-white grid grid-cols-1 md:grid-cols-2 rounded-lg p-6 max-w-3xl w-full overflow-hidden'
 				onClick={(e) => e.stopPropagation()}>
-				<div className='flex justify-between items-center mb-4'>
-					<h2 className='text-2xl font-medium'>{lecturer.name}</h2>
-					<button
-						className='text-gray-500 hover:text-gray-800 focus:outline-none ml-auto'
-						onClick={handleCloseModal}>
-						<FaTimes />
-					</button>
-				</div>
-				<div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
-					<div className='mb-4 md:mb-0'>
-						<h3 className='text-lg font-medium mb-2'>Lecturer Info</h3>
-						<div className='flex items-center mb-2'>
-							<span className='text-teal-400 mr-1'>
-								<FaStar />
-							</span>
-							<p className='font-medium'>{lecturer.averageRating.toFixed(1)}</p>
+				<div>
+					<div className=' items-center mb-4'>
+						<h2 className='text-2xl font-medium'>{lecturer.name}</h2>
+						<p className=' text-gray-500'>{lecturer.email ?? 'N/A'}</p>
+					</div>
+					<div className='flex items-center mb-4'>
+						<div className={circleStyle}>
+							<div className={circleShadowStyle}></div>
+							<div
+								className={circlePercentStyle}
+								style={{
+									transform: `rotate(${totalRatingAvg * 1.8}deg)`,
+								}}></div>
+							<div className={circleTextStyle}>{`${
+								Math.round(totalRatingAvg * 10) / 10
+							}/5.0`}</div>
 						</div>
-						<div className='flex items-center mb-2'>
-							<span className='text-gray-400 mr-2'>
-								<FaUser />
-							</span>
-							<p className='font-medium'>{lecturer.numRatings} ratings</p>
-						</div>
-						<div className='flex items-center mb-4'>
-							<span className='text-gray-400 mr-2'>
-								<FaCommentAlt />
-							</span>
-							<p className='font-medium'>{lecturer.numReviews} reviews</p>
-						</div>
-						<div className='flex items-center justify-center'>
-							<button
-								className='bg-teal-400 hover:bg-teal-500 text-white font-medium px-4 py-2 rounded-lg focus:outline-none'
-								onClick={handleWriteReview}>
-								Write a Review
-							</button>
+						<div>
+							<p className='text-lg font-medium'>{`${
+								Math.round(totalRatingAvg * 10) / 10
+							}/5.0`}</p>
+							<p className='text-sm text-gray-500'>{`${
+								lecReviews.length
+							} review${lecReviews.length !== 1 ? 's' : ''}`}</p>
 						</div>
 					</div>
-					<div>
-						<h3 className='text-lg font-medium mb-2'>Attributes</h3>
-						<div className='flex items-center mb-2'>
-							<div className='w-20 mr-4'>
-								<p className='text-sm text-gray-600'>Knowledge</p>
+					<div className='flex flex-wrap items-center mb-4'>
+						<div className='flex items-center mb-2 mr-4'>
+							<FaStar className={greenIconStyle} />
+							<div className='w-full relative'>
+								<div
+									className={greenProgressBarStyle}
+									style={{ width: `${ratingAverages.coolness * 20}%` }}></div>
 							</div>
-							<div className='bg-green-400 h-3 w-20 rounded-full'></div>
 						</div>
-						<div className='flex items-center mb-2'>
-							<div className='w-20 mr-4'>
-								<p className='text-sm text-gray-600'>Teaching</p>
+						<div className='flex items-center mb-2 mr-4'>
+							<FaStar className={yellowIconStyle} />
+							<div className='w-full relative'>
+								<div
+									className={yellowProgressBarStyle}
+									style={{ width: `${ratingAverages.grading * 20}%` }}></div>
 							</div>
-							<div className='bg-yellow-400 h-3 w-16 rounded-full'></div>
 						</div>
-						<div className='flex items-center mb-2'>
-							<div className='w-20 mr-4'>
-								<p className='text-sm text-gray-600'>Communication</p>
+						<div className='flex items-center mb-2 mr-4'>
+							<FaStar className={tealIconStyle} />
+							<div className='w-full relative'>
+								<div
+									className={tealProgressBarStyle}
+									style={{ width: `${ratingAverages.workload * 20}%` }}></div>
 							</div>
-							<div className='bg-teal-400 h-3 w-24 rounded-full'></div>
 						</div>
-						<div className='flex items-center mb-2'>
-							<div className='w-20 mr-4'>
-								<p className='text-sm text-gray-600'>Feedback</p>
+						<div className='flex items-center mb-2 mr-4'>
+							<FaStar className={redIconStyle} />
+							<div className='w-full relative'>
+								<div
+									className={redProgressBarStyle}
+									style={{ width: `${ratingAverages.expertise * 20}%` }}></div>
 							</div>
-							<div className='bg-red-400 h-3 w-12 rounded-full'></div>
+						</div>
+						<div className='flex items-center mb-2 mr-4'>
+							<FaUser className={iconStyle} />
+							<div className='w-full relative'>
+								<div
+									className={progressBarStyle}
+									style={{ width: `${ratingAverages.rwa * 20}%` }}></div>
+							</div>
 						</div>
 					</div>
 				</div>
-				<div className='mt-6'>
-					<h3 className='text-lg font-medium mb-2'>
-						Reviews ({lecturer.numReviews ?? 0})
-					</h3>
-					{lecturer.reviews?.map((review) => (
-						<CommentElement key={review.id} review={review} />
+
+				<div className='relative'>
+					<RatingComponent
+						onSubmit={handleSubmitReview}
+						lecturerName={lecturer.name}
+					/>
+				</div>
+				<div className='mb-4'>
+					<p className='text-lg font-medium mb-2'>Reviews</p>
+					{lecReviews.length === 0 && (
+						<p className='text-gray-500'>No reviews yet.</p>
+					)}
+					{lecReviews.map((review) => (
+						<ReviewElement key={review._id} review={review} />
 					))}
-					<CommentElement />
-				</div>
-				<div className='mt-6'>
-					<h3 className='text-lg font-medium mb-2'>Share</h3>
-					<div className='flex items-center'>
-						<a
-							// href={https://www.facebook.com/sharer/sharer.php?u=${window.location.href}}
-							target='_blank'
-							rel='noopener noreferrer'
-							className='text-gray-600 hover:text-gray-800 mr-4'>
-							<FaFacebook />
-						</a>
-						<a
-							// href={https://twitter.com/intent/tweet?url=${window.location.href}}
-							target='_blank'
-							rel='noopener noreferrer'
-							className='text-gray-600 hover:text-gray-800 mr-4'>
-							<FaTwitter />
-						</a>
-						<a
-							// href={https://www.linkedin.com/sharing/share-offsite/?url=${window.location.href}}
-							target='_blank'
-							rel='noopener noreferrer'
-							className='text-gray-600 hover:text-gray-800'>
-							<FaLinkedin />
-						</a>
-					</div>
 				</div>
 			</div>
 		</div>

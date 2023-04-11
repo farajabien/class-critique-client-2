@@ -4,6 +4,7 @@ export const initialState = {
 	courses: [],
 	uniCourses: [],
 	lecturerCourses: [],
+	courseReviews: [],
 	selectedCourse: null,
 	selectedUniCourse: null,
 	loading: false,
