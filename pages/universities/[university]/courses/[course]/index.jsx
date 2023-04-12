@@ -48,7 +48,7 @@ const CourseDetails = () => {
 
 	return (
 		<div className='bg-gray-100 min-h-screen'>
-			<div className='bg-white py-6'>
+			<div className='bg-white py-2'>
 				{courseLoading ? (
 					<LoadingScreen />
 				) : (
@@ -59,7 +59,7 @@ const CourseDetails = () => {
 								{university?.name?.toUpperCase()}
 							</p>
 						</Link>
-						<div className='flex justify-between items-center mt-4'>
+						<div className='flex justify-between items-center'>
 							<div className='flex items-center space-x-4'>
 								<p className='text-sm font-medium text-teal-500'>
 									{course?.code}
@@ -121,7 +121,7 @@ const CourseDetails = () => {
 							</div>
 						</div>
 					</div>
-					<div className='container mx-auto px-4 mt-3 col-span-12 lg:col-span-7'>
+					<div className='container mx-auto px-4 col-span-12 lg:col-span-7'>
 						{courseLoading ? (
 							<LoadingScreen />
 						) : (

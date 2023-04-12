@@ -8,7 +8,7 @@ function LecturerQuality({}) {
 		<div className='grid grid-cols-2 gap-6'>
 			<div>
 				<h3 className='text-lg font-medium mb-2'>
-					Overall Lecturer Quality: {average.toFixed(1)}
+					Overall: {average.toFixed(1)}
 				</h3>
 				<div className='w-48 h-48 mx-auto relative'>
 					<CircularProgressbar

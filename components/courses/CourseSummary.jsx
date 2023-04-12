@@ -77,19 +77,20 @@ function CourseSummary({
 
 	// State for showing/hiding reviews
 	const [showReviews, setShowReviews] = useState(true)
+	const [showDescription, setShowDescription] = useState(false)
 
 	return (
 		<div
-			className='bg-white rounded-lg p-6 max-w-3xl w-full overflow-hidden'
+			className='bg-white rounded-lg px-6 py-2 max-w-3xl w-full overflow-hidden'
 			onClick={(e) => e.stopPropagation()}>
 			{courseLoading ? (
 				<LoadingScreen />
 			) : (
 				<>
 					{' '}
-					<div className='flex justify-between items-center mb-4'>
-						<h2 className='text-2xl font-medium'>
-							{course?.code} - {course?.name}
+					<div className='flex justify-between items-center mb-2'>
+						<h2 className='text-2xl font-medium text-gray-700'>
+							{course?.code} SUMMARY
 						</h2>
 						<button
 							className='text-gray-500 hover:text-gray-800 focus:outline-none'
@@ -98,37 +99,69 @@ function CourseSummary({
 						</button>
 					</div>
 					{/* COURSE SUMMARY */}
-					<div className='grid grid-cols-1 gap-6 md:grid-cols-2'>
+					<div className='grid grid-cols-2 gap-6 md:grid-cols-2'>
 						<LecturerQuality reviews={reviews} />
 						<div>
 							<h3 className='text-lg font-medium mb-4'>Attributes</h3>
 							{courseSummaryData.map((item) => (
-								<div
-									key={item.label}
-									className='flex items-center justify-between mb-2'>
-									<div className='flex items-center'>
-										<div
-											className='w-8 h-8 flex items-center justify-center rounded-full mr-3'
-											style={{ backgroundColor: item.color }}>
-											{/* {item.icon} */}
-											<span className='font-medium'>
-												{item.value.toFixed(1)}
-											</span>
+								<div key={item.label} className='mb-2'>
+									<div
+										className='flex items-center justify-between cursor-pointer'
+										onClick={() =>
+											setShowDescription(
+												showDescription === item.label ? null : item.label
+											)
+										}>
+										<div className='flex items-center'>
+											<div
+												className='w-8 h-8 flex items-center justify-center rounded-full mr-3'
+												style={{ backgroundColor: item.color }}>
+												<span className='font-medium'>
+													{item.value.toFixed(1)}
+												</span>
+											</div>
+											<div>
+												<span className='font-medium'>{item.label}</span>
+											</div>
 										</div>
 										<div>
-											<span className='font-medium'>{item.label}</span>{' '}
-											<p className='text-sm text-gray-500'>
-												{item.description}
-											</p>
+											{showDescription === item.label ? (
+												<svg
+													className='w-4 h-4 text-gray-500'
+													viewBox='0 0 20 20'
+													fill='currentColor'>
+													<path
+														fillRule='evenodd'
+														d='M5.293 6.293a1 1 0 011.414 0L10 9.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z'
+														clipRule='evenodd'
+													/>
+												</svg>
+											) : (
+												<svg
+													className='w-4 h-4 text-gray-500'
+													viewBox='0 0 20 20'
+													fill='currentColor'>
+													<path
+														fillRule='evenodd'
+														d='M5.293 9.707a1 1 0 011.414 0L10 12.879l3.293-3.172a1 1 0 111.414 1.414l-4 3.857a1 1 0 01-1.414 0l-4-3.857a1 1 0 010-1.414z'
+														clipRule='evenodd'
+													/>
+												</svg>
+											)}
 										</div>
 									</div>
+									{showDescription === item.label && (
+										<p className='text-sm text-gray-500 mt-2'>
+											{item.description}
+										</p>
+									)}
 								</div>
 							))}
 						</div>
 					</div>
 					{/* REVIEWS */}
-					<div className='mt-8'>
-						<div className='flex items-center justify-between mb-4'>
+					<div className='mt-4'>
+						<div className='flex items-center justify-between'>
 							<h3 className='text-lg font-medium'>Reviews</h3>
 							<button
 								className='text-gray-500 hover:text-gray-800 focus:outline-none'
