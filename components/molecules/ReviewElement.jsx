@@ -5,13 +5,14 @@ import Link from 'next/link'
 
 function ReviewElement({ username, review, targetLec }) {
 	// Add a check to ensure that review object is not undefined
-	const { rating, comment, date } = review || {}
+	const { rating, comment, updatedAt } = review || {}
 
 	// Add a check to ensure that rating object is not undefined
 	const { coolness, grading, workload, expertise, rwa } = rating || {}
 
 	const ratingAverage = (coolness + grading + workload + expertise + rwa) / 5
-	const formattedDate = moment(date).fromNow()
+	// console.log('DATE', review.updatedAt.toLocaleString())
+	const formattedDate = moment(review?.updatedAt).fromNow()
 
 	return (
 		<>

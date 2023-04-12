@@ -13,12 +13,23 @@ import WriteReviewModal from '../atoms/WriteReviewModal'
 import RatingComponent from './RatingComponent'
 import { useDispatch, useSelector } from 'react-redux'
 import { getReviewsForCourse, addReview } from '../../actions/reviewActions'
+import LoadingScreen from '../molecules/LoadingScreen'
 
-function LecturerModal({ lecturer, handleCloseModal, reviews, course }) {
+function LecturerModal({
+	lecturer,
+	handleCloseModal,
+	reviews,
+	course,
+	reviewLoading,
+}) {
 	const dispatch = useDispatch()
-	const lecReviews = reviews?.filter(
-		(review) => review.lecturer === lecturer._id && review.course === course._id
-	)
+	const lecReviews =
+		reviews.length > 0
+			? reviews?.filter(
+					(review) =>
+						review.lecturer === lecturer._id && review.course === course._id
+			  )
+			: []
 	const { user, token, error } = useSelector((state) => state.authReducer)
 
 	// Calculate average rating for each attribute
@@ -169,12 +180,18 @@ function LecturerModal({ lecturer, handleCloseModal, reviews, course }) {
 				</div>
 				<div className='mb-4'>
 					<p className='text-lg font-medium mb-2'>Reviews</p>
-					{lecReviews.length === 0 && (
-						<p className='text-gray-500'>No reviews yet.</p>
+					{reviewLoading ? (
+						<LoadingScreen />
+					) : (
+						<>
+							{lecReviews.length === 0 && (
+								<p className='text-gray-500'>No reviews yet.</p>
+							)}
+							{lecReviews.map((review, idx) => (
+								<ReviewElement key={review._id ?? idx} review={review} />
+							))}
+						</>
 					)}
-					{lecReviews.map((review, idx) => (
-						<ReviewElement key={review._id ?? idx} review={review} />
-					))}
 				</div>
 			</div>
 		</div>

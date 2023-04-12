@@ -2,7 +2,13 @@ import React, { useEffect } from 'react'
 import LecturerRankingCard from './LecturerRankingCard'
 import LoadingScreen from '../molecules/LoadingScreen'
 
-const Rankings = ({ lecturers, loading, reviews, course }) => {
+const Rankings = ({
+	lecturers,
+	reviewLoading,
+	lecLoading,
+	reviews,
+	course,
+}) => {
 	const sortLecturers = (lecturers) => {
 		return lecturers
 		// return lecturers.sort((a, b) => b.rating - a.rating)
@@ -11,7 +17,7 @@ const Rankings = ({ lecturers, loading, reviews, course }) => {
 
 	return (
 		<div>
-			{loading ? (
+			{lecLoading ? (
 				<LoadingScreen />
 			) : (
 				<>
@@ -21,7 +27,7 @@ const Rankings = ({ lecturers, loading, reviews, course }) => {
 							lecturer={lecturer}
 							rank={index + 1}
 							reviews={reviews}
-							loading={loading}
+							reviewLoading={reviewLoading}
 							course={course}
 						/>
 					))}

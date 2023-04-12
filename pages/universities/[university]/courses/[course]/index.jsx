@@ -114,6 +114,7 @@ const CourseDetails = () => {
 										loading={lecLoading}
 										reviews={reviews}
 										reviewLoading={reviewLoading}
+										lecLoading={lecLoading}
 										course={course}
 									/>
 								)}

@@ -22,19 +22,18 @@ export const getReviewsForCourse = (courseId) => async (dispatch) => {
 	}
 }
 
-//ADD REVIEW
-// Path: actions/reviewActions.js
-
 export const addReview = (courseId, review, token) => async (dispatch) => {
 	try {
 		dispatch({ type: reviewActionTypes.CREATE_REVIEW_REQUEST })
 		const addedReview = await addNewReview(courseId, review, token)
 
+		// Get updated reviews list
+		dispatch(getReviewsForCourse(courseId))
+
 		dispatch({
 			type: reviewActionTypes.CREATE_REVIEW_SUCCESS,
 			payload: addedReview,
 		})
-		getReviewsForCourse(courseId)
 	} catch (error) {
 		const errorMessage = error.response?.data?.message || 'Something went wrong'
 		dispatch({
