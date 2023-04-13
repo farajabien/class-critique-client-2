@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useState, useRef } from 'react'
 import {
 	FaCommentAlt,
 	FaFacebook,
@@ -22,6 +22,9 @@ function LecturerModal({
 	course,
 	reviewLoading,
 }) {
+	const [newReview, setNewReview] = useState(null)
+	const [isBannerVisible, setIsBannerVisible] = useState(false)
+	const timerRef = useRef(null)
 	const dispatch = useDispatch()
 	const lecReviews =
 		reviews.length > 0
@@ -83,6 +86,17 @@ function LecturerModal({
 	const circleTextStyle =
 		'font-bold text-sm text-gray-600 z-10 flex justify-center items-center'
 
+	const addNewReview = (review) => {
+		setNewReview(review)
+		setIsBannerVisible(true)
+		if (timerRef.current) {
+			clearTimeout(timerRef.current)
+		}
+		timerRef.current = setTimeout(() => {
+			setIsBannerVisible(false)
+		}, 5000)
+	}
+
 	const handleSubmitReview = (newReview) => {
 		const review = {
 			...newReview,
@@ -92,12 +106,20 @@ function LecturerModal({
 		const courseId = course._id.toString()
 
 		dispatch(addReview(courseId, review, token))
+		addNewReview(review)
 	}
+
+	const banner = (
+		<div className='fixed top-0 left-0 w-full bg-teal-500 text-white text-center p-2 z-50'>
+			New review added!
+		</div>
+	)
 
 	return (
 		<div
 			className='fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center z-50'
 			onClick={handleCloseModal}>
+			{isBannerVisible && banner}
 			<div
 				className='bg-white grid grid-cols-1 md:grid-cols-2 rounded-lg p-6 max-w-3xl w-full overflow-hidden'
 				onClick={(e) => e.stopPropagation()}>
@@ -114,14 +136,11 @@ function LecturerModal({
 								style={{
 									transform: `rotate(${totalRatingAvg * 1.8}deg)`,
 								}}></div>
-							<div className={circleTextStyle}>{`${
-								Math.round(totalRatingAvg * 10) / 10
-							}/5.0`}</div>
+							<div
+								className={circleTextStyle}>{`${lecturer.avgRating}/5.0`}</div>
 						</div>
 						<div>
-							<p className='text-lg font-medium'>{`${
-								Math.round(totalRatingAvg * 10) / 10
-							}/5.0`}</p>
+							<p className='text-lg font-medium'>{`${lecturer.avgRating}/5.0`}</p>
 							<p className='text-sm text-gray-500'>{`${
 								lecReviews.length
 							} review${lecReviews.length !== 1 ? 's' : ''}`}</p>

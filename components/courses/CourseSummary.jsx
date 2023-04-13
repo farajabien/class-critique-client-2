@@ -100,7 +100,7 @@ function CourseSummary({
 					</div>
 					{/* COURSE SUMMARY */}
 					<div className='grid grid-cols-2 gap-6 md:grid-cols-2'>
-						<LecturerQuality reviews={reviews} />
+						<LecturerQuality reviews={reviews} average={average} />
 						<div>
 							<h3 className='text-lg font-medium mb-4'>Attributes</h3>
 							{courseSummaryData.map((item) => (
@@ -166,7 +166,7 @@ function CourseSummary({
 							<button
 								className='text-gray-500 hover:text-gray-800 focus:outline-none'
 								onClick={() => setShowReviews(!showReviews)}>
-								{showReviews ? 'Hide' : 'Show'} Reviews ({reviews.length})
+								{showReviews ? 'Hide' : 'Show'} Reviews ({reviews?.length})
 							</button>
 						</div>
 						{reviewLoading ? (
@@ -175,11 +175,11 @@ function CourseSummary({
 							<>
 								{showReviews && (
 									<>
-										{reviews.length > 0 ? (
-											reviews.map((review, idx) => (
+										{reviews?.length > 0 ? (
+											reviews?.map((review, idx) => (
 												<ReviewElement
 													key={review._id ?? idx}
-													username='Placeholder'
+													user={review.user}
 													targetLec={
 														review.lecturer ? getLecName(review.lecturer) : ''
 													}

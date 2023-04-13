@@ -2,8 +2,7 @@ import { FaUsers } from 'react-icons/fa'
 import { CircularProgressbar } from 'react-circular-progressbar'
 import 'react-circular-progressbar/dist/styles.css'
 
-function LecturerQuality({}) {
-	const average = 4.5
+function LecturerQuality({ average }) {
 	return (
 		<div className='grid grid-cols-2 gap-6'>
 			<div>
@@ -12,7 +11,7 @@ function LecturerQuality({}) {
 				</h3>
 				<div className='w-48 h-48 mx-auto relative'>
 					<CircularProgressbar
-						value={average * 10}
+						value={average * 20}
 						text={`${average.toFixed(1)}`}
 						strokeWidth={10}
 						styles={{

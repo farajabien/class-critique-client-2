@@ -11,7 +11,7 @@ const LecturerRankingCard = ({
 	course,
 }) => {
 	const [showModal, setShowModal] = useState(false)
-	lecturer.averageRating = 4.5
+	// lecturer.averageRating = 4.5
 
 	const handleModal = () => {
 		setShowModal(!showModal)
@@ -45,7 +45,7 @@ const LecturerRankingCard = ({
 						<FaStar />
 					</span>
 					<p className={`font-bold ${rank === 1 ? 'text-lg' : 'text-base'}`}>
-						{lecturer.averageRating.toFixed(1)}
+						{lecturer?.avgRating?.toFixed(1) ?? 'N/A'}
 					</p>
 				</div>
 				<button

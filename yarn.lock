@@ -660,10 +660,20 @@
   optionalDependencies:
     "fsevents" "~2.3.2"
 
+"classnames@^2.2.5":
+  "integrity" "sha512-CSbhY4cFEJRe6/GQzIk5qXZ4Jeg5pcsP7b5peFSDpffpe1cqjASH/n9UTjBwOp6XpMSTwQ8Za2K5V02ueA7Tmw=="
+  "resolved" "https://registry.npmjs.org/classnames/-/classnames-2.3.2.tgz"
+  "version" "2.3.2"
+
 "client-only@0.0.1":
   "integrity" "sha512-IV3Ou0jSMzZrd3pZ48nLkT9DA7Ag1pnPzaiQhpW7c3RbcqqzvzzVu+L8gfqMp/8IM2MQtSiqaCxrrcfu8I8rMA=="
   "resolved" "https://registry.npmjs.org/client-only/-/client-only-0.0.1.tgz"
   "version" "0.0.1"
+
+"clsx@^1.2.1":
+  "integrity" "sha512-EcR6r5a8bj6pu3ycsa/E/cKVGuTgZJZdsyUYHOksG/UHIiKfjxzRxYJpyVBwYaQeOvghal9fcc4PidlgzugAQg=="
+  "resolved" "https://registry.npmjs.org/clsx/-/clsx-1.2.1.tgz"
+  "version" "1.2.1"
 
 "color-convert@^1.9.0":
   "integrity" "sha512-QfAUtd+vFdAtFQcC8CCyYt1fYWxSqAiK2cSD6zDB8N3cpsEBAvRxp9zOGg6G/SHHJYAT88/az/IuDGALsNVbGg=="
@@ -846,6 +856,11 @@
   "integrity" "sha512-IdJVpMHJoBT/nn0GQ02wPfbhogDVpd1ud95lP//FTf5l35wzxKJwibB4HBdY7Q+xKPA1nkZ0UDLOMyRj5U5IAQ=="
   "resolved" "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.4.353.tgz"
   "version" "1.4.353"
+
+"emoji-regex@^8.0.0":
+  "integrity" "sha512-MSjYzcWNOA0ewAHpz0MxpYFvwg6yjy1NG3xteoqz644VCo/RPgnr1/GGt+ic3iJTzQ8Eu3TdM14SawnVUmGE6A=="
+  "resolved" "https://registry.npmjs.org/emoji-regex/-/emoji-regex-8.0.0.tgz"
+  "version" "8.0.0"
 
 "emoji-regex@^9.2.2":
   "integrity" "sha512-L18DaJsXSUk2+42pv8mLs5jJT2hqFkFE4j21wOmgbUqsZ2hL72NsUU785g9RXgo3s0ZNgVl42TiHp3ZtOv/Vyg=="
@@ -1533,6 +1548,13 @@
     "has" "^1.0.3"
     "side-channel" "^1.0.4"
 
+"invariant@^2.2.1":
+  "integrity" "sha512-phJfQVBuaJM5raOpJjSfkiD6BpbCE4Ns//LaXl6wGYtUBY83nWS6Rf9tXm2e8VaK60JEjYldbPif/A2B1C2gNA=="
+  "resolved" "https://registry.npmjs.org/invariant/-/invariant-2.2.4.tgz"
+  "version" "2.2.4"
+  dependencies:
+    "loose-envify" "^1.0.0"
+
 "is-arguments@^1.1.1":
   "integrity" "sha512-8Q7EARjzEnKpt/PCD7e1cgUS0a6X8u5tdSiMqXhojOdoV9TsMsiO+9VLC5vAmO8N7/GmXn7yjR8qnA6bVAEzfA=="
   "resolved" "https://registry.npmjs.org/is-arguments/-/is-arguments-1.1.1.tgz"
@@ -1821,17 +1843,32 @@
   "resolved" "https://registry.npmjs.org/lodash.castarray/-/lodash.castarray-4.4.0.tgz"
   "version" "4.4.0"
 
+"lodash.flatten@^4.2.0", "lodash.flatten@^4.4.0":
+  "integrity" "sha512-C5N2Z3DgnnKr0LOpv/hKCgKdb7ZZwafIrsesve6lmzvZIRZRGaZ/l6Q8+2W7NaT+ZwO3fFlSCzCzrDCFdJfZ4g=="
+  "resolved" "https://registry.npmjs.org/lodash.flatten/-/lodash.flatten-4.4.0.tgz"
+  "version" "4.4.0"
+
 "lodash.isplainobject@^4.0.6":
   "integrity" "sha512-oSXzaWypCMHkPC3NvBEaPHf0KsA5mvPrOPgQWDsbg8n7orZ290M0BmC/jgRZ4vcJ6DTAhjrsSYgdsW/F+MFOBA=="
   "resolved" "https://registry.npmjs.org/lodash.isplainobject/-/lodash.isplainobject-4.0.6.tgz"
   "version" "4.0.6"
+
+"lodash.isstring@^4.0.1":
+  "integrity" "sha512-0wJxfxH1wgO3GrbuP+dTTk7op+6L41QCXbGINEmD+ny/G/eCqGzxyCsh7159S+mgDDcoarnBw6PC1PS5+wUGgw=="
+  "resolved" "https://registry.npmjs.org/lodash.isstring/-/lodash.isstring-4.0.1.tgz"
+  "version" "4.0.1"
 
 "lodash.merge@^4.6.2":
   "integrity" "sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ=="
   "resolved" "https://registry.npmjs.org/lodash.merge/-/lodash.merge-4.6.2.tgz"
   "version" "4.6.2"
 
-"loose-envify@^1.1.0", "loose-envify@^1.4.0":
+"lodash@^4.17.21":
+  "integrity" "sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg=="
+  "resolved" "https://registry.npmjs.org/lodash/-/lodash-4.17.21.tgz"
+  "version" "4.17.21"
+
+"loose-envify@^1.0.0", "loose-envify@^1.1.0", "loose-envify@^1.4.0":
   "integrity" "sha512-lyuxPGr/Wfhrlem2CL/UcnUc1zcqKAImBDzukY7Y5F/yQiNdko6+fRLevlw1HgMySw7f611UIY408EtxRSoK3Q=="
   "resolved" "https://registry.npmjs.org/loose-envify/-/loose-envify-1.4.0.tgz"
   "version" "1.4.0"
@@ -2265,7 +2302,7 @@
   "resolved" "https://registry.npmjs.org/pretty-format/-/pretty-format-3.8.0.tgz"
   "version" "3.8.0"
 
-"prop-types@^15.5.7", "prop-types@^15.8.1":
+"prop-types@^15.5.7", "prop-types@^15.5.8", "prop-types@^15.8.1":
   "integrity" "sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg=="
   "resolved" "https://registry.npmjs.org/prop-types/-/prop-types-15.8.1.tgz"
   "version" "15.8.1"
@@ -2316,13 +2353,24 @@
   "resolved" "https://registry.npmjs.org/react-circular-progressbar/-/react-circular-progressbar-2.1.0.tgz"
   "version" "2.1.0"
 
-"react-dom@^16.0.0 || ^17 || ^18", "react-dom@^16.8 || ^17.0 || ^18.0", "react-dom@^17.0.2 || ^18", "react-dom@^18.2.0", "react-dom@18.2.0":
+"react-dom@^16.0.0 || ^17 || ^18", "react-dom@^16.8 || ^17.0 || ^18.0", "react-dom@^17.0.2 || ^18", "react-dom@^18.2.0", "react-dom@>=0.14.0", "react-dom@18.2.0":
   "integrity" "sha512-6IMTriUmvsjHUjNtEDudZfuDQUoWXVxKHhlEGSk81n4YFS+r/Kl99wXiwlVXtPBtJenozv2P+hxDsw9eA7Xo6g=="
   "resolved" "https://registry.npmjs.org/react-dom/-/react-dom-18.2.0.tgz"
   "version" "18.2.0"
   dependencies:
     "loose-envify" "^1.1.0"
     "scheduler" "^0.23.0"
+
+"react-emoji-render@^2.0.1":
+  "integrity" "sha512-SKtsdwgEf2BFNiE9y4UBFZBWjkRcyWmhMprVly52+J77/zxThcfaQ3sCA0+2LtGJIRMpm4DGWSvyLg72fd1rXQ=="
+  "resolved" "https://registry.npmjs.org/react-emoji-render/-/react-emoji-render-2.0.1.tgz"
+  "version" "2.0.1"
+  dependencies:
+    "classnames" "^2.2.5"
+    "emoji-regex" "^8.0.0"
+    "lodash.flatten" "^4.4.0"
+    "prop-types" "^15.5.8"
+    "string-replace-to-array" "^1.0.1"
 
 "react-icons@^4.8.0":
   "integrity" "sha512-N6+kOLcihDiAnj5Czu637waJqSnwlMNROzVZMhfX68V/9bu9qHaMIJC4UdozWoOk57gahFCNHwVvWzm0MTzRjg=="
@@ -2351,7 +2399,7 @@
     "react-is" "^18.0.0"
     "use-sync-external-store" "^1.0.0"
 
-"react@*", "react@^0.14.0 || ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0", "react@^16.0.0 || ^17 || ^18", "react@^16.8 || ^17.0 || ^18.0", "react@^16.8.0 || ^17.0.0 || ^18.0.0", "react@^17.0.2 || ^18", "react@^18.2.0", "react@>= 16.8.0 || 17.x.x || ^18.0.0-0", "react@>=0.13", "react@>=16.8.0", "react@18.2.0":
+"react@*", "react@^0.14.0 || ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0", "react@^16.0.0 || ^17 || ^18", "react@^16.8 || ^17.0 || ^18.0", "react@^16.8.0 || ^17.0.0 || ^18.0.0", "react@^17.0.2 || ^18", "react@^18.2.0", "react@>= 16.8.0 || 17.x.x || ^18.0.0-0", "react@>=0.13", "react@>=0.14.0", "react@>=16.8.0", "react@18.2.0":
   "integrity" "sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ=="
   "resolved" "https://registry.npmjs.org/react/-/react-18.2.0.tgz"
   "version" "18.2.0"
@@ -2515,6 +2563,15 @@
   "version" "1.0.0"
   dependencies:
     "internal-slot" "^1.0.4"
+
+"string-replace-to-array@^1.0.1":
+  "integrity" "sha512-QIdKvmfXbdFvblXAAz6IIjR7A+C6SU6m2A+e7fE/0EYDC5yfeWNMJQ193fPsW7nG+9q52dv/UjnVrDaNVZXpmQ=="
+  "resolved" "https://registry.npmjs.org/string-replace-to-array/-/string-replace-to-array-1.0.3.tgz"
+  "version" "1.0.3"
+  dependencies:
+    "invariant" "^2.2.1"
+    "lodash.flatten" "^4.2.0"
+    "lodash.isstring" "^4.0.1"
 
 "string.prototype.matchall@^4.0.8":
   "integrity" "sha512-6zOCOcJ+RJAQshcTvXPHoxoQGONa3e/Lqx90wUA+wEzX78sg5Bo+1tQo4N0pohS0erG9qtCqJDjNCQBjeWVxyg=="

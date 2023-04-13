@@ -1,6 +1,4 @@
 //LECTURER REDUCER
-// Path: reducers/lecturerReducer.js
-// Compare this snippet from courseReducer.js:
 import { lecturerActionTypes } from '../constants'
 
 export const initialState = {
