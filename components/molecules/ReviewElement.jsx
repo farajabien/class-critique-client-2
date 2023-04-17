@@ -14,7 +14,7 @@ const otherEmojis = ['🧑', '👤', '👥', '🌐', '💬']
 
 function ReviewElement({ user, review, targetLec }) {
 	// Add a check to ensure that review object is not undefined
-	const { rating, comment, updatedAt } = review || {}
+	const { rating, comment, updatedAt: reviewUpdatedAt } = review || {}
 	const {
 		error,
 		loading,
@@ -22,10 +22,22 @@ function ReviewElement({ user, review, targetLec }) {
 	} = useSelector((state) => state.authReducer)
 
 	// Add a check to ensure that rating object is not undefined
-	const { coolness, grading, workload, expertise, rwa } = rating || {}
+	const {
+		coolness,
+		grading,
+		workload,
+		expertise,
+		rwa,
+		updatedAt: ratingUpdatedAt,
+	} = rating || {}
 
 	const ratingAverage = (coolness + grading + workload + expertise + rwa) / 5
-	const formattedDate = moment(review?.updatedAt).fromNow()
+
+	const latestUpdate =
+		reviewUpdatedAt > ratingUpdatedAt ? reviewUpdatedAt : ratingUpdatedAt
+
+	const formattedDate = moment(latestUpdate).fromNow()
+
 	const initials = user?.name
 		.split(' ')
 		.map((part) => part[0])
