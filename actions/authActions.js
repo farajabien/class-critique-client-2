@@ -48,11 +48,10 @@ export const register = (userData) => async (dispatch) => {
 	}
 }
 
-export const logout = (userData) => async (dispatch) => {
+export const logout = () => async (dispatch) => {
 	try {
 		dispatch({ type: authActionTypes.LOGOUT_REQUEST })
-		const user = await registerUser(userData)
-		dispatch({ type: authActionTypes.LOGOUT_SUCCESS, payload: user })
+		dispatch({ type: authActionTypes.LOGOUT_SUCCESS })
 	} catch (error) {
 		dispatch({
 			type: authActionTypes.LOGOUT_FAILURE,
