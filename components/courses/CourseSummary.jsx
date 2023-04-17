@@ -27,6 +27,11 @@ function CourseSummary({
 		return lec?.name
 	}
 
+	//sort reviews by updatedAt
+	reviews.sort((a, b) => {
+		return new Date(b.updatedAt) - new Date(a.updatedAt)
+	})
+
 	// Sample data for the course summary
 	const courseSummaryData = [
 		{

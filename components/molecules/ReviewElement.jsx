@@ -1,11 +1,11 @@
 import React from 'react'
 import moment from 'moment'
-import { FaClock, FaStar } from 'react-icons/fa'
+import { FaClock, FaRegStar, FaStar } from 'react-icons/fa'
 import Link from 'next/link'
 import Avatar from '../atoms/Avatar'
 import { useSelector } from 'react-redux'
 import { IoMdFemale, IoMdMale } from 'react-icons/io'
-import { FaUserAlt } from 'react-icons/fa'
+import { BsFillStarFill } from 'react-icons/bs'
 import Emoji from 'react-emoji-render'
 
 const girlEmojis = ['💅', '💄', '👗', '🎀', '💖']
@@ -62,77 +62,86 @@ function ReviewElement({ user, review, targetLec }) {
 	)
 
 	// Check if the logged in user wrote this review
-	const isCurrentUserReview = loggedInUser && loggedInUser._id === user._id
+	const isCurrentUserReview =
+		loggedInUser && loggedInUser?.id === review.user?._id
 
 	// Define the badge component
 	const Badge = () => (
-		<div className='inline-block ml-2 px-2 py-1 text-sm font-medium text-white bg-teal-500 rounded'>
-			Your Review
+		<div className='absolute'>
+			<div className='text-xl font-medium text-yellow-400 rounded-full mt-1 ml-1'>
+				{/* star icon  */}
+				<BsFillStarFill className='mr-1' />
+			</div>
 		</div>
 	)
 
 	return (
-		<div
-			className={`flex items-start rounded-lg shadow-md px-6 py-4 ${
-				isCurrentUserReview ? 'bg-teal-100' : 'bg-white'
-			}`}>
-			<Avatar initials={initials} className='mr-4 mt-1' />
-			<div>
-				<div className='flex items-center justify-between'>
-					<div>
-						<div className='text-sm font-medium'>
-							{user?.gender === 'male' ? (
-								<BoyEmojis />
-							) : user?.gender === 'female' ? (
-								<GirlEmojis />
-							) : (
-								<OtherEmojis />
-							)}
-						</div>
-						<div className='flex items-center text-gray-500 text-sm'>
-							<FaStar
-								className={`text-yellow-500 mr-1 ${
-									ratingAverage >= 1 ? 'opacity-100' : 'opacity-25'
-								}`}
-							/>
-							<FaStar
-								className={`text-yellow-500 mr-1 ${
-									ratingAverage >= 2 ? 'opacity-100' : 'opacity-25'
-								}`}
-							/>
-							<FaStar
-								className={`text-yellow-500 mr-1 ${
-									ratingAverage >= 3 ? 'opacity-100' : 'opacity-25'
-								}`}
-							/>
-							<FaStar
-								className={`text-yellow-500 mr-1 ${
-									ratingAverage >= 4 ? 'opacity-100' : 'opacity-25'
-								}`}
-							/>
-							<FaStar
-								className={`text-yellow-500 mr-1 ${
-									ratingAverage >= 5 ? 'opacity-100' : 'opacity-25'
-								}`}
-							/>
-							<span className='mr-2'>{ratingAverage.toFixed(1)}</span>
-							<FaClock className='mr-1' />
-							<span>{formattedDate}</span>
+		<div>
+			{isCurrentUserReview && <Badge />}
+			<div
+				className={`flex items-start rounded-lg shadow-md px-6 py-4 ${
+					isCurrentUserReview ? 'bg-teal-100' : 'bg-white'
+				}`}>
+				<Avatar initials={initials} className='mr-4 mt-1' />
+				<div>
+					<div className='flex items-center justify-between'>
+						<div>
+							<div className='text-sm font-medium'>
+								{user?.gender === 'male' ? (
+									<BoyEmojis />
+								) : user?.gender === 'female' ? (
+									<GirlEmojis />
+								) : (
+									<OtherEmojis />
+								)}
+							</div>
+							<div className='flex items-center text-gray-500 text-sm'>
+								<FaStar
+									className={`text-yellow-500 mr-1 ${
+										ratingAverage >= 1 ? 'opacity-100' : 'opacity-25'
+									}`}
+								/>
+								<FaStar
+									className={`text-yellow-500 mr-1 ${
+										ratingAverage >= 2 ? 'opacity-100' : 'opacity-25'
+									}`}
+								/>
+								<FaStar
+									className={`text-yellow-500 mr-1 ${
+										ratingAverage >= 3 ? 'opacity-100' : 'opacity-25'
+									}`}
+								/>
+								<FaStar
+									className={`text-yellow-500 mr-1 ${
+										ratingAverage >= 4 ? 'opacity-100' : 'opacity-25'
+									}`}
+								/>
+								<FaStar
+									className={`text-yellow-500 mr-1 ${
+										ratingAverage >= 5 ? 'opacity-100' : 'opacity-25'
+									}`}
+								/>
+								<span className='mr-2'>{ratingAverage.toFixed(1)}</span>
+								<FaClock className='mr-1' />
+								<span>{formattedDate}</span>
+							</div>
 						</div>
 					</div>
+
+					<div className='mt-2 text-gray-700 text-sm'>{comment}</div>
 				</div>
-				<div className='mt-2 text-gray-700 text-sm'>{comment}</div>
+
+				{targetLec && (
+					<span className='inline-block ml-auto text-gray-500 text-normal'>
+						<span className='ml-auto mr-1 text-normal'>Review for</span>
+						<Link
+							href={`/lecturers/${targetLec}`}
+							className='text-teal-500 hover:underline mr-2'>
+							{targetLec}
+						</Link>
+					</span>
+				)}
 			</div>
-			{targetLec && (
-				<span className='inline-block ml-auto text-gray-500 text-normal'>
-					<span className='ml-auto mr-1 text-normal'>Review for</span>
-					<Link
-						href={`/lecturers/${targetLec}`}
-						className='text-teal-500 hover:underline mr-2'>
-						{targetLec}
-					</Link>
-				</span>
-			)}
 		</div>
 	)
 }

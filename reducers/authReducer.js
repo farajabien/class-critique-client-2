@@ -31,10 +31,11 @@ export default function authReducer(state = initialState, action) {
 		case authActionTypes.REGISTER_SUCCESS:
 			localStorage.setItem('classCritiqueToken', action.payload.token)
 			localStorage.setItem('classCritiqueExpiresAt', action.payload.expiresAt)
-			// navigate to previous page or home page
-			const prevPath = localStorage.getItem('prevPath')
-			console.log('Prev', prevPath)
-			router.push(prevPath || '/')
+
+			if (!action.payload.isModal?.isModal) {
+				router.push(`/universities/${action.payload.user.university}`)
+			}
+
 			return {
 				...state,
 				expiresAt: action.payload.expiresAt,

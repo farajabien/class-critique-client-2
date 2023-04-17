@@ -33,6 +33,12 @@ function LecturerModal({
 						review.lecturer === lecturer._id && review.course === course._id
 			  )
 			: []
+
+	//sort lecReviews by updatedAt
+	lecReviews.sort((a, b) => {
+		return new Date(b.updatedAt) - new Date(a.updatedAt)
+	})
+
 	const { user, token, error } = useSelector((state) => state.authReducer)
 
 	// Calculate average rating for each attribute
@@ -188,6 +194,32 @@ function LecturerModal({
 							</div>
 						</div>
 					</div>
+					<div className='mb-4'>
+						<p className='text-lg font-medium mb-2'>Reviews</p>
+						{reviewLoading ? (
+							<LoadingScreen />
+						) : (
+							<>
+								{lecReviews.length === 0 && (
+									<p className='text-gray-500'>No reviews yet.</p>
+								)}
+
+								<>
+									{lecReviews?.length > 0 ? (
+										lecReviews?.map((review, idx) => (
+											<ReviewElement
+												key={review._id ?? idx}
+												user={review.user}
+												review={review}
+											/>
+										))
+									) : (
+										<p className=' text-gray-500'>No reviews yet.</p>
+									)}
+								</>
+							</>
+						)}
+					</div>
 				</div>
 
 				<div className='relative'>
@@ -196,21 +228,6 @@ function LecturerModal({
 						lecturerName={lecturer.name}
 						attributeNames={ratings}
 					/>
-				</div>
-				<div className='mb-4'>
-					<p className='text-lg font-medium mb-2'>Reviews</p>
-					{reviewLoading ? (
-						<LoadingScreen />
-					) : (
-						<>
-							{lecReviews.length === 0 && (
-								<p className='text-gray-500'>No reviews yet.</p>
-							)}
-							{lecReviews.map((review, idx) => (
-								<ReviewElement key={review._id ?? idx} review={review} />
-							))}
-						</>
-					)}
 				</div>
 			</div>
 		</div>

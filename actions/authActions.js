@@ -12,17 +12,17 @@ export const signup = (userData) => async (dispatch) => {
 	}
 }
 
-export const login = (userData) => async (dispatch) => {
+export const login = (userData, isModal) => async (dispatch) => {
 	try {
 		dispatch({ type: authActionTypes.LOGIN_REQUEST })
-		const response = await loginUser(userData)
+		const response = await loginUser(userData, isModal)
 		if (response.error) {
 			throw new Error(response.error)
 		}
 		const { user, token, expiresAt } = response
 		dispatch({
 			type: authActionTypes.LOGIN_SUCCESS,
-			payload: { user, token, expiresAt },
+			payload: { user, token, expiresAt, isModal },
 		})
 	} catch (error) {
 		console.log(error)

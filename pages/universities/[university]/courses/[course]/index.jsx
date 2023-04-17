@@ -52,7 +52,7 @@ const CourseDetails = () => {
 				{courseLoading ? (
 					<LoadingScreen />
 				) : (
-					<div className='container mx-auto px-4'>
+					<div className='mx-auto px-4'>
 						<div className='flex justify-between items-center'>
 							<div className='flex items-center space-x-4'>
 								<div>
@@ -65,7 +65,7 @@ const CourseDetails = () => {
 										</p>
 									</Link>
 
-									<div className='flex items-center space-x-2'>
+									<div className='flex items-center '>
 										<p className='text-sm font-medium text-teal-500'>
 											{course?.code}
 										</p>
