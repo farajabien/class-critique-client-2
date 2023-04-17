@@ -65,7 +65,7 @@ const Header = () => {
 				{user && (
 					<>
 						<Link
-							href='/profile'
+							href='/auth/profile'
 							className='flex items-center space-x-2 text-white text-lg md:text-xl hover:text-teal-200 focus:text-teal-200 transition-colors duration-300'>
 							<HiOutlineUserCircle />
 							<span>Profile</span>

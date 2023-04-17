@@ -61,6 +61,7 @@ const LecturerRankingCard = ({
 			{showModal && (
 				<LecturerModal
 					lecturer={lecturer}
+					rank={rank}
 					handleCloseModal={() => setShowModal(false)}
 					handleCloseReviewModal={() => setShowModal(false)}
 					reviews={reviews}

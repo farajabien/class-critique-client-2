@@ -17,6 +17,7 @@ import LoadingScreen from '../molecules/LoadingScreen'
 
 function LecturerModal({
 	lecturer,
+	rank,
 	handleCloseModal,
 	reviews,
 	course,
@@ -137,7 +138,9 @@ function LecturerModal({
 				onClick={(e) => e.stopPropagation()}>
 				<div>
 					<div className=' items-center mb-4'>
-						<h2 className='text-2xl font-medium'>{lecturer.name}</h2>
+						<h2 className='text-2xl font-medium'>
+							#{rank}. {lecturer.name}
+						</h2>
 						<p className=' text-gray-500'>{lecturer.email ?? 'N/A'}</p>
 					</div>
 					<div className='flex items-center mb-4'>
