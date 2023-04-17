@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import {
 	FaCommentAlt,
 	FaFacebook,
@@ -111,7 +111,8 @@ function LecturerModal({
 
 		const courseId = course._id.toString()
 
-		dispatch(addReview(courseId, review, token))
+		const uniId = user.university.toString()
+		dispatch(addReview(courseId, review, token, uniId))
 		addNewReview(review)
 	}
 

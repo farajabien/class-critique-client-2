@@ -12,6 +12,7 @@ const Rankings = ({
 	const sortLecturers = (lecturers) => {
 		const lecturersWithAvgRating = lecturers.map((lecturer) => {
 			// Calculate the average rating for this lecturer
+
 			const totalRating =
 				lecturer.avgCoolness +
 				lecturer.avgGrading +

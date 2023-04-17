@@ -1,5 +1,6 @@
 import { reviewActionTypes } from '../constants'
 import { getAllReviewsForCourse, addNewReview } from '../pages/api/data'
+import { getCourseLecturers } from './lecturerActions'
 
 export const getReviewsForCourse = (courseId) => async (dispatch) => {
 	if (courseId) {
@@ -22,23 +23,26 @@ export const getReviewsForCourse = (courseId) => async (dispatch) => {
 	}
 }
 
-export const addReview = (courseId, review, token) => async (dispatch) => {
-	try {
-		dispatch({ type: reviewActionTypes.CREATE_REVIEW_REQUEST })
-		const addedReview = await addNewReview(courseId, review, token)
+export const addReview =
+	(courseId, review, token, uniId) => async (dispatch) => {
+		try {
+			dispatch({ type: reviewActionTypes.CREATE_REVIEW_REQUEST })
+			const addedReview = await addNewReview(courseId, review, token)
 
-		// Get updated reviews list
-		dispatch(getReviewsForCourse(courseId))
+			// Get updated reviews list and lecturer list
+			dispatch(getReviewsForCourse(courseId))
+			dispatch(getCourseLecturers(uniId, courseId))
 
-		dispatch({
-			type: reviewActionTypes.CREATE_REVIEW_SUCCESS,
-			payload: addedReview,
-		})
-	} catch (error) {
-		const errorMessage = error.response?.data?.message || 'Something went wrong'
-		dispatch({
-			type: reviewActionTypes.CREATE_REVIEW_FAILURE,
-			payload: errorMessage,
-		})
+			dispatch({
+				type: reviewActionTypes.CREATE_REVIEW_SUCCESS,
+				payload: addedReview,
+			})
+		} catch (error) {
+			const errorMessage =
+				error.response?.data?.message || 'Something went wrong'
+			dispatch({
+				type: reviewActionTypes.CREATE_REVIEW_FAILURE,
+				payload: errorMessage,
+			})
+		}
 	}
-}

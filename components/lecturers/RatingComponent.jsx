@@ -26,10 +26,17 @@ function RatingComponent({ onSubmit, lecturerName, attributeNames }) {
 	const [openLoginModal, setOpenLoginModal] = useState(false)
 
 	const handleRating = (attribute, rating) => {
-		setRatings((prevRatings) => ({
-			...prevRatings,
-			[attribute]: rating,
-		}))
+		if (attribute.toLowerCase().includes('applicability')) {
+			setRatings((prevRatings) => ({
+				...prevRatings,
+				rwa: rating,
+			}))
+		} else {
+			setRatings((prevRatings) => ({
+				...prevRatings,
+				[attribute]: rating,
+			}))
+		}
 	}
 
 	const handleComment = (event) => {
@@ -84,7 +91,11 @@ function RatingComponent({ onSubmit, lecturerName, attributeNames }) {
 								{attributeNames.map((name, index) => (
 									<div key={index} className='flex items-center space-x-4'>
 										<label
-											htmlFor={`rating-${name.toLowerCase()}`}
+											htmlFor={`rating-${
+												name.toLowerCase().includes('applicability')
+													? 'rwa'
+													: name.toLowerCase()
+											}`}
 											className='w-28 font-medium text-gray-800'>
 											{name}
 										</label>
@@ -94,12 +105,22 @@ function RatingComponent({ onSubmit, lecturerName, attributeNames }) {
 													key={index}
 													type='button'
 													className={`rounded-full w-8 h-8 flex items-center justify-center text-sm font-medium text-gray-800 focus:outline-none ${
-														ratings[name.toLowerCase()] === index + 1
+														ratings[
+															name.toLowerCase().includes('applicability')
+																? 'rwa'
+																: name.toLowerCase()
+														] ===
+														index + 1
 															? 'bg-teal-500 text-white'
 															: 'bg-white hover:bg-gray-200'
 													}`}
 													onClick={() =>
-														handleRating(name.toLowerCase(), index + 1)
+														handleRating(
+															name.toLowerCase().includes('applicability')
+																? 'rwa'
+																: name.toLowerCase(),
+															index + 1
+														)
 													}>
 													{' '}
 													{index + 1}{' '}
