@@ -45,7 +45,9 @@ const LecturerRankingCard = ({
 						<FaStar />
 					</span>
 					<p className={`font-bold ${rank === 1 ? 'text-lg' : 'text-base'}`}>
-						{lecturer?.avgRating?.toFixed(1) ?? 'N/A'}
+						{typeof lecturer.avgRating === 'number'
+							? lecturer.avgRating.toFixed(1)
+							: 'N/A'}
 					</p>
 				</div>
 				<button
@@ -53,7 +55,7 @@ const LecturerRankingCard = ({
 						rank === 1 ? 'hover:text-teal-100' : 'hover:text-teal-700'
 					}`}
 					onClick={handleModal}>
-					<FaCommentAlt className='inline mr-1' /> View ({reviews.length ?? 0})
+					<FaCommentAlt className='inline mr-1' /> View ({reviews.length || 0})
 				</button>
 			</div>
 			{showModal && (

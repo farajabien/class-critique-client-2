@@ -95,6 +95,7 @@ function LecturerModal({
 	const addNewReview = (review) => {
 		setNewReview(review)
 		setIsBannerVisible(true)
+		setIsReviewAdded(true)
 		if (timerRef.current) {
 			clearTimeout(timerRef.current)
 		}
@@ -112,15 +113,19 @@ function LecturerModal({
 		const courseId = course._id.toString()
 
 		const uniId = user.university.toString()
-		dispatch(addReview(courseId, review, token, uniId))
+		dispatch(addReview(courseId, review, token, uniId)).then(() => {
+			setIsReviewAdded(false)
+		})
 		addNewReview(review)
 	}
 
 	const banner = (
-		<div className='fixed top-0 left-0 w-full bg-teal-500 text-white text-center p-2 z-50'>
+		<div className='fixed top-0 left-0 w-full bg-teal-500 text-white text-center p-2 py-8 z-50'>
 			New review added!
 		</div>
 	)
+
+	const [isReviewAdded, setIsReviewAdded] = useState(false)
 
 	return (
 		<div
@@ -206,18 +211,20 @@ function LecturerModal({
 								)}
 
 								<>
-									{lecReviews?.length > 0 ? (
+									{lecReviews?.length > 0 &&
 										lecReviews?.map((review, idx) => (
 											<ReviewElement
 												key={review._id ?? idx}
 												user={review.user}
 												review={review}
 											/>
-										))
-									) : (
-										<p className=' text-gray-500'>No reviews yet.</p>
-									)}
+										))}
 								</>
+								{isReviewAdded && (
+									<div className='fixed top-0 left-0 w-full bg-teal-500 text-white text-center p-2 z-50'>
+										New review added!
+									</div>
+								)}
 							</>
 						)}
 					</div>

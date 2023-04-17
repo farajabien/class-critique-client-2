@@ -37,22 +37,16 @@ const Rankings = ({
 
 	return (
 		<div>
-			{lecLoading ? (
-				<LoadingScreen />
-			) : (
-				<>
-					{sortedLecturers?.map((lecturer, index) => (
-						<LecturerRankingCard
-							key={lecturer._id}
-							lecturer={lecturer}
-							rank={index + 1}
-							reviews={reviews}
-							reviewLoading={reviewLoading}
-							course={course}
-						/>
-					))}
-				</>
-			)}
+			{sortedLecturers?.map((lecturer, index) => (
+				<LecturerRankingCard
+					key={lecturer._id}
+					lecturer={lecturer}
+					rank={index + 1}
+					reviews={reviews}
+					reviewLoading={reviewLoading}
+					course={course}
+				/>
+			))}
 		</div>
 	)
 }

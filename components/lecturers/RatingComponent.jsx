@@ -156,7 +156,7 @@ function RatingComponent({ onSubmit, lecturerName, attributeNames }) {
 										</span>
 										<span
 											onClick={() => setOpenLoginModal(true)}
-											className='cursor-pointer text-gray-600 rounded-md px-2 hover:text-teal-600 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2'>
+											className=' bg-teal-300 mx-1 p-0.5 hover:bg-teal-500 hover:text-teal-100 cursor-pointer text-gray-600 rounded-md px-2 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2'>
 											Login
 										</span>
 									</div>

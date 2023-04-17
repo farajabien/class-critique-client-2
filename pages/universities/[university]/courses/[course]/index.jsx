@@ -120,19 +120,15 @@ const CourseDetails = () => {
 									Lecturers Ranking (
 									{lecLoading ? <LoadingScreen /> : lecturers?.length ?? 0})
 								</h2>
-								{lecLoading ? (
-									<LoadingScreen />
-								) : (
-									<Rankings
-										lecturers={lecturers}
-										searchQuery={searchQuery}
-										loading={lecLoading}
-										reviews={reviews}
-										reviewLoading={reviewLoading}
-										lecLoading={lecLoading}
-										course={course}
-									/>
-								)}
+								<Rankings
+									lecturers={lecturers}
+									searchQuery={searchQuery}
+									loading={lecLoading}
+									reviews={reviews}
+									reviewLoading={reviewLoading}
+									lecLoading={lecLoading}
+									course={course}
+								/>
 							</div>
 						</div>
 					</div>
