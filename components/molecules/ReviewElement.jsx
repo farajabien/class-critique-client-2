@@ -78,7 +78,7 @@ function ReviewElement({ user, review, targetLec }) {
 	let isCurrentUserReview =
 		loggedInUser && loggedInUser?.id === review.user?._id
 
-	if (loggedInUser.id == null || review.user == null) {
+	if (loggedInUser?.id == null || review?.user == null) {
 		isCurrentUserReview = false
 	}
 

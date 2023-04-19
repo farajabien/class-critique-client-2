@@ -6,7 +6,12 @@ import Link from 'next/link'
 import { useSelector } from 'react-redux'
 import LoginModal from '../LoginRegister'
 
-function RatingComponent({ onSubmit, courseUniversity, attributeNames }) {
+function RatingComponent({
+	onSubmit,
+	courseUniversity,
+	attributeNames,
+	lecturerName,
+}) {
 	const {
 		error,
 		loading,
@@ -67,8 +72,6 @@ function RatingComponent({ onSubmit, courseUniversity, attributeNames }) {
 	useEffect(() => {
 		if (loggedInUser) {
 			setOpenLoginModal(false)
-			console.log('HERE', loggedInUser.university)
-			console.log('THERE', courseUniversity)
 			setUserUniversity(loggedInUser.university)
 		}
 	}, [loggedInUser, courseUniversity])
@@ -85,6 +88,14 @@ function RatingComponent({ onSubmit, courseUniversity, attributeNames }) {
 			<div className='flex-grow flex flex-col items-center justify-center px-4'>
 				{!submitted ? (
 					<div className='w-full max-w-lg'>
+						{/* heading  */}
+						<div className='flex items-center justify-between mb-4'>
+							<h1 className='text-2xl font-medium text-gray-800'>
+								{' '}
+								Submit Rating on
+								<span className='text-teal-500'> {lecturerName}</span>{' '}
+							</h1>{' '}
+						</div>{' '}
 						<form onSubmit={handleSubmit}>
 							<div className='flex flex-col space-y-4 mb-6'>
 								{attributeNames.map((name, index) => (
