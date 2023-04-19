@@ -1,18 +1,9 @@
-import React, { useState, useRef, useEffect } from 'react'
-import {
-	FaCommentAlt,
-	FaFacebook,
-	FaLinkedin,
-	FaStar,
-	FaTimes,
-	FaTwitter,
-	FaUser,
-} from 'react-icons/fa'
+import React, { useState, useRef } from 'react'
+import { FaStar, FaUser } from 'react-icons/fa'
 import ReviewElement from '../molecules/ReviewElement'
-import WriteReviewModal from '../atoms/WriteReviewModal'
 import RatingComponent from './RatingComponent'
 import { useDispatch, useSelector } from 'react-redux'
-import { getReviewsForCourse, addReview } from '../../actions/reviewActions'
+import { addReview } from '../../actions/reviewActions'
 import LoadingScreen from '../molecules/LoadingScreen'
 
 function LecturerModal({
@@ -241,6 +232,7 @@ function LecturerModal({
 						onSubmit={handleSubmitReview}
 						lecturerName={lecturer.name}
 						attributeNames={ratings}
+						courseUniversity={course?.university?.toString()}
 					/>
 				</div>
 			</div>

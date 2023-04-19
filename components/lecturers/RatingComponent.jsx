@@ -6,7 +6,7 @@ import Link from 'next/link'
 import { useSelector } from 'react-redux'
 import LoginModal from '../LoginRegister'
 
-function RatingComponent({ onSubmit, lecturerName, attributeNames }) {
+function RatingComponent({ onSubmit, courseUniversity, attributeNames }) {
 	const {
 		error,
 		loading,
@@ -24,6 +24,7 @@ function RatingComponent({ onSubmit, lecturerName, attributeNames }) {
 	const [comment, setComment] = useState('')
 	const [submitted, setSubmitted] = useState(false)
 	const [openLoginModal, setOpenLoginModal] = useState(false)
+	const [userUniversity, setUserUniversity] = useState('')
 
 	const handleRating = (attribute, rating) => {
 		if (attribute.toLowerCase().includes('applicability')) {
@@ -66,17 +67,15 @@ function RatingComponent({ onSubmit, lecturerName, attributeNames }) {
 	useEffect(() => {
 		if (loggedInUser) {
 			setOpenLoginModal(false)
+			console.log('HERE', loggedInUser.university)
+			console.log('THERE', courseUniversity)
+			setUserUniversity(loggedInUser.university)
 		}
-	}, [loggedInUser])
+	}, [loggedInUser, courseUniversity])
 
 	return (
 		<div className='flex flex-col items-center bg-gray-100'>
-			<div className='flex items-center justify-between w-full max-w-screen-lg p-4'>
-				{/* <span className='text-lg font-medium text-gray-800'>
-					{lecturerName}
-				</span>
-				<div className='w-8'></div> */}
-			</div>
+			<div className='flex items-center justify-between w-full max-w-screen-lg p-4'></div>
 			{openLoginModal && (
 				<LoginModal
 					open={openLoginModal}
@@ -144,11 +143,23 @@ function RatingComponent({ onSubmit, lecturerName, attributeNames }) {
 										onChange={handleComment}></textarea>{' '}
 								</div>{' '}
 								{loggedInUser ? (
-									<button
-										type='submit'
-										className='bg-teal-500 text-white rounded-md py-2 px-4 hover:bg-teal-600 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2'>
-										Submit
-									</button>
+									<>
+										{userUniversity === courseUniversity ? (
+											<button
+												type='submit'
+												className='bg-teal-300 hover:bg-teal-500 text-gray-800 font-medium py-1 px-4 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2'>
+												{' '}
+												Submit{' '}
+											</button>
+										) : (
+											<div className='flex-grow flex items-center justify-center'>
+												<span className='text-lg font-medium text-gray-800'>
+													You can only submit ratings for courses at your
+													university.
+												</span>
+											</div>
+										)}
+									</>
 								) : (
 									<div className='flex-grow flex items-center justify-center'>
 										<span className='text-lg font-medium text-gray-800'>
@@ -222,7 +233,7 @@ function RatingComponent({ onSubmit, lecturerName, attributeNames }) {
 
 RatingComponent.propTypes = {
 	onSubmit: PropTypes.func.isRequired,
-	lecturerName: PropTypes.string.isRequired,
+	courseUniversity: PropTypes.string.isRequired,
 	attributeNames: PropTypes.arrayOf(PropTypes.string).isRequired,
 }
 
