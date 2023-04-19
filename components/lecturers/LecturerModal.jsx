@@ -151,11 +151,14 @@ function LecturerModal({
 								style={{
 									transform: `rotate(${totalRatingAvg * 1.8}deg)`,
 								}}></div>
-							<div
-								className={circleTextStyle}>{`${lecturer.avgRating}/5.0`}</div>
+							<div className={circleTextStyle}>{`${lecturer.avgRating.toFixed(
+								1
+							)}/5.0`}</div>
 						</div>
 						<div>
-							<p className='text-lg font-medium'>{`${lecturer.avgRating}/5.0`}</p>
+							<p className='text-lg font-medium'>{`${lecturer.avgRating.toFixed(
+								1
+							)}/5.0`}</p>
 							<p className='text-sm text-gray-500'>{`${
 								lecReviews.length
 							} review${lecReviews.length !== 1 ? 's' : ''}`}</p>
