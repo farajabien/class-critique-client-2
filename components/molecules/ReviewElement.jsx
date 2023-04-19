@@ -20,6 +20,7 @@ function ReviewElement({ user, review, targetLec }) {
 		loading,
 		user: loggedInUser,
 	} = useSelector((state) => state.authReducer)
+	if (!review) return null
 
 	// Add a check to ensure that rating object is not undefined
 	const {
@@ -74,8 +75,12 @@ function ReviewElement({ user, review, targetLec }) {
 	)
 
 	// Check if the logged in user wrote this review
-	const isCurrentUserReview =
+	let isCurrentUserReview =
 		loggedInUser && loggedInUser?.id === review.user?._id
+
+	if (loggedInUser.id == null || review.user == null) {
+		isCurrentUserReview = false
+	}
 
 	// Define the badge component
 	const Badge = () => (

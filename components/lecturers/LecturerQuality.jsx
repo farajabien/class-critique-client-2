@@ -2,17 +2,19 @@ import { FaUsers } from 'react-icons/fa'
 import { CircularProgressbar } from 'react-circular-progressbar'
 import 'react-circular-progressbar/dist/styles.css'
 
-function LecturerQuality({ average }) {
+function LecturerQuality({ average, reviews }) {
+	const numReviews = reviews.length
+
+	const progressBarColor = '#26A69A'
+
 	return (
 		<div className='grid grid-cols-2 gap-6'>
 			<div>
-				<h3 className='text-lg font-medium mb-2'>
-					Overall: {average.toFixed(1)}
-				</h3>
+				<h3 className='text-lg font-medium mb-2'>Overall Quality</h3>
 				<div className='w-48 h-48 mx-auto relative'>
 					<CircularProgressbar
 						value={average * 20}
-						text={`${average.toFixed(1)}`}
+						text={`${average}`}
 						strokeWidth={10}
 						styles={{
 							root: {
@@ -20,11 +22,11 @@ function LecturerQuality({ average }) {
 								height: '100%',
 							},
 							path: {
-								stroke: '#26A69A',
+								stroke: `${progressBarColor}`,
 								strokeLinecap: 'round',
 							},
 							text: {
-								fill: '#26A69A',
+								fill: `${progressBarColor}`,
 								fontSize: '24px',
 								fontWeight: 'bold',
 								textAnchor: 'middle',
@@ -41,8 +43,12 @@ function LecturerQuality({ average }) {
 					/>
 					<div className='absolute top-0 left-0 w-full h-full flex items-center justify-center'>
 						<div className='flex items-center'>
-							<FaUsers className='text-teal-500 text-3xl mr-2 mt-16' />
-							<div></div>
+							<div className='text-teal-500 text-3xl mr-2 mt-16'>
+								<FaUsers className='text-teal-500 mt-8' />
+								<span className='text-gray-500 ml-1 text-normal '>
+									{numReviews}
+								</span>
+							</div>
 						</div>
 					</div>
 				</div>

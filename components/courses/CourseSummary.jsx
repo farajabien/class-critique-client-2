@@ -16,7 +16,6 @@ function CourseSummary({
 	course,
 	lecturers,
 	handleCloseModal,
-	handleWriteReview,
 	courseLoading,
 	reviews,
 	reviewLoading,
@@ -27,16 +26,55 @@ function CourseSummary({
 		return lec?.name
 	}
 
-	//sort reviews by updatedAt
-	reviews.sort((a, b) => {
-		return new Date(b.updatedAt) - new Date(a.updatedAt)
-	})
+	// Calculate the values for all the attributes based on the reviews
+	const [coolness, setCoolness] = useState(0)
+	const [grading, setGrading] = useState(0)
+	const [workload, setWorkload] = useState(0)
+	const [expertise, setExpertise] = useState(0)
+	const [realWorldApplication, setRealWorldApplication] = useState(0)
+	const [totalAvg, setTotalAvg] = useState(0)
+
+	useEffect(() => {
+		if (reviews?.length > 0) {
+			const ratings = reviews.reduce(
+				(acc, curr) => {
+					acc.coolness += curr.rating.coolness
+					acc.grading += curr.rating.grading
+					acc.workload += curr.rating.workload
+					acc.expertise += curr.rating.expertise
+					acc.realWorldApplication += curr.rating.rwa
+					return acc
+				},
+				{
+					coolness: 0,
+					grading: 0,
+					workload: 0,
+					expertise: 0,
+					realWorldApplication: 0,
+				}
+			)
+
+			setCoolness(ratings.coolness / reviews.length)
+			setGrading(ratings.grading / reviews.length)
+			setWorkload(ratings.workload / reviews.length)
+			setExpertise(ratings.expertise / reviews.length)
+			setRealWorldApplication(ratings.realWorldApplication / reviews.length)
+		}
+	}, [reviews])
+
+	useEffect(() => {
+		if (coolness && grading && workload && expertise && realWorldApplication) {
+			setTotalAvg(
+				(coolness + grading + workload + expertise + realWorldApplication) / 5
+			)
+		}
+	}, [coolness, grading, workload, expertise, realWorldApplication])
 
 	// Sample data for the course summary
 	const courseSummaryData = [
 		{
 			label: 'Coolness',
-			value: 4,
+			value: coolness,
 			color: '#66BB6A',
 			icon: <FaStar />,
 			description:
@@ -44,7 +82,7 @@ function CourseSummary({
 		},
 		{
 			label: 'Grading',
-			value: 5,
+			value: grading,
 			color: '#FFD54F',
 			icon: <FaUser />,
 			description:
@@ -52,7 +90,7 @@ function CourseSummary({
 		},
 		{
 			label: 'Workload',
-			value: 3,
+			value: workload,
 			color: '#26A69A',
 			icon: <FaCommentAlt />,
 			description:
@@ -60,25 +98,21 @@ function CourseSummary({
 		},
 		{
 			label: 'Expertise',
-			value: 4,
-			color: '#EF5350',
+			value: expertise,
+			color: '#FF7043',
 			icon: <FaHeart />,
 			description:
-				'How smart and knowledgeable was the lecturer in the course material? Were they able to explain the tricky stuff in a way that was easy to understand?',
+				'How knowledgeable was the lecturer? Did they provide useful information and resources?',
 		},
 		{
 			label: 'Real World Application',
-			value: 5,
-			color: '#AB47BC',
+			value: realWorldApplication,
+			color: '#42A5F5',
 			icon: <FaClock />,
 			description:
-				'How applicable were the course concepts to the real world? Did the lecturer provide examples of how the material can be used in real-life situations?',
+				'How relevant was the course material to the real world? Did the lecturer provide examples of how the course material could be applied in the real world?',
 		},
 	]
-
-	// Calculate the average value for all the attributes
-	const total = courseSummaryData.reduce((acc, curr) => acc + curr.value, 0)
-	const average = total / courseSummaryData.length
 
 	// State for showing/hiding reviews
 	const [showReviews, setShowReviews] = useState(true)
@@ -105,7 +139,7 @@ function CourseSummary({
 					</div>
 					{/* COURSE SUMMARY */}
 					<div className='grid grid-cols-2 gap-6 md:grid-cols-2'>
-						<LecturerQuality reviews={reviews} average={average} />
+						<LecturerQuality reviews={reviews} average={totalAvg} />
 						<div>
 							<h3 className='text-lg font-medium mb-4'>Attributes</h3>
 							{courseSummaryData.map((item) => (
@@ -120,7 +154,26 @@ function CourseSummary({
 										<div className='flex items-center'>
 											<div
 												className='w-8 h-8 flex items-center justify-center rounded-full mr-3'
-												style={{ backgroundColor: item.color }}>
+												style={{
+													backgroundColor:
+														item.value >= 4.5
+															? '#26A69A'
+															: item.value >= 4.0
+															? '#2CA25F'
+															: item.value >= 3.5
+															? '#41AE76'
+															: item.value >= 3.0
+															? '#7FCDBB'
+															: item.value >= 2.5
+															? '#C7E9B4'
+															: item.value >= 2.0
+															? '#EDF8B1'
+															: item.value >= 1.5
+															? '#FEE08B'
+															: item.value >= 1.0
+															? '#FDAE61'
+															: '#F46D43',
+												}}>
 												<span className='font-medium'>
 													{item.value.toFixed(1)}
 												</span>
