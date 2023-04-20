@@ -11,6 +11,8 @@ function RatingComponent({
 	courseUniversity,
 	attributeNames,
 	lecturerName,
+	course,
+	handleCloseModal,
 }) {
 	const {
 		error,
@@ -74,6 +76,7 @@ function RatingComponent({
 			setOpenLoginModal(false)
 			setUserUniversity(loggedInUser.university)
 		}
+		console.log('LLL', courseUniversity)
 	}, [loggedInUser, courseUniversity])
 
 	return (
@@ -90,12 +93,12 @@ function RatingComponent({
 					<div className='w-full max-w-lg'>
 						{/* heading  */}
 						<div className='flex items-center justify-between mb-4'>
-							<h1 className='text-2xl font-medium text-gray-800'>
-								{' '}
+							<p className='text-lg font-medium text-gray-800'>
 								Submit Rating on
-								<span className='text-teal-500'> {lecturerName}</span>{' '}
-							</h1>{' '}
-						</div>{' '}
+								<span className='text-teal-500'> {lecturerName}</span>
+								<span className='text-gray-500'> ({course.code})</span>
+							</p>
+						</div>
 						<form onSubmit={handleSubmit}>
 							<div className='flex flex-col space-y-4 mb-6'>
 								{attributeNames.map((name, index) => (
