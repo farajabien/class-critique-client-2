@@ -76,7 +76,6 @@ function RatingComponent({
 			setOpenLoginModal(false)
 			setUserUniversity(loggedInUser.university)
 		}
-		console.log('LLL', courseUniversity)
 	}, [loggedInUser, courseUniversity])
 
 	return (

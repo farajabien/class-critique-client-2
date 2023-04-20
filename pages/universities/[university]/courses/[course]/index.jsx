@@ -38,6 +38,10 @@ const CourseDetails = () => {
 		}
 	}, [courseId, uniId])
 
+	useEffect(() => {
+		console.log('HIZI', lecturers)
+	}, [lecturers])
+
 	const handleSearch = (query) => {
 		setSearchQuery(query)
 	}

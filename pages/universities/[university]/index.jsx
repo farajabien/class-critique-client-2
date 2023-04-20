@@ -10,9 +10,12 @@ import LecturerList from '../../../components/lecturers/LecturerList'
 import { IoMdSchool, IoMdPeople } from 'react-icons/io'
 import { FaSearch } from 'react-icons/fa'
 import LoadingScreen from '../../../components/molecules/LoadingScreen'
+import AddLecturerModal from '../../../components/lecturers/AddLecturerModal'
+import AddCourseModal from '../../../components/courses/AddCourseModal'
 
 export default function UniversityDetails() {
 	const router = useRouter()
+	const { token, user } = useSelector((state) => state.authReducer)
 	const { university: uniId } = router.query
 	const [searchQuery, setSearchQuery] = useState('')
 	const [viewMode, setViewMode] = useState('courses')
@@ -23,6 +26,22 @@ export default function UniversityDetails() {
 	const lecLoading = useSelector((state) => state.lecturerReducer.loading)
 
 	const error = useSelector((state) => state.courseReducer.error)
+
+	const isAdmin = user && user.role === 'admin'
+	const isUniAdmin = user && user.role === 'universityAdmin'
+	const canAdd = isAdmin || (isUniAdmin && user.university === uniId)
+
+	const [showAddLecModal, setShowAddLecModal] = useState(false)
+	const [showAddCourseModal, setShowAddCourseModal] = useState(false)
+	// lecturer.averageRating = 4.5
+
+	const handleAddLecModal = () => {
+		setShowAddLecModal(!showAddLecModal)
+	}
+
+	const handleAddCourseModal = () => {
+		setShowAddCourseModal(!showAddCourseModal)
+	}
 
 	useEffect(() => {
 		if (uniId) {
@@ -60,6 +79,22 @@ export default function UniversityDetails() {
 							searchIcon={<FaSearch className='h-6 w-6 m-auto' />}
 						/>
 					</div>
+					{canAdd && showAddLecModal && (
+						<AddLecturerModal
+							showAddLecModal={showAddLecModal}
+							handleAddLecModal={handleAddLecModal}
+							uniId={uniId}
+							token={token}
+						/>
+					)}
+					{canAdd && showAddCourseModal && (
+						<AddCourseModal
+							showAddCourseModal={showAddCourseModal}
+							handleAddCourseModal={handleAddCourseModal}
+							uniId={uniId}
+							token={token}
+						/>
+					)}
 					<div className='mt-8'>
 						<div className='flex justify-between items-center'>
 							<button
@@ -72,6 +107,22 @@ export default function UniversityDetails() {
 								<IoMdSchool className='inline-block mr-2 text-lg' />
 								Courses ({courses?.length ?? 0})
 							</button>
+							{canAdd && (
+								<div className='mt-4 flex justify-center'>
+									<button
+										type='button'
+										className='py-2 px-4 font-medium rounded-md text-white bg-teal-900 hover:bg-teal-800 focus:outline-none focus:ring-2 focus:ring-teal-900 focus:ring-opacity-50'
+										onClick={handleAddCourseModal}>
+										Add Course
+									</button>
+									<button
+										type='button'
+										className='py-2 px-4 ml-4 font-medium rounded-md text-white bg-teal-900 hover:bg-teal-800 focus:outline-none focus:ring-2 focus:ring-teal-900 focus:ring-opacity-50'
+										onClick={handleAddLecModal}>
+										Add Lecturer
+									</button>
+								</div>
+							)}
 							<button
 								className={`px-4 py-2 font-medium text-sm rounded-md ${
 									viewMode === 'lecturers'
@@ -86,6 +137,7 @@ export default function UniversityDetails() {
 					</div>
 				</div>
 			</div>
+
 			<div className='container mx-auto px-4 mt-8'>
 				{viewMode === 'courses' ? (
 					<>

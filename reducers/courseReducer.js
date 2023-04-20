@@ -55,6 +55,12 @@ const courseReducer = (state = initialState, action) => {
 				loading: false,
 			}
 
+		case courseActionTypes.CREATE_COURSE_SUCCESS:
+			return {
+				...state,
+				uniCourses: [...state.uniCourses, action.payload],
+				loading: false,
+			}
 		case courseActionTypes.GET_ALL_COURSES_FAILURE:
 		case courseActionTypes.GET_COURSE_FOR_UNI_FAILURE:
 		case courseActionTypes.GET_COURSE_FOR_LECTURER_FAILURE:

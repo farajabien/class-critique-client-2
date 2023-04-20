@@ -157,8 +157,6 @@ function LecturerModal({
 			className='fixed overflow-y-auto inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center z-50'
 			onClick={handleCloseModal}>
 			{isBannerVisible && banner}
-			{/* close icon  */}
-
 			<div
 				className='bg-white grid grid-cols-1 md:grid-cols-2 rounded-lg p-6 max-w-3xl w-full max-h-screen overflow-hidden overflow-y-scroll mt-20'
 				onClick={(e) => e.stopPropagation()}>

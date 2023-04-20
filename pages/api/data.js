@@ -188,10 +188,49 @@ export const getAllLecturersForCourse = async (uniId, courseId) => {
 			const response = await axios.get(
 				`${API_BASE_URL}/lecturers/${uniId}/${courseId}`
 			)
+			console.log('SEMA', uniId, courseId, response)
 			return response.data
 		} catch (error) {
 			console.error('Error while fetching lecturers for course', error)
 			throw error
 		}
+	}
+}
+
+//addNewLecturer
+export const addNewLecturer = async (token, uniId, lecturer) => {
+	try {
+		const response = await axios.post(
+			`${API_BASE_URL}/lecturers`,
+			{ uniId, lecturer },
+			{
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			}
+		)
+		return response.data
+	} catch (error) {
+		console.error('Error while creating lecturer', error)
+		throw error
+	}
+}
+
+//addNewCourse
+export const addNewCourse = async (token, uniId, course) => {
+	try {
+		const response = await axios.post(
+			`${API_BASE_URL}/universities/${uniId}`,
+			{ uniId, course },
+			{
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			}
+		)
+		return response.data
+	} catch (error) {
+		console.error('Error while creating lecturer', error)
+		throw error
 	}
 }

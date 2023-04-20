@@ -19,6 +19,7 @@ const lecturerReducer = (state = initialState, action) => {
 		case lecturerActionTypes.GET_ALL_LECTURERS_FOR_COURSE_REQUEST:
 		case lecturerActionTypes.GET_LECTURER_FOR_COURSE_REQUEST:
 		case lecturerActionTypes.GET_LECTURER_REQUEST:
+		case lecturerActionTypes.CREATE_LECTURER_REQUEST:
 			return {
 				...state,
 				loading: true,
@@ -48,6 +49,24 @@ const lecturerReducer = (state = initialState, action) => {
 				selectedLecturer: action.payload,
 				loading: false,
 			}
+		case lecturerActionTypes.GET_LECTURER_FOR_UNI_SUCCESS:
+			return {
+				...state,
+				selectedUniLecturer: action.payload,
+				loading: false,
+			}
+		case lecturerActionTypes.GET_LECTURER_FOR_COURSE_SUCCESS:
+			return {
+				...state,
+				selectedCourseLecturer: action.payload,
+				loading: false,
+			}
+		case lecturerActionTypes.CREATE_LECTURER_SUCCESS:
+			return {
+				...state,
+				uniLecturers: [...state.uniLecturers, action.payload],
+				loading: false,
+			}
 
 		case lecturerActionTypes.GET_ALL_LECTURERS_FAILURE:
 		case lecturerActionTypes.GET_ALL_LECTURERS_FOR_UNI_FAILURE:
@@ -55,6 +74,7 @@ const lecturerReducer = (state = initialState, action) => {
 		case lecturerActionTypes.GET_LECTURER_FOR_UNI_FAILURE:
 		case lecturerActionTypes.GET_LECTURER_FOR_COURSE_FAILURE:
 		case lecturerActionTypes.GET_LECTURER_FAILURE:
+		case lecturerActionTypes.CREATE_LECTURER_FAILURE:
 			return {
 				...state,
 				error: action.payload,

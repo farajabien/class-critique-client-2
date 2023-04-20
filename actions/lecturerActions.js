@@ -2,6 +2,7 @@ import { lecturerActionTypes } from '../constants'
 import {
 	getAllLecturersForCourse,
 	getLecturersByUniId,
+	addNewLecturer,
 } from '../pages/api/data'
 
 export const getLecturersByUni = (uniId) => async (dispatch) => {
@@ -41,6 +42,29 @@ export const getCourseLecturers = (uniId, courseId) => async (dispatch) => {
 				error.response?.data?.message || 'Something went wrong'
 			dispatch({
 				type: lecturerActionTypes.GET_ALL_LECTURERS_FOR_COURSE_FAILURE,
+				payload: errorMessage,
+			})
+		}
+	}
+}
+
+//ADD LECTURER
+export const addLecturer = (token, uniId, lecturer) => async (dispatch) => {
+	if (uniId) {
+		try {
+			dispatch({
+				type: lecturerActionTypes.CREATE_LECTURER_REQUEST,
+			})
+			const courseLecturers = await addNewLecturer(token, uniId, lecturer)
+			dispatch({
+				type: lecturerActionTypes.CREATE_LECTURER_SUCCESS,
+				payload: courseLecturers,
+			})
+		} catch (error) {
+			const errorMessage =
+				error.response?.data?.message || 'Something went wrong adding new lec'
+			dispatch({
+				type: lecturerActionTypes.CREATE_LECTURER_FAILURE,
 				payload: errorMessage,
 			})
 		}

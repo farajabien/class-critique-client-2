@@ -4,6 +4,7 @@ import {
 	getAllCourses,
 	getCoursesByUniId,
 	getCourseByUniIdCourseId,
+	addNewCourse,
 } from '../pages/api/data'
 
 export const getCourses = () => async (dispatch) => {
@@ -55,6 +56,30 @@ export const getCourseByUniCourse = (uniId, courseId) => async (dispatch) => {
 				error.response?.data?.message || 'Something went wrong'
 			dispatch({
 				type: courseActionTypes.GET_COURSE_FOR_UNI_FAILURE,
+				payload: errorMessage,
+			})
+		}
+	}
+}
+
+//ADD COURSE
+export const addCourse = (token, uniId, lecturer) => async (dispatch) => {
+	if (uniId) {
+		try {
+			dispatch({
+				type: courseActionTypes.CREATE_COURSE_REQUEST,
+			})
+			const uniCourses = await addNewCourse(token, uniId, lecturer)
+			dispatch({
+				type: courseActionTypes.CREATE_COURSE_SUCCESS,
+				payload: uniCourses,
+			})
+		} catch (error) {
+			const errorMessage =
+				error.response?.data?.message ||
+				'Something went wrong adding new course'
+			dispatch({
+				type: courseActionTypes.CREATE_COURSE_FAILURE,
 				payload: errorMessage,
 			})
 		}
