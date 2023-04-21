@@ -1,15 +1,14 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { addLecturer } from '../../actions/lecturerActions'
 import Select from 'react-select'
+import { FaTimes } from 'react-icons/fa'
 
-export default function AddLecModal({
-	showAddLecModal,
-	handleAddLecModal,
-	uniId,
-	token,
-}) {
-	const courses = useSelector((state) => state.courseReducer.uniCourses)
+export default function AddLecModal({ handleAddLecModal, uniId, token }) {
+	const { uniCourses: courses, error: courseError } = useSelector(
+		(state) => state.courseReducer
+	)
+	const { error: lecturerError } = useSelector((state) => state.lecturerReducer)
 	const [newLec, setNewLec] = useState({
 		fName: '',
 		lName: '',
@@ -18,6 +17,9 @@ export default function AddLecModal({
 		university: uniId,
 		courses: [],
 	})
+	const [selectedCourses, setSelectedCourses] = useState([])
+	const dispatch = useDispatch()
+	const [errorMessages, setErrorMessages] = useState([])
 
 	const [isBannerVisible, setIsBannerVisible] = useState(false)
 
@@ -27,20 +29,11 @@ export default function AddLecModal({
 		</div>
 	)
 
-	const [searchTerm, setSearchTerm] = useState('')
-	const [filteredCourses, setFilteredCourses] = useState(courses)
-	const [selectedCourses, setSelectedCourses] = useState([])
-	const dispatch = useDispatch()
-
-	const handleSearchCourses = (event) => {
-		setSearchTerm(event.target.value)
-		const filtered = courses.filter(
-			(course) =>
-				course.name.toLowerCase().includes(event.target.value.toLowerCase()) ||
-				course.code.toLowerCase().includes(event.target.value.toLowerCase())
-		)
-		setFilteredCourses(filtered)
-	}
+	useEffect(() => {
+		if (courseError) {
+			setErrorMessages((prev) => [...prev, courseError])
+		}
+	}, [courseError])
 
 	const handleSubmit = (e) => {
 		e.preventDefault()
@@ -57,14 +50,26 @@ export default function AddLecModal({
 
 			courses: selectedCourses,
 		}
-		console.log('new lec', lecturer)
 		dispatch(addLecturer(token, uniId, lecturer)).then(() => {
+			//check error
+			if (lecturerError) {
+				setErrorMessages((prev) => [...prev, lecturerError])
+				return
+			}
 			setIsBannerVisible(true)
+			setTimeout(() => {
+				handleAddLecModal()
+			}, 1500)
+
 			setTimeout(() => {
 				setIsBannerVisible(false)
 			}, 5000)
 		})
 	}
+
+	useEffect(() => {
+		console.log('errora', errorMessages)
+	}, [errorMessages])
 
 	const handleSelectChange = (selectedOptions) => {
 		const values = selectedOptions
@@ -73,7 +78,7 @@ export default function AddLecModal({
 		setSelectedCourses(values)
 	}
 
-	const options = filteredCourses.map((course) => ({
+	const options = courses.map((course) => ({
 		value: course._id,
 		label: `${course.name} (${course.code})`,
 	}))
@@ -122,6 +127,29 @@ export default function AddLecModal({
 								Add Lecturer
 							</button>
 						</div>
+						{errorMessages &&
+							errorMessages.map((error, index) => (
+								<div key={index} className='mb-4'>
+									<div
+										className='bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mt-2'
+										role='alert'>
+										<strong className='font-bold'>Error:</strong>
+										<span className='block sm:inline'>{error}</span>
+										<span className='absolute top-0 bottom-0 right-0 px-4 py-3'>
+											<button
+												className='text-gray-500 hover:text-gray-700'
+												onClick={() =>
+													setErrorMessages(
+														errorMessages.filter((err) => err !== error)
+													)
+												}>
+												<FaTimes className='h-6 w-6' />
+											</button>
+										</span>
+									</div>
+								</div>
+							))}
+
 						<div className='mb-4'>
 							<label
 								htmlFor='fName'

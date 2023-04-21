@@ -31,8 +31,7 @@ export const getCoursesByUni = (uniId) => async (dispatch) => {
 				payload: uniCourses,
 			})
 		} catch (error) {
-			const errorMessage =
-				error.response?.data?.message || 'Something went wrong'
+			const errorMessage = error.response.data.errore || 'Something went wrong'
 			dispatch({
 				type: courseActionTypes.GET_ALL_COURSES_FOR_UNI_FAILURE,
 				payload: errorMessage,
@@ -52,8 +51,7 @@ export const getCourseByUniCourse = (uniId, courseId) => async (dispatch) => {
 				payload: selectedUniCourse,
 			})
 		} catch (error) {
-			const errorMessage =
-				error.response?.data?.message || 'Something went wrong'
+			const errorMessage = error.response.data.errore || 'Something went wrong'
 			dispatch({
 				type: courseActionTypes.GET_COURSE_FOR_UNI_FAILURE,
 				payload: errorMessage,
@@ -76,8 +74,7 @@ export const addCourse = (token, uniId, lecturer) => async (dispatch) => {
 			})
 		} catch (error) {
 			const errorMessage =
-				error.response?.data?.message ||
-				'Something went wrong adding new course'
+				error.response.data.errore || 'Something went wrong adding new course'
 			dispatch({
 				type: courseActionTypes.CREATE_COURSE_FAILURE,
 				payload: errorMessage,

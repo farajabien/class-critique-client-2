@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { addLecturer } from '../../actions/lecturerActions'
 import Select from 'react-select'
 import { addCourse } from '../../actions/courseActions'
 
@@ -27,19 +26,8 @@ export default function AddCourseModal({
 			New course added! {newCourse.name}
 		</div>
 	)
-
-	const [searchTerm, setSearchTerm] = useState('')
-	const [filteredLecturers, setFilteredLecturers] = useState(lecturers)
 	const [selectedLecturers, setSelectedLecturers] = useState([])
 	const dispatch = useDispatch()
-
-	const handleSearchCourses = (event) => {
-		setSearchTerm(event.target.value)
-		const filtered = lecturers.filter((lec) =>
-			lec.name.toLowerCase().includes(event.target.value.toLowerCase())
-		)
-		setFilteredLecturers(filtered)
-	}
 
 	const handleSubmit = (e) => {
 		e.preventDefault()
@@ -54,6 +42,9 @@ export default function AddCourseModal({
 		dispatch(addCourse(token, uniId, course)).then(() => {
 			setIsBannerVisible(true)
 			setTimeout(() => {
+				handleAddCourseModal()
+			}, 1500)
+			setTimeout(() => {
 				setIsBannerVisible(false)
 			}, 5000)
 		})
@@ -66,7 +57,7 @@ export default function AddCourseModal({
 		setSelectedLecturers(values)
 	}
 
-	const options = filteredLecturers.map((lec) => ({
+	const options = lecturers.map((lec) => ({
 		value: lec._id,
 		label: `${lec.name}`,
 	}))
@@ -112,7 +103,7 @@ export default function AddCourseModal({
 							<button
 								type='submit'
 								className='bg-teal-800 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline'>
-								Add Lecturer
+								Add Course
 							</button>
 						</div>
 						<div className='mb-4'>
@@ -132,7 +123,7 @@ export default function AddCourseModal({
 										name: event.target.value,
 									})
 								}}
-								placeholder='Enter first name'
+								placeholder='Enter course name'
 								required
 								className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-900 leading-tight focus:outline-none focus:shadow-outline'
 							/>
@@ -153,7 +144,7 @@ export default function AddCourseModal({
 										code: event.target.value,
 									})
 								}}
-								placeholder='Enter last name'
+								placeholder='Enter course code'
 								required
 								className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-900 leading-tight focus:outline-none focus:shadow-outline'
 							/>
@@ -174,7 +165,7 @@ export default function AddCourseModal({
 										description: event.target.value,
 									})
 								}}
-								placeholder='Enter description'
+								placeholder='Enter course description'
 								required
 								className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-900 leading-tight focus:outline-none focus:shadow-outline'
 							/>

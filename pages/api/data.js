@@ -8,8 +8,11 @@ export const loginUser = async (userData) => {
 		const response = await axios.post(`${API_BASE_URL}/auth/login`, userData)
 		return response.data
 	} catch (error) {
-		return {
-			error: error.response?.data?.error ?? 'Something went wrong logging in',
+		if (error.response && error.response.data) {
+			const { message } = error.response.data
+			return { error: message }
+		} else {
+			return { error: 'Something went wrong logging in.' }
 		}
 	}
 }
@@ -56,12 +59,13 @@ export const getUniversityById = async (id) => {
 	}
 }
 
-export const createUniversity = async (universityData) => {
+export const createUniversity = async (token, uniData) => {
 	try {
-		const response = await axios.post(
-			`${API_BASE_URL}/universities`,
-			universityData
-		)
+		const response = await axios.post(`${API_BASE_URL}/universities`, uniData, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		})
 		return response.data
 	} catch (error) {
 		console.error('Error while creating university', error)

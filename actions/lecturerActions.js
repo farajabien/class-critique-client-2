@@ -16,8 +16,7 @@ export const getLecturersByUni = (uniId) => async (dispatch) => {
 				payload: uniLecturers,
 			})
 		} catch (error) {
-			const errorMessage =
-				error.response?.data?.message || 'Something went wrong'
+			const errorMessage = error.response.data.error || 'Something went wrong'
 			dispatch({
 				type: lecturerActionTypes.GET_ALL_LECTURERS_FOR_UNI_FAILURE,
 				payload: errorMessage,
@@ -38,8 +37,7 @@ export const getCourseLecturers = (uniId, courseId) => async (dispatch) => {
 				payload: courseLecturers,
 			})
 		} catch (error) {
-			const errorMessage =
-				error.response?.data?.message || 'Something went wrong'
+			const errorMessage = error.response.data.error || 'Something went wrong'
 			dispatch({
 				type: lecturerActionTypes.GET_ALL_LECTURERS_FOR_COURSE_FAILURE,
 				payload: errorMessage,
@@ -62,7 +60,7 @@ export const addLecturer = (token, uniId, lecturer) => async (dispatch) => {
 			})
 		} catch (error) {
 			const errorMessage =
-				error.response?.data?.message || 'Something went wrong adding new lec'
+				error.response.data.error || 'Something went wrong adding new lec'
 			dispatch({
 				type: lecturerActionTypes.CREATE_LECTURER_FAILURE,
 				payload: errorMessage,

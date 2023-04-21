@@ -31,9 +31,12 @@ export default function authReducer(state = initialState, action) {
 		case authActionTypes.REGISTER_SUCCESS:
 			localStorage.setItem('classCritiqueToken', action.payload.token)
 			localStorage.setItem('classCritiqueExpiresAt', action.payload.expiresAt)
-
-			if (!action.payload.isModal?.isModal) {
-				router.push(`/universities/${action.payload.user.university}`)
+			if (!action.payload.isModal) {
+				if (action.payload.user.university) {
+					router.push(`/universities/${action.payload.user.university}`)
+				} else {
+					router.push('/universities')
+				}
 			}
 
 			return {

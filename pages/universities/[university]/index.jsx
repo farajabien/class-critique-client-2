@@ -58,8 +58,10 @@ export default function UniversityDetails() {
 		setViewMode(mode)
 	}
 
-	const filteredCourses = courses.filter((course) =>
-		course.name.toLowerCase().includes(searchQuery.toLowerCase())
+	const filteredCourses = courses.filter(
+		(course) =>
+			course.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+			course.code.toLowerCase().includes(searchQuery.toLowerCase())
 	)
 	const filteredLecturers = lecturers.filter((lecturer) =>
 		lecturer.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -148,6 +150,7 @@ export default function UniversityDetails() {
 								courses={filteredCourses}
 								loading={courseLoading}
 								error={error}
+								uniId={uniId}
 							/>
 						)}
 					</>

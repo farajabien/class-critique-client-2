@@ -25,10 +25,9 @@ export const login = (userData, isModal) => async (dispatch) => {
 			payload: { user, token, expiresAt, isModal },
 		})
 	} catch (error) {
-		console.log(error)
 		dispatch({
 			type: authActionTypes.LOGIN_FAILURE,
-			payload: error.message ?? 'Something went wrong logging in',
+			payload: error.message,
 		})
 	}
 }
