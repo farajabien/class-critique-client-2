@@ -17,10 +17,13 @@ export const loginUser = async (userData) => {
 	}
 }
 
-//registerUser
-export const registerUser = async (userData) => {
+//registerClerkUser
+export const registerClerkUser = async (userData) => {
 	try {
-		const response = await axios.post(`${API_BASE_URL}/auth/register`, userData)
+		const response = await axios.post(
+			`${API_BASE_URL}/auth/register-clerk-user`,
+			userData
+		)
 		return response.data
 	} catch (error) {
 		console.error('Error while registering user', error)
@@ -192,7 +195,6 @@ export const getAllLecturersForCourse = async (uniId, courseId) => {
 			const response = await axios.get(
 				`${API_BASE_URL}/lecturers/${uniId}/${courseId}`
 			)
-			console.log('SEMA', uniId, courseId, response)
 			return response.data
 		} catch (error) {
 			console.error('Error while fetching lecturers for course', error)

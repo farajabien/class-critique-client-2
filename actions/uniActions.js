@@ -8,7 +8,7 @@ import {
 
 export const getUniversities = () => async (dispatch) => {
 	try {
-		dispatch({ type: uniActionTypes.GET_UNI_COURSES_REQUEST })
+		dispatch({ type: uniActionTypes.GET_UNIS_REQUEST })
 		const unis = await getAllUniversities()
 		dispatch({ type: uniActionTypes.GET_UNIS_SUCCESS, payload: unis })
 	} catch (error) {

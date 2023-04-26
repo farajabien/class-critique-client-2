@@ -1,30 +1,18 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { AiOutlineLogin, AiOutlineUserAdd } from 'react-icons/ai'
-import { HiOutlineUserCircle } from 'react-icons/hi'
 import { FaBars, FaTimes } from 'react-icons/fa'
-import { useDispatch, useSelector } from 'react-redux'
 import { FaGithub, FaTwitter } from 'react-icons/fa'
-import { logout } from '../actions/authActions'
 
-import { useRouter } from 'next/router'
+import { SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs'
 
 const Header = () => {
 	const [isOpen, setIsOpen] = useState(false)
-	const dispatch = useDispatch()
-	const { user, token, error, loading } = useSelector(
-		(state) => state.authReducer
-	)
-	const router = useRouter()
-
-	const handleLogout = () => {
-		dispatch(logout())
-		router.push('/auth/login')
-	}
 
 	const toggleMenu = () => {
 		setIsOpen(!isOpen)
 	}
+
+	// ADD THE FOLLOWING CODE TO HANDLE CLERK WEBHOOKS
 
 	return (
 		<header className='bg-teal-500 flex justify-between items-center py-4 px-6 md:px-12 lg:px-16'>
@@ -53,33 +41,13 @@ const Header = () => {
 					<span>Universities</span>
 				</Link>
 
-				{!user && (
-					<Link
-						href='/auth/login'
-						className='flex items-center space-x-2 bg-white text-teal-200 px-4 py-2 rounded-full text-lg md:text-xl hover:bg-teal-600 hover:text-teal-50 focus:bg-teal-600 transition-colors duration-100'>
-						<AiOutlineUserAdd />
-						<span>Sign In</span>
-					</Link>
-				)}
+				<SignedOut>
+					<SignInButton mode='modal' />
+				</SignedOut>
 
-				{user && (
-					<>
-						<Link
-							href='/auth/profile'
-							className='flex items-center space-x-2 text-white text-lg md:text-xl hover:text-teal-200 focus:text-teal-200 transition-colors duration-300'>
-							<HiOutlineUserCircle />
-							<span>Profile</span>
-						</Link>
-						<button
-							onClick={
-								user && token ? handleLogout : () => router.push('/auth/login')
-							}
-							className='flex items-center space-x-2 bg-white text-teal-500 px-4 py-2 rounded-full text-lg md:text-xl hover:bg-teal-600 hover:text-white focus:bg-teal-600 transition-colors duration-300'>
-							<AiOutlineLogin />
-							<span>{user && token ? 'Logout' : 'Login'}</span>
-						</button>
-					</>
-				)}
+				<SignedIn>
+					<UserButton />
+				</SignedIn>
 			</nav>
 		</header>
 	)

@@ -35,7 +35,7 @@ const CourseCard = ({ course }) => {
 		avgWorkload,
 	} = course
 
-	const lecturerCount = lecturers.length
+	const lecturerCount = lecturers?.length
 	const ratingAvg =
 		(avgCoolness + avgExpertise + avgGrading + avgRWA + avgWorkload) / 5
 
