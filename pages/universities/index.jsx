@@ -13,16 +13,20 @@ import { motion } from 'framer-motion'
 import { shuffle } from 'lodash'
 //import Link
 import Link from 'next/link'
+import { SignedIn } from '@clerk/nextjs'
 
 const Universities = () => {
 	const dispatch = useDispatch()
 	const universities = useSelector((state) => state.uniReducer.unis)
 	const loading = useSelector((state) => state.uniReducer.loading)
 	const error = useSelector((state) => state.uniReducer.error)
-	const { user, token } = useSelector((state) => state.authReducer)
 	const [searchQuery, setSearchQuery] = useState('')
-	const isAdmin = user && user.role === 'admin'
 	const [showAddUniModal, setShowAddUniModal] = useState(false)
+
+	const { user: userData, error: userDataError } = useSelector(
+		(state) => state.authReducer
+	)
+	const isAdmin = userData && userData.role === 'admin'
 	const canAdd = isAdmin
 
 	useEffect(() => {
@@ -57,26 +61,28 @@ const Universities = () => {
 
 	return (
 		<div className='container mx-auto px-4 sm:px-6 lg:px-8'>
-			{canAdd && (
-				<div className='my-4'>
-					<motion.button
-						className='bg-teal-500 hover:bg-teal-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline'
-						initial={{ opacity: 0 }}
-						animate={{ opacity: 1 }}
-						transition={{ delay: 1, duration: 1 }}
-						onClick={handleAddUniModal}>
-						Add University
-					</motion.button>
-					{showAddUniModal && (
-						<AddUniversityModal
-							showAddUniModal={showAddUniModal}
-							handleAddUniModal={handleAddUniModal}
-							token={token}
-							loading={loading}
-						/>
-					)}
-				</div>
-			)}
+			<SignedIn>
+				{canAdd && (
+					<div className='my-4'>
+						<motion.button
+							className='bg-teal-500 hover:bg-teal-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline'
+							initial={{ opacity: 0 }}
+							animate={{ opacity: 1 }}
+							transition={{ delay: 1, duration: 1 }}
+							onClick={handleAddUniModal}>
+							Add University
+						</motion.button>
+						{showAddUniModal && (
+							<AddUniversityModal
+								showAddUniModal={showAddUniModal}
+								handleAddUniModal={handleAddUniModal}
+								token={token}
+								loading={loading}
+							/>
+						)}
+					</div>
+				)}
+			</SignedIn>
 			<div className='my-8 flex justify-center'>
 				<div className='w-full sm:w-1/2'>
 					<SearchBar
