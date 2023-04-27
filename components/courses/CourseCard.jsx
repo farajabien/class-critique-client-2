@@ -1,88 +1,90 @@
-import Link from 'next/link'
 import React, { useEffect } from 'react'
 import { FaStar } from 'react-icons/fa'
 import { MdRateReview } from 'react-icons/md'
+import { IoPerson } from 'react-icons/io5'
+import { IoSchool } from 'react-icons/io5'
+import Avatar from 'react-avatar'
+import { motion } from 'framer-motion'
+
+const cardVariants = {
+	hidden: (custom) => ({
+		opacity: 0,
+		y: custom * 20,
+	}),
+	visible: {
+		opacity: 1,
+		y: 0,
+		transition: {
+			delay: 0.1,
+		},
+	},
+}
 
 const CourseCard = ({ course }) => {
-	const { name, code, university, lecturers, ratings, _id: courseId } = course
+	const {
+		name,
+		code,
+		university: uniId,
+		lecturers,
+		reviews,
+		_id: courseId,
+		avgCoolness,
+		avgExpertise,
+		avgGrading,
+		avgRWA,
+		avgWorkload,
+	} = course
+
+	const lecturerCount = lecturers?.length
+	const ratingAvg =
+		(avgCoolness + avgExpertise + avgGrading + avgRWA + avgWorkload) / 5
 
 	return (
-		<div
-			className='bg-gray-900 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300 relative dark:bg-gray-900'
-			style={{ perspective: '800px' }}>
-			<div
-				className='px-6 py-4'
-				style={{
-					transform: 'rotateX(15deg)',
-					transformOrigin: 'bottom',
-				}}>
-				<div className='mb-4'>
-					<div className='flex justify-between items-center'>
-						<h3 className='text-xl font-medium text-white'>{name}</h3>
-						<span className='bg-teal-500 text-white px-2 py-1 text-sm font-medium rounded-full'>
-							{code}
-						</span>
+		<motion.div
+			custom={courseId}
+			variants={cardVariants}
+			initial='hidden'
+			animate='visible'
+			className='bg-white shadow-md rounded-md flex flex-col justify-between h-36'>
+			<div className='p-4 flex justify-between items-center'>
+				<div className='flex items-center'>
+					<Avatar
+						name={name}
+						size={50}
+						round={true}
+						variant='circle'
+						className='mr-4'
+					/>
+					<div>
+						<h2 className='text-lg font-medium'>{name}</h2>
+						<div className='flex items-center text-gray-500'>
+							<span>{code}</span>
+						</div>
 					</div>
 				</div>
-				<div
-					className='flex items-center mt-8'
-					style={{
-						transform: 'rotateX(-15deg)',
-						transformOrigin: 'top',
-					}}>
-					<span
-						className='text-yellow-400 mr-1'
-						style={{ transform: 'scale(1.2)' }}>
-						<FaStar />
-					</span>
-					<span
-						className='text-white text-lg mr-1'
-						style={{ fontWeight: 'bold' }}>
-						{ratingScore.toFixed(1)}
-					</span>
-					<span className='text-gray-500 mx-1'>|</span>
-					<span
-						className='text-teal-500 mx-1'
-						style={{ transform: 'scale(1.2)' }}>
-						<MdRateReview />
-					</span>
-
-					<span className='text-white text-lg'>
-						{ratings.length}{' '}
-						<span
-							className='text-gray-500 font-light'
-							style={{ transform: 'scale(0.8)' }}>
-							Reviews
-						</span>
-					</span>
-				</div>
-
-				<div
-					className='flex justify-between items-center my-5'
-					style={{
-						transform: 'rotateX(-15deg)',
-						transformOrigin: 'top',
-					}}>
-					<div className='flex'>
-						<span className='text-white text-lg'>
-							{lecturers.length}{' '}
-							<span
-								className='text-gray-500 font-light'
-								style={{ transform: 'scale(0.8)' }}>
-								lecturer(s)
-							</span>
-						</span>
-					</div>
-					<Link href={`/courses/${courseId}`}>
-						<button
-							className='bg-teal-500 text-white px-3 py-1 rounded-full text-sm font-medium hover:bg-teal-600 transition-colors duration-300'
-							style={{ transform: 'rotateX(15deg)' }}>
-							View Course
-						</button>
-					</Link>
+				<div className='flex items-center text-gray-500'>
+					<IoSchool className='mr-2' />
+					<span>{course.code}</span>
 				</div>
 			</div>
-		</div>
+
+			<div>
+				<div className='flex justify-between items-center p-4'>
+					<div className='flex items-center text-gray-500'>
+						<IoPerson className='mr-2' />
+						<span>{lecturerCount} Lecturer(s)</span>
+					</div>
+					<div className='flex items-center'>
+						<FaStar className='mr-2' />
+						<span>{ratingAvg.toFixed(1)}/5.0</span>
+					</div>
+					<div className='flex items-center'>
+						<MdRateReview className='mr-2' />
+						<span>{reviews?.length ?? 0} Review(s)</span>
+					</div>
+				</div>
+			</div>
+		</motion.div>
 	)
 }
 

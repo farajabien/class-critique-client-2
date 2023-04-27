@@ -1,16 +1,22 @@
 import axios from 'axios'
 import { uniActionTypes } from '../constants'
-import { getAllUniversities, createUniversity } from '../pages/api/data'
+import {
+	getAllUniversities,
+	getUniversityById,
+	createUniversity,
+} from '../pages/api/data'
 
 export const getUniversities = () => async (dispatch) => {
 	try {
-		dispatch({ type: uniActionTypes.GET_UNI_COURSES_REQUEST })
+		dispatch({ type: uniActionTypes.GET_UNIS_REQUEST })
 		const unis = await getAllUniversities()
 		dispatch({ type: uniActionTypes.GET_UNIS_SUCCESS, payload: unis })
 	} catch (error) {
 		dispatch({
 			type: uniActionTypes.GET_UNIS_FAILURE,
-			payload: error.response.data.message,
+			payload:
+				error.response?.data?.message ??
+				'Something went wrong getting all unis',
 		})
 	}
 }
@@ -19,30 +25,29 @@ export const getUniversities = () => async (dispatch) => {
 export const getUniversity = (id) => async (dispatch) => {
 	try {
 		dispatch({ type: uniActionTypes.GET_UNI_REQUEST })
-		const uni = await axios.get(`/api/universities/${id}`)
+		const uni = await await getUniversityById(id)
 		dispatch({ type: uniActionTypes.GET_UNI_SUCCESS, payload: uni })
 	} catch (error) {
-		dispatch(
-			getUniFailure({
-				type: uniActionTypes.GET_UNI_FAILURE,
-				payload: error.response.data.message,
-			})
-		)
+		dispatch({
+			type: uniActionTypes.GET_UNI_FAILURE,
+			payload:
+				error.response?.data?.message ?? 'Something went wrong getting uni',
+		})
 	}
 }
 
-export const addUniversity = (universityData) => async (dispatch) => {
+//addUni
+export const addUni = (token, uniData) => async (dispatch) => {
 	try {
+		console.log('UNI DATA', uniData)
 		dispatch({ type: uniActionTypes.CREATE_UNI_REQUEST })
-		const newUni = await createUniversity(universityData)
-		dispatch({
-			type: uniActionTypes.CREATE_UNI_SUCCESS,
-			payload: newUni,
-		})
+		const uni = await await createUniversity(token, uniData)
+		dispatch({ type: uniActionTypes.CREATE_UNI_SUCCESS, payload: uni })
 	} catch (error) {
 		dispatch({
 			type: uniActionTypes.CREATE_UNI_FAILURE,
-			payload: error.response.data.message,
+			payload:
+				error.response?.data?.message ?? 'Something went wrong adding uni',
 		})
 	}
 }

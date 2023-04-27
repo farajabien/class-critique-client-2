@@ -1,119 +1,173 @@
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
-import { useSelector } from 'react-redux'
-import {
-	FaSearch,
-	FaUniversity,
-	FaUserGraduate,
-	FaChalkboardTeacher,
-} from 'react-icons/fa'
-import CourseCard from '../../components/universities/CourseCard'
-import SearchBar from '../../components/molecules/SearchBar'
+import { useDispatch, useSelector } from 'react-redux'
+import { getCoursesByUni } from '../../../actions/courseActions'
+import { getLecturersByUni } from '../../../actions/lecturerActions'
+import SearchBar from '../../../components/molecules/SearchBar'
+import UniversityInfo from '../../../components/universities/UniversityInfo'
+import CourseList from '../../../components/courses/CourseList'
+import LecturerList from '../../../components/lecturers/LecturerList'
+import { IoMdSchool, IoMdPeople } from 'react-icons/io'
+import { FaSearch } from 'react-icons/fa'
+import LoadingScreen from '../../../components/molecules/LoadingScreen'
+import AddLecturerModal from '../../../components/lecturers/AddLecturerModal'
+import AddCourseModal from '../../../components/courses/AddCourseModal'
 
 export default function UniversityDetails() {
 	const router = useRouter()
-	const { id } = router.query
-
-	const universities = useSelector((state) => state.uniReducer.unis)
-	const selectedUniversity = universities.find((uni) => uni.id === Number(id))
-
+	const { token, user } = useSelector((state) => state.authReducer)
+	const { university: uniId } = router.query
 	const [searchQuery, setSearchQuery] = useState('')
+	const [viewMode, setViewMode] = useState('courses')
+	const dispatch = useDispatch()
+	const courses = useSelector((state) => state.courseReducer.uniCourses)
+	const lecturers = useSelector((state) => state.lecturerReducer.uniLecturers)
+	const courseLoading = useSelector((state) => state.courseReducer.loading)
+	const lecLoading = useSelector((state) => state.lecturerReducer.loading)
+
+	const error = useSelector((state) => state.courseReducer.error)
+
+	const isAdmin = user && user.role === 'admin'
+	const isUniAdmin = user && user.role === 'universityAdmin'
+	const canAdd = isAdmin || (isUniAdmin && user.university === uniId)
+
+	const [showAddLecModal, setShowAddLecModal] = useState(false)
+	const [showAddCourseModal, setShowAddCourseModal] = useState(false)
+	// lecturer.averageRating = 4.5
+
+	const handleAddLecModal = () => {
+		setShowAddLecModal(!showAddLecModal)
+	}
+
+	const handleAddCourseModal = () => {
+		setShowAddCourseModal(!showAddCourseModal)
+	}
 
 	useEffect(() => {
-		if (!id || !selectedUniversity) {
-			router.push('/')
+		if (uniId) {
+			dispatch(getCoursesByUni(uniId))
+			dispatch(getLecturersByUni(uniId))
 		}
-	}, [id, selectedUniversity, router])
+	}, [dispatch, uniId])
 
 	const handleSearch = (query) => {
 		setSearchQuery(query)
 	}
 
-	// Filter courses by search query
-	const filteredCourses = selectedUniversity?.courses.filter(
+	const handleViewMode = (mode) => {
+		setViewMode(mode)
+	}
+
+	const filteredCourses = courses.filter(
 		(course) =>
 			course.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
 			course.code.toLowerCase().includes(searchQuery.toLowerCase())
 	)
+	const filteredLecturers = lecturers.filter((lecturer) =>
+		lecturer.name.toLowerCase().includes(searchQuery.toLowerCase())
+	)
 
 	return (
-		<div className='min-h-screen bg-gray-100'>
-			<main className='container mx-auto px-4 sm:px-6 lg:px-8'>
-				<div className='py-12 text-center'>
-					<h1 className='text-5xl font-bold mb-4 text-teal-500'>
-						{selectedUniversity?.name}
-					</h1>
-					<p className='text-xl text-center mb-8'>
-						{selectedUniversity?.description}
-					</p>
-					<div className='my-8 flex justify-center'>
-						<div className='w-full sm:w-1/2 md:w-1/3'>
-							<SearchBar
-								placeholder='Search for courses'
-								searchIcon={<FaSearch className='h-6 w-6 m-auto' />}
-								onChange={handleSearch}
-								className='w-full'
-							/>
-							{searchQuery.length > 0 && (
-								<p className='my-2 text-normal text-center'>
-									{filteredCourses?.length} courses found.
-								</p>
+		<div className='bg-gray-100 min-h-screen'>
+			<div className='bg-white py-6'>
+				<div className='container mx-auto px-4'>
+					<UniversityInfo uniId={uniId} />
+					<div className='mt-8'>
+						<SearchBar
+							placeholder={`Search ${
+								viewMode === 'courses' ? 'Courses' : 'Lecturers'
+							}`}
+							onChange={handleSearch}
+							searchIcon={<FaSearch className='h-6 w-6 m-auto' />}
+						/>
+					</div>
+					{canAdd && showAddLecModal && (
+						<AddLecturerModal
+							showAddLecModal={showAddLecModal}
+							handleAddLecModal={handleAddLecModal}
+							uniId={uniId}
+							token={token}
+						/>
+					)}
+					{canAdd && showAddCourseModal && (
+						<AddCourseModal
+							showAddCourseModal={showAddCourseModal}
+							handleAddCourseModal={handleAddCourseModal}
+							uniId={uniId}
+							token={token}
+						/>
+					)}
+					<div className='mt-8'>
+						<div className='flex justify-between items-center'>
+							<button
+								className={`px-4 py-2 font-medium text-sm rounded-md mr-2 ${
+									viewMode === 'courses'
+										? 'bg-teal-500 text-white'
+										: 'text-gray-500'
+								}`}
+								onClick={() => handleViewMode('courses')}>
+								<IoMdSchool className='inline-block mr-2 text-lg' />
+								Courses ({courses?.length ?? 0})
+							</button>
+							{canAdd && (
+								<div className='mt-4 flex justify-center'>
+									<button
+										type='button'
+										className='py-2 px-4 font-medium rounded-md text-white bg-teal-900 hover:bg-teal-800 focus:outline-none focus:ring-2 focus:ring-teal-900 focus:ring-opacity-50'
+										onClick={handleAddCourseModal}>
+										Add Course
+									</button>
+									<button
+										type='button'
+										className='py-2 px-4 ml-4 font-medium rounded-md text-white bg-teal-900 hover:bg-teal-800 focus:outline-none focus:ring-2 focus:ring-teal-900 focus:ring-opacity-50'
+										onClick={handleAddLecModal}>
+										Add Lecturer
+									</button>
+								</div>
 							)}
+							<button
+								className={`px-4 py-2 font-medium text-sm rounded-md ${
+									viewMode === 'lecturers'
+										? 'bg-teal-500 text-white'
+										: 'text-gray-500'
+								}`}
+								onClick={() => handleViewMode('lecturers')}>
+								<IoMdPeople className='inline-block mr-2 text-lg' />
+								Lecturers ({lecturers?.length ?? 0})
+							</button>
 						</div>
 					</div>
 				</div>
+			</div>
 
-				<div className='flex justify-evenly items-center flex-wrap'>
-					<div className='p-8'>
-						<div className='text-4xl text-teal-500 mb-2'>
-							<FaUniversity />
-						</div>
-						<div className='text-lg text-gray-700 font-medium mb-2'>
-							Location
-						</div>
-						<div className='text-gray-700 mb-2'>
-							{selectedUniversity?.location}
-						</div>
-					</div>
-
-					<div className='p-8'>
-						<div className='text-4xl text-teal-500 mb-2'>
-							<FaUserGraduate />
-						</div>
-						<div className='text-lg text-gray-700 font-medium mb-2'>
-							Number of students
-						</div>
-						<div className='text-gray-700 mb-2'>
-							{selectedUniversity?.numberOfStudents}
-						</div>
-					</div>
-
-					<div className='p-8'>
-						<div className='text-4xl text-teal-500 mb-2'>
-							<FaChalkboardTeacher />
-						</div>
-						<div className='text-lg text-gray-700 font-medium mb-2'>
-							Faculty
-						</div>
-						<div className='text-gray-700 mb-2'>
-							{selectedUniversity?.faculty}
-						</div>
-					</div>
-				</div>
-				<h2 className='text-2xl font-bold mt-16 mb-4 text-teal-500'>Courses</h2>
-
-				{filteredCourses?.length > 0 ? (
-					<div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8'>
-						{filteredCourses.map((course) => (
-							<CourseCard key={course.id} course={course} />
-						))}
-					</div>
+			<div className='container mx-auto px-4 mt-8'>
+				{viewMode === 'courses' ? (
+					<>
+						{courseLoading ? (
+							<LoadingScreen />
+						) : (
+							<CourseList
+								courses={filteredCourses}
+								loading={courseLoading}
+								error={error}
+								uniId={uniId}
+							/>
+						)}
+					</>
 				) : (
-					<p className='text-lg text-center text-gray-700'>
-						No courses found for your search query.
-					</p>
+					<>
+						{lecLoading ? (
+							<LoadingScreen />
+						) : (
+							<LecturerList
+								lecturers={filteredLecturers}
+								loading={lecLoading}
+								error={error}
+							/>
+						)}
+					</>
 				)}
-			</main>
+			</div>
 		</div>
 	)
 }

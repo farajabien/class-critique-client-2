@@ -1,19 +1,18 @@
 import { Provider } from 'react-redux'
 import '../styles/globals.css'
-import { SessionProvider } from 'next-auth/react'
 import { store } from '../store'
 import Layout from '../components/Layout'
-//provider redux
+import { ClerkProvider } from '@clerk/nextjs'
 
 function MyApp({ Component, pageProps }) {
 	return (
-		<Provider store={store}>
-			<SessionProvider session={pageProps.session}>
+		<ClerkProvider>
+			<Provider store={store}>
 				<Layout>
 					<Component {...pageProps} />
 				</Layout>
-			</SessionProvider>
-		</Provider>
+			</Provider>
+		</ClerkProvider>
 	)
 }
 

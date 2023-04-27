@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { AiOutlineLogin, AiOutlineUserAdd } from 'react-icons/ai'
-import { HiOutlineUserCircle } from 'react-icons/hi'
 import { FaBars, FaTimes } from 'react-icons/fa'
+import { FaGithub, FaTwitter } from 'react-icons/fa'
+
+import { SignInButton, SignedIn, SignedOut, UserButton } from '@clerk/nextjs'
 
 const Header = () => {
 	const [isOpen, setIsOpen] = useState(false)
@@ -11,12 +12,14 @@ const Header = () => {
 		setIsOpen(!isOpen)
 	}
 
+	// ADD THE FOLLOWING CODE TO HANDLE CLERK WEBHOOKS
+
 	return (
-		<header className='bg-gray-100 flex justify-between items-center py-4 px-6 md:px-12 lg:px-16'>
+		<header className='bg-teal-500 flex justify-between items-center py-4 px-6 md:px-12 lg:px-16'>
 			<div className='flex items-center space-x-4'>
 				<Link
 					href='/'
-					className='flex items-center space-x-2 font-bold text-lg md:text-xl'>
+					className='flex items-center space-x-2 font-bold text-2xl md:text-3xl text-white'>
 					<span>ClassCritique</span>
 				</Link>
 			</div>
@@ -34,29 +37,21 @@ const Header = () => {
 				}`}>
 				<Link
 					href='/universities'
-					className='flex items-center space-x-1 text-base md:text-lg hover:text-teal-400 focus:text-teal-400'>
+					className='text-white text-lg md:text-xl hover:text-teal-200 focus:text-teal-200 transition-colors duration-300'>
 					<span>Universities</span>
 				</Link>
 
-				<Link
-					href='/auth/login'
-					className='flex items-center space-x-1 bg-teal-400 text-white px-3 py-2 rounded-full text-base md:text-lg hover:bg-teal-500 focus:bg-teal-500 transition-colors duration-300'>
-					<AiOutlineUserAdd />
-					<span>Sign In</span>
-				</Link>
+				<SignedOut>
+					<SignInButton mode='modal' />
+				</SignedOut>
 
-				<Link
-					href='/profile'
-					className='flex items-center space-x-1 text-base md:text-lg hover:text-teal-400 focus:text-teal-400'>
-					<HiOutlineUserCircle />
-					<span>Profile</span>
-				</Link>
+				<SignedIn>
+					<UserButton />
+				</SignedIn>
 			</nav>
 		</header>
 	)
 }
-
-import { FaGithub, FaTwitter } from 'react-icons/fa'
 
 const Footer = () => {
 	return (
