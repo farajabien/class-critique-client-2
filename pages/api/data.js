@@ -1,11 +1,12 @@
 import axios from 'axios'
 
-const API_BASE_URL = 'http://localhost:3001'
-
 //loginUser
 export const loginUser = async (userData) => {
 	try {
-		const response = await axios.post(`${API_BASE_URL}/auth/login`, userData)
+		const response = await axios.post(
+			`${process.env.NEXT_PUBLIC_BASE_URL}/auth/login`,
+			userData
+		)
 		return response.data
 	} catch (error) {
 		if (error.response && error.response.data) {
@@ -21,7 +22,7 @@ export const loginUser = async (userData) => {
 export const registerClerkUser = async (userData) => {
 	try {
 		const response = await axios.post(
-			`${API_BASE_URL}/auth/register-clerk-user`,
+			`${process.env.NEXT_PUBLIC_BASE_URL}/auth/register-clerk-user`,
 			userData
 		)
 		return response.data
@@ -34,7 +35,9 @@ export const registerClerkUser = async (userData) => {
 //logout
 export const logoutUser = async () => {
 	try {
-		const response = await axios.post(`${API_BASE_URL}/auth/logout`)
+		const response = await axios.post(
+			`${process.env.NEXT_PUBLIC_BASE_URL}/auth/logout`
+		)
 		return response.data
 	} catch (error) {
 		console.error('Error while logging out', error)
@@ -44,7 +47,9 @@ export const logoutUser = async () => {
 
 export const getAllUniversities = async () => {
 	try {
-		const response = await axios.get(`${API_BASE_URL}/universities`)
+		const response = await axios.get(
+			`${process.env.NEXT_PUBLIC_BASE_URL}/universities`
+		)
 		return response.data
 	} catch (error) {
 		console.error('Error while fetching universities', error)
@@ -54,7 +59,9 @@ export const getAllUniversities = async () => {
 
 export const getUniversityById = async (id) => {
 	try {
-		const response = await axios.get(`${API_BASE_URL}/universities/${id}`)
+		const response = await axios.get(
+			`${process.env.NEXT_PUBLIC_BASE_URL}/universities/${id}`
+		)
 		return response.data
 	} catch (error) {
 		console.error('Error while fetching university', error)
@@ -64,11 +71,15 @@ export const getUniversityById = async (id) => {
 
 export const createUniversity = async (token, uniData) => {
 	try {
-		const response = await axios.post(`${API_BASE_URL}/universities`, uniData, {
-			headers: {
-				Authorization: `Bearer ${token}`,
-			},
-		})
+		const response = await axios.post(
+			`${process.env.NEXT_PUBLIC_BASE_URL}/universities`,
+			uniData,
+			{
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			}
+		)
 		return response.data
 	} catch (error) {
 		console.error('Error while creating university', error)
@@ -78,7 +89,9 @@ export const createUniversity = async (token, uniData) => {
 
 export const getAllCourses = async () => {
 	try {
-		const response = await axios.get(`${API_BASE_URL}/courses`)
+		const response = await axios.get(
+			`${process.env.NEXT_PUBLIC_BASE_URL}/courses`
+		)
 		return response.data
 	} catch (error) {
 		console.error('Error while fetching courses', error)
@@ -89,7 +102,7 @@ export const getAllCourses = async () => {
 export const getCoursesByUniId = async (uniId) => {
 	try {
 		const response = await axios.get(
-			`${API_BASE_URL}/universities/${uniId}/courses`
+			`${process.env.NEXT_PUBLIC_BASE_URL}/universities/${uniId}/courses`
 		)
 		return response.data
 	} catch (error) {
@@ -102,7 +115,7 @@ export const getCourseByUniIdCourseId = async (uniId, courseId) => {
 	if (uniId && courseId) {
 		try {
 			const response = await axios.get(
-				`${API_BASE_URL}/universities/${uniId}/courses/${courseId}`
+				`${process.env.NEXT_PUBLIC_BASE_URL}/universities/${uniId}/courses/${courseId}`
 			)
 			return response.data
 		} catch (error) {
@@ -116,7 +129,7 @@ export const getLecturersByUniId = async (uniId) => {
 	if (uniId) {
 		try {
 			const response = await axios.get(
-				`${API_BASE_URL}/universities/${uniId}/lecturers`
+				`${process.env.NEXT_PUBLIC_BASE_URL}/universities/${uniId}/lecturers`
 			)
 			return response.data
 		} catch (error) {
@@ -132,7 +145,7 @@ export const getAllReviewsForCourse = async (courseId) => {
 	if (courseId) {
 		try {
 			const response = await axios.get(
-				`${API_BASE_URL}/reviews/courses/${courseId}`
+				`${process.env.NEXT_PUBLIC_BASE_URL}/reviews/courses/${courseId}`
 			)
 			return response.data
 		} catch (error) {
@@ -147,7 +160,7 @@ export const getAllReviewsForLecturer = async (lecturerId, courseId) => {
 	if (courseId && lecturerId) {
 		try {
 			const response = await axios.get(
-				`${API_BASE_URL}/reviews/lecturers/${lecturerId}`
+				`${process.env.NEXT_PUBLIC_BASE_URL}/reviews/lecturers/${lecturerId}`
 			)
 			return response.data
 		} catch (error) {
@@ -161,7 +174,7 @@ export const getAllReviewsForLecturer = async (lecturerId, courseId) => {
 export const addNewReview = async (courseId, review, token) => {
 	try {
 		const response = await axios.post(
-			`${API_BASE_URL}/reviews/courses/${courseId}`,
+			`${process.env.NEXT_PUBLIC_BASE_URL}/reviews/courses/${courseId}`,
 			review,
 			{
 				headers: {
@@ -180,7 +193,9 @@ export const addNewReview = async (courseId, review, token) => {
 // getAllLecturers
 export const getAllLecturers = async () => {
 	try {
-		const response = await axios.get(`${API_BASE_URL}/lecturers`)
+		const response = await axios.get(
+			`${process.env.NEXT_PUBLIC_BASE_URL}/lecturers`
+		)
 		return response.data
 	} catch (error) {
 		console.error('Error while fetching lecturers', error)
@@ -193,7 +208,7 @@ export const getAllLecturersForCourse = async (uniId, courseId) => {
 	if ((uniId, courseId)) {
 		try {
 			const response = await axios.get(
-				`${API_BASE_URL}/lecturers/${uniId}/${courseId}`
+				`${process.env.NEXT_PUBLIC_BASE_URL}/lecturers/${uniId}/${courseId}`
 			)
 			return response.data
 		} catch (error) {
@@ -207,7 +222,7 @@ export const getAllLecturersForCourse = async (uniId, courseId) => {
 export const addNewLecturer = async (token, uniId, lecturer) => {
 	try {
 		const response = await axios.post(
-			`${API_BASE_URL}/lecturers`,
+			`${process.env.NEXT_PUBLIC_BASE_URL}/lecturers`,
 			{ uniId, lecturer },
 			{
 				headers: {
@@ -226,7 +241,7 @@ export const addNewLecturer = async (token, uniId, lecturer) => {
 export const addNewCourse = async (token, uniId, course) => {
 	try {
 		const response = await axios.post(
-			`${API_BASE_URL}/universities/${uniId}`,
+			`${process.env.NEXT_PUBLIC_BASE_URL}/universities/${uniId}`,
 			{ uniId, course },
 			{
 				headers: {
