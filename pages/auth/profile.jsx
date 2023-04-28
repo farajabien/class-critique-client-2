@@ -49,7 +49,7 @@ const StudentProfile = () => {
 		error: uniError,
 		selectedUni: uni,
 	} = useSelector((state) => state.uniReducer)
-	const { user: userData, error: userDataError } = useSelector(
+	const { userData, error: userDataError } = useSelector(
 		(state) => state.authReducer
 	)
 	const [watchListLecs, setWatchListLecs] = useState(watchListLecsSample)
@@ -77,7 +77,7 @@ const StudentProfile = () => {
 		if (user && !isLoading && !userData) {
 			dispatch(register(user))
 		}
-	}, [user, isLoading, userData])
+	}, [dispatch, user, isLoading, userData])
 
 	const handleSelectUni = () => {
 		if (user && !isLoading) {
@@ -87,6 +87,8 @@ const StudentProfile = () => {
 				university,
 			}
 			dispatch(register(newUserData))
+
+			setShowUniModal(false)
 		}
 	}
 
@@ -123,23 +125,27 @@ const StudentProfile = () => {
 							{userDataError}
 						</div>
 					)}
-
-					{/* University selection modal */}
 					{showUniModal && (
-						<div className='bg-white rounded-md border-2 border-gray-200 py-4 px-4 mb-4'>
-							<h2 className='text-lg font-semibold mb-2'>
-								Select Your University
-							</h2>
-							<Select
-								options={universityOptions}
-								onChange={handleUniChange}
-								placeholder='Select university'
-							/>
-							<button
-								className='bg-blue-500 text-white px-4 py-2 rounded-md mt-4'
-								onClick={handleSelectUni}>
-								Save
-							</button>
+						<div className='fixed overflow-y-auto inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center z-50'>
+							<div
+								className='bg-white rounded-lg p-6 max-w-3xl w-full min-h-96 h-5/6 overflow-hidden overflow-y-scroll '
+								onClick={(e) => e.stopPropagation()}>
+								<div className='bg-white rounded-md border-2 border-gray-200 py-4 px-4 mb-4'>
+									<h2 className='text-lg font-semibold mb-2'>
+										Select Your University
+									</h2>
+									<Select
+										options={universityOptions}
+										onChange={handleUniChange}
+										placeholder='Select university'
+									/>
+									<button
+										className='bg-teal-500 text-white px-4 py-2 rounded-md mt-4'
+										onClick={handleSelectUni}>
+										Save
+									</button>
+								</div>
+							</div>
 						</div>
 					)}
 

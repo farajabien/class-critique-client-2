@@ -23,7 +23,7 @@ const Universities = () => {
 	const [searchQuery, setSearchQuery] = useState('')
 	const [showAddUniModal, setShowAddUniModal] = useState(false)
 
-	const { user: userData, error: userDataError } = useSelector(
+	const { userData, error: userDataError } = useSelector(
 		(state) => state.authReducer
 	)
 	const isAdmin = userData && userData.role === 'admin'
@@ -49,15 +49,9 @@ const Universities = () => {
 		uni.name.toLowerCase().includes(searchQuery.toLowerCase())
 	)
 
-	// Define animations
-	const cardVariants = {
-		hidden: { opacity: 0, scale: 0 },
-		visible: { opacity: 1, scale: 1, transition: { duration: 0.5 } },
-	}
-	const avatarVariants = {
-		hidden: { scale: 0 },
-		visible: { scale: 1, transition: { duration: 0.5 } },
-	}
+	useEffect(() => {
+		console.log('LOOOLLL', userData)
+	}, [userData])
 
 	return (
 		<div className='container mx-auto px-4 sm:px-6 lg:px-8'>
@@ -76,7 +70,7 @@ const Universities = () => {
 							<AddUniversityModal
 								showAddUniModal={showAddUniModal}
 								handleAddUniModal={handleAddUniModal}
-								token={token}
+								userRole={userData.role}
 								loading={loading}
 							/>
 						)}

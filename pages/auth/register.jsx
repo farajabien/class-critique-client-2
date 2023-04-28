@@ -15,7 +15,7 @@ const RegisterPage = () => {
 	)
 	useEffect(() => {
 		dispatch(getUniversities())
-	}, [])
+	}, [dispatch])
 	useEffect(() => {
 		// IF USER IS SIGNED IN, REDIRECT TO PROFILE
 		if (user && !isLoading) {

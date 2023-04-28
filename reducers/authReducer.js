@@ -11,7 +11,7 @@ export default function authReducer(state = initialState, action) {
 		case authActionTypes.REGISTER_REQUEST:
 			return {
 				...state,
-				user: null,
+				userData: null,
 				error: null,
 				loading: true,
 			}
@@ -19,14 +19,14 @@ export default function authReducer(state = initialState, action) {
 			return {
 				...state,
 
-				user: action.payload,
+				userData: action.payload,
 				error: null,
 				loading: false,
 			}
 		case authActionTypes.REGISTER_FAILURE:
 			return {
 				...state,
-				user: null,
+				userData: null,
 				error: action.payload,
 				loading: false,
 			}

@@ -36,11 +36,7 @@ const CourseDetails = () => {
 			dispatch(getCourseLecturers(uniId, courseId))
 			dispatch(getReviewsForCourse(courseId))
 		}
-	}, [courseId, uniId])
-
-	useEffect(() => {
-		console.log('HIZI', lecturers)
-	}, [lecturers])
+	}, [courseId, dispatch, uniId])
 
 	const handleSearch = (query) => {
 		setSearchQuery(query)
