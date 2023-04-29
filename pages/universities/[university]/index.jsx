@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import { useDispatch, useSelector } from 'react-redux'
 import { getCoursesByUni } from '../../../actions/courseActions'
 import { getLecturersByUni } from '../../../actions/lecturerActions'
+
 import SearchBar from '../../../components/molecules/SearchBar'
 import UniversityInfo from '../../../components/universities/UniversityInfo'
 import CourseList from '../../../components/courses/CourseList'
@@ -12,10 +13,11 @@ import { FaSearch } from 'react-icons/fa'
 import LoadingScreen from '../../../components/molecules/LoadingScreen'
 import AddLecturerModal from '../../../components/lecturers/AddLecturerModal'
 import AddCourseModal from '../../../components/courses/AddCourseModal'
+import { motion } from 'framer-motion'
+import { useUser } from '@clerk/nextjs'
 
 export default function UniversityDetails() {
 	const router = useRouter()
-	const { token, user } = useSelector((state) => state.authReducer)
 	const { university: uniId } = router.query
 	const [searchQuery, setSearchQuery] = useState('')
 	const [viewMode, setViewMode] = useState('courses')
@@ -27,9 +29,11 @@ export default function UniversityDetails() {
 
 	const error = useSelector((state) => state.courseReducer.error)
 
-	const isAdmin = user && user.role === 'admin'
-	const isUniAdmin = user && user.role === 'universityAdmin'
-	const canAdd = isAdmin || (isUniAdmin && user.university === uniId)
+	const { user, isLoading } = useUser()
+
+	const isAdmin = user?.publicMetadata.role === 'admin'
+	const isUniAdmin = user?.publicMetadata.role === 'universityAdmin'
+	const canAdd = isAdmin || isUniAdmin
 
 	const [showAddLecModal, setShowAddLecModal] = useState(false)
 	const [showAddCourseModal, setShowAddCourseModal] = useState(false)
@@ -86,15 +90,16 @@ export default function UniversityDetails() {
 							showAddLecModal={showAddLecModal}
 							handleAddLecModal={handleAddLecModal}
 							uniId={uniId}
-							token={token}
+							user={user}
 						/>
 					)}
+
 					{canAdd && showAddCourseModal && (
 						<AddCourseModal
 							showAddCourseModal={showAddCourseModal}
 							handleAddCourseModal={handleAddCourseModal}
 							uniId={uniId}
-							token={token}
+							user={user}
 						/>
 					)}
 					<div className='mt-8'>
@@ -111,18 +116,22 @@ export default function UniversityDetails() {
 							</button>
 							{canAdd && (
 								<div className='mt-4 flex justify-center'>
-									<button
-										type='button'
-										className='py-2 px-4 font-medium rounded-md text-white bg-teal-900 hover:bg-teal-800 focus:outline-none focus:ring-2 focus:ring-teal-900 focus:ring-opacity-50'
+									<motion.button
+										className='bg-teal-500 hover:bg-teal-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mr-2'
+										initial={{ opacity: 0 }}
+										animate={{ opacity: 1 }}
+										transition={{ delay: 1, duration: 1 }}
 										onClick={handleAddCourseModal}>
 										Add Course
-									</button>
-									<button
-										type='button'
-										className='py-2 px-4 ml-4 font-medium rounded-md text-white bg-teal-900 hover:bg-teal-800 focus:outline-none focus:ring-2 focus:ring-teal-900 focus:ring-opacity-50'
+									</motion.button>
+									<motion.button
+										className='bg-teal-500 hover:bg-teal-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline'
+										initial={{ opacity: 0 }}
+										animate={{ opacity: 1 }}
+										transition={{ delay: 1, duration: 1 }}
 										onClick={handleAddLecModal}>
 										Add Lecturer
-									</button>
+									</motion.button>
 								</div>
 							)}
 							<button

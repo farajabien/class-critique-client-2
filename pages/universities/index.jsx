@@ -13,7 +13,7 @@ import { motion } from 'framer-motion'
 import { shuffle } from 'lodash'
 //import Link
 import Link from 'next/link'
-import { SignedIn } from '@clerk/nextjs'
+import { SignedIn, useUser } from '@clerk/nextjs'
 
 const Universities = () => {
 	const dispatch = useDispatch()
@@ -23,10 +23,9 @@ const Universities = () => {
 	const [searchQuery, setSearchQuery] = useState('')
 	const [showAddUniModal, setShowAddUniModal] = useState(false)
 
-	const { user: userData, error: userDataError } = useSelector(
-		(state) => state.authReducer
-	)
-	const isAdmin = userData && userData.role === 'admin'
+	const { user, isLoading } = useUser()
+
+	const isAdmin = user?.publicMetadata.role === 'admin'
 	const canAdd = isAdmin
 
 	useEffect(() => {
@@ -49,16 +48,6 @@ const Universities = () => {
 		uni.name.toLowerCase().includes(searchQuery.toLowerCase())
 	)
 
-	// Define animations
-	const cardVariants = {
-		hidden: { opacity: 0, scale: 0 },
-		visible: { opacity: 1, scale: 1, transition: { duration: 0.5 } },
-	}
-	const avatarVariants = {
-		hidden: { scale: 0 },
-		visible: { scale: 1, transition: { duration: 0.5 } },
-	}
-
 	return (
 		<div className='container mx-auto px-4 sm:px-6 lg:px-8'>
 			<SignedIn>
@@ -76,7 +65,7 @@ const Universities = () => {
 							<AddUniversityModal
 								showAddUniModal={showAddUniModal}
 								handleAddUniModal={handleAddUniModal}
-								token={token}
+								user={user}
 								loading={loading}
 							/>
 						)}

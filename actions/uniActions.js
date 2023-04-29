@@ -37,11 +37,10 @@ export const getUniversity = (id) => async (dispatch) => {
 }
 
 //addUni
-export const addUni = (token, uniData) => async (dispatch) => {
+export const addUni = (user, uniData) => async (dispatch) => {
 	try {
-		console.log('UNI DATA', uniData)
 		dispatch({ type: uniActionTypes.CREATE_UNI_REQUEST })
-		const uni = await await createUniversity(token, uniData)
+		const uni = await await createUniversity(user, uniData)
 		dispatch({ type: uniActionTypes.CREATE_UNI_SUCCESS, payload: uni })
 	} catch (error) {
 		dispatch({

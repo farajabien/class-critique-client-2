@@ -8,6 +8,7 @@ const Rankings = ({
 	lecLoading,
 	reviews,
 	course,
+	userData,
 }) => {
 	const sortLecturers = (lecturers) => {
 		const lecturersWithAvgRating = lecturers.map((lecturer) => {
@@ -45,6 +46,7 @@ const Rankings = ({
 					reviews={reviews}
 					reviewLoading={reviewLoading}
 					course={course}
+					userData={userData}
 				/>
 			))}
 		</div>
