@@ -42,6 +42,12 @@ const RegisterPage = () => {
 							path='/auth/register'
 							routing='path'
 							signInUrl='/auth/login'
+							appearance={{
+								elements: {
+									formButtonPrimary:
+										'bg-teal-500 hover:bg-teal-600 text-sm normal-case',
+								},
+							}}
 						/>
 					</SignedOut>
 				</>

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import LoadingScreen from '../../components/molecules/LoadingScreen'
@@ -23,7 +23,18 @@ const LoginPage = () => {
 						</Link>
 					</SignedIn>
 					<SignedOut>
-						<SignIn />
+						<SignIn
+							path='/auth/login'
+							routing='path'
+							signInUrl='/auth/register'
+							appearance={{
+								elements: {
+									formButtonPrimary:
+										'bg-teal-500 hover:bg-teal-600 text-sm normal-case',
+									footerBackground: 'bg-teal-500',
+								},
+							}}
+						/>
 					</SignedOut>
 				</>
 			)}
