@@ -1,25 +1,21 @@
 import React from 'react'
 import moment from 'moment'
-import { FaClock, FaRegStar, FaStar } from 'react-icons/fa'
+import { FaClock, FaStar } from 'react-icons/fa'
 import Link from 'next/link'
 import Avatar from '../atoms/Avatar'
-import { useSelector } from 'react-redux'
-import { IoMdFemale, IoMdMale } from 'react-icons/io'
 import { BsFillStarFill } from 'react-icons/bs'
-import Emoji from 'react-emoji-render'
+import { useUser } from '@clerk/nextjs'
 
 const girlEmojis = ['💅', '💄', '👗', '🎀', '💖']
 const boyEmojis = ['🕶️', '💪', '🏀', '👔', '🔥']
 const otherEmojis = ['🧑', '👤', '👥', '🌐', '💬']
 
-function ReviewElement({ user, review, targetLec }) {
+function ReviewElement({ loggedInUserData, review, targetLec }) {
 	// Add a check to ensure that review object is not undefined
 	const { rating, comment, updatedAt: reviewUpdatedAt } = review || {}
-	const {
-		error,
-		loading,
-		user: loggedInUser,
-	} = useSelector((state) => state.authReducer)
+
+	const { user: loggedInUser, isLoading } = useUser()
+
 	if (!review) return null
 
 	// Add a check to ensure that rating object is not undefined
@@ -39,7 +35,7 @@ function ReviewElement({ user, review, targetLec }) {
 
 	const formattedDate = moment(latestUpdate).fromNow()
 
-	const initials = user?.name
+	const initials = loggedInUser?.fullName
 		.split(' ')
 		.map((part) => part[0])
 		.join('.')
@@ -76,9 +72,9 @@ function ReviewElement({ user, review, targetLec }) {
 
 	// Check if the logged in user wrote this review
 	let isCurrentUserReview =
-		loggedInUser && loggedInUser?.id === review.user?._id
+		loggedInUserData && loggedInUserData?._id === review.user?._id
 
-	if (loggedInUser?.id == null || review?.user == null) {
+	if (loggedInUserData?._id == null || review?.user == null) {
 		isCurrentUserReview = false
 	}
 
@@ -104,9 +100,9 @@ function ReviewElement({ user, review, targetLec }) {
 					<div className='flex items-center justify-between'>
 						<div>
 							<div className='text-sm font-medium'>
-								{user?.gender === 'male' ? (
+								{loggedInUserData?.gender === 'Male' ? (
 									<BoyEmojis />
-								) : user?.gender === 'female' ? (
+								) : loggedInUserData?.gender === 'Female' ? (
 									<GirlEmojis />
 								) : (
 									<OtherEmojis />

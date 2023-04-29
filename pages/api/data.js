@@ -1,23 +1,5 @@
 import axios from 'axios'
 
-//loginUser
-export const loginUser = async (userData) => {
-	try {
-		const response = await axios.post(
-			`${process.env.NEXT_PUBLIC_BASE_URL}/auth/login`,
-			userData
-		)
-		return response.data
-	} catch (error) {
-		if (error.response && error.response.data) {
-			const { message } = error.response.data
-			return { error: message }
-		} else {
-			return { error: 'Something went wrong logging in.' }
-		}
-	}
-}
-
 //registerClerkUser
 export const registerClerkUser = async (userData) => {
 	try {
@@ -32,15 +14,15 @@ export const registerClerkUser = async (userData) => {
 	}
 }
 
-//logout
-export const logoutUser = async () => {
+//getUserDetailsData
+export const getUserDetailsData = async (userId) => {
 	try {
-		const response = await axios.post(
-			`${process.env.NEXT_PUBLIC_BASE_URL}/auth/logout`
+		const response = await axios.get(
+			`${process.env.NEXT_PUBLIC_BASE_URL}/auth/users/${userId}`
 		)
 		return response.data
 	} catch (error) {
-		console.error('Error while logging out', error)
+		console.error('Error while getting user details', error)
 		throw error
 	}
 }
@@ -69,16 +51,15 @@ export const getUniversityById = async (id) => {
 	}
 }
 
-export const createUniversity = async (token, uniData) => {
+export const createUniversity = async (user, uniData) => {
 	try {
+		if (user.publicMetadata.role !== 'admin') {
+			throw new Error('Unauthorized access')
+		}
+
 		const response = await axios.post(
 			`${process.env.NEXT_PUBLIC_BASE_URL}/universities`,
-			uniData,
-			{
-				headers: {
-					Authorization: `Bearer ${token}`,
-				},
-			}
+			{ user, uniData }
 		)
 		return response.data
 	} catch (error) {
@@ -171,16 +152,11 @@ export const getAllReviewsForLecturer = async (lecturerId, courseId) => {
 }
 
 //addNewReview
-export const addNewReview = async (courseId, review, token) => {
+export const addNewReview = async (courseId, review, userId) => {
 	try {
 		const response = await axios.post(
-			`${process.env.NEXT_PUBLIC_BASE_URL}/reviews/courses/${courseId}`,
-			review,
-			{
-				headers: {
-					Authorization: `Bearer ${token}`,
-				},
-			}
+			`${process.env.NEXT_PUBLIC_BASE_URL}/reviews/courses/${courseId}/${userId}`,
+			review
 		)
 		return response.data
 	} catch (error) {
@@ -219,16 +195,11 @@ export const getAllLecturersForCourse = async (uniId, courseId) => {
 }
 
 //addNewLecturer
-export const addNewLecturer = async (token, uniId, lecturer) => {
+export const addNewLecturer = async (user, uniId, lecturer) => {
 	try {
 		const response = await axios.post(
 			`${process.env.NEXT_PUBLIC_BASE_URL}/lecturers`,
-			{ uniId, lecturer },
-			{
-				headers: {
-					Authorization: `Bearer ${token}`,
-				},
-			}
+			{ user, uniId, lecturer }
 		)
 		return response.data
 	} catch (error) {
@@ -238,20 +209,15 @@ export const addNewLecturer = async (token, uniId, lecturer) => {
 }
 
 //addNewCourse
-export const addNewCourse = async (token, uniId, course) => {
+export const addNewCourse = async (user, uniId, course) => {
 	try {
 		const response = await axios.post(
 			`${process.env.NEXT_PUBLIC_BASE_URL}/universities/${uniId}`,
-			{ uniId, course },
-			{
-				headers: {
-					Authorization: `Bearer ${token}`,
-				},
-			}
+			{ user, uniId, course }
 		)
 		return response.data
 	} catch (error) {
-		console.error('Error while creating lecturer', error)
+		console.error('Error while creating course', error)
 		throw error
 	}
 }

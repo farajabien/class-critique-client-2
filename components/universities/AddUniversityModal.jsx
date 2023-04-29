@@ -8,7 +8,7 @@ import PhoneInput from 'react-phone-number-input/input'
 
 export default function AddUniversityModal({
 	handleAddUniModal,
-	userRole,
+	user,
 	showAddUniModal,
 	loading: unisLoading,
 }) {
@@ -109,7 +109,7 @@ export default function AddUniversityModal({
 			phone: contact.phone,
 		}
 		//TODO: CONTINUE FIXING AUTHORIZATION CRUD WITH CLERK
-		dispatch(addUni(userRole, uni)).then((res) => {
+		dispatch(addUni(user, uni)).then((res) => {
 			setNewUni({
 				name: '',
 				abbreviation: '',

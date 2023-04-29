@@ -4,7 +4,7 @@ import { addLecturer } from '../../actions/lecturerActions'
 import Select from 'react-select'
 import { FaTimes } from 'react-icons/fa'
 
-export default function AddLecModal({ handleAddLecModal, uniId, token }) {
+export default function AddLecModal({ handleAddLecModal, uniId, user }) {
 	const { uniCourses: courses, error: courseError } = useSelector(
 		(state) => state.courseReducer
 	)
@@ -50,7 +50,7 @@ export default function AddLecModal({ handleAddLecModal, uniId, token }) {
 
 			courses: selectedCourses,
 		}
-		dispatch(addLecturer(token, uniId, lecturer)).then(() => {
+		dispatch(addLecturer(user, uniId, lecturer)).then(() => {
 			//check error
 			if (lecturerError) {
 				setErrorMessages((prev) => [...prev, lecturerError])

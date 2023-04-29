@@ -24,10 +24,10 @@ export const getReviewsForCourse = (courseId) => async (dispatch) => {
 }
 
 export const addReview =
-	(courseId, review, token, uniId) => async (dispatch) => {
+	(courseId, review, userId, uniId) => async (dispatch) => {
 		try {
 			dispatch({ type: reviewActionTypes.CREATE_REVIEW_REQUEST })
-			const addedReview = await addNewReview(courseId, review, token)
+			const addedReview = await addNewReview(courseId, review, userId)
 
 			// Get updated reviews list and lecturer list
 			dispatch(getReviewsForCourse(courseId))

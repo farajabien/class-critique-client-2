@@ -7,7 +7,7 @@ export default function AddCourseModal({
 	showAddCourseModal,
 	handleAddCourseModal,
 	uniId,
-	token,
+	user,
 }) {
 	const lecturers = useSelector((state) => state.lecturerReducer.uniLecturers)
 	const [newCourse, setNewCourse] = useState({
@@ -39,7 +39,7 @@ export default function AddCourseModal({
 			university: uniId,
 			lecturers: selectedLecturers,
 		}
-		dispatch(addCourse(token, uniId, course)).then(() => {
+		dispatch(addCourse(user, uniId, course)).then(() => {
 			setIsBannerVisible(true)
 			setTimeout(() => {
 				handleAddCourseModal()

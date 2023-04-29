@@ -4,7 +4,7 @@ import { FaStar, FaCheck, FaComment, FaThumbsUp } from 'react-icons/fa'
 import { RiArrowGoBackLine } from 'react-icons/ri'
 import Link from 'next/link'
 import { useSelector } from 'react-redux'
-import LoginModal from '../LoginRegister'
+import { SignIn, useUser } from '@clerk/nextjs'
 
 function RatingComponent({
 	onSubmit,
@@ -13,7 +13,9 @@ function RatingComponent({
 	lecturerName,
 	course,
 	handleCloseModal,
+	userData,
 }) {
+	const { user, isLoading } = useUser()
 	const {
 		error,
 		loading,
@@ -32,6 +34,12 @@ function RatingComponent({
 	const [submitted, setSubmitted] = useState(false)
 	const [openLoginModal, setOpenLoginModal] = useState(false)
 	const [userUniversity, setUserUniversity] = useState('')
+
+	useEffect(() => {
+		if (userData) {
+			setUserUniversity(userData.university)
+		}
+	}, [userData])
 
 	const handleRating = (attribute, rating) => {
 		if (attribute.toLowerCase().includes('applicability')) {
@@ -53,7 +61,7 @@ function RatingComponent({
 
 	const handleSubmit = (event) => {
 		event.preventDefault()
-		if (!loggedInUser) {
+		if (!user) {
 			// Prompt user to log in
 			alert('Please log in to submit a rating.')
 			return
@@ -71,22 +79,9 @@ function RatingComponent({
 		return sum / count
 	}
 
-	useEffect(() => {
-		if (loggedInUser) {
-			setOpenLoginModal(false)
-			setUserUniversity(loggedInUser.university)
-		}
-	}, [loggedInUser, courseUniversity])
-
 	return (
 		<div className='flex flex-col items-center bg-gray-100'>
 			<div className='flex items-center justify-between w-full max-w-screen-lg p-4'></div>
-			{openLoginModal && (
-				<LoginModal
-					open={openLoginModal}
-					onClose={() => setOpenLoginModal(false)}
-				/>
-			)}
 			<div className='flex-grow flex flex-col items-center justify-center px-4'>
 				{!submitted ? (
 					<div className='w-full max-w-lg'>
@@ -155,7 +150,7 @@ function RatingComponent({
 										value={comment}
 										onChange={handleComment}></textarea>{' '}
 								</div>{' '}
-								{loggedInUser ? (
+								{user ? (
 									<>
 										{userUniversity === courseUniversity ? (
 											<button
@@ -178,11 +173,7 @@ function RatingComponent({
 										<span className='text-lg font-medium text-gray-800'>
 											Please log in to submit a rating.
 										</span>
-										<span
-											onClick={() => setOpenLoginModal(true)}
-											className=' bg-teal-300 mx-1 p-0.5 hover:bg-teal-500 hover:text-teal-100 cursor-pointer text-gray-600 rounded-md px-2 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2'>
-											Login
-										</span>
+										<SignIn />
 									</div>
 								)}
 							</div>{' '}

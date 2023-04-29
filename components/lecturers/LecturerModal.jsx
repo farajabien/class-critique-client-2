@@ -13,6 +13,7 @@ function LecturerModal({
 	reviews,
 	course,
 	reviewLoading,
+	userData,
 }) {
 	const [newReview, setNewReview] = useState(null)
 	const [isBannerVisible, setIsBannerVisible] = useState(false)
@@ -104,8 +105,10 @@ function LecturerModal({
 
 		const courseId = course._id.toString()
 
-		const uniId = user.university.toString()
-		dispatch(addReview(courseId, review, token, uniId)).then(() => {
+		const uniId = userData.university.toString()
+		const userId = userData._id.toString()
+
+		dispatch(addReview(courseId, review, userId, uniId)).then(() => {
 			setIsReviewAdded(false)
 		})
 		addNewReview(review)
@@ -137,6 +140,7 @@ function LecturerModal({
 									<ReviewElement
 										key={review._id ?? idx}
 										user={review.user}
+										loggedInUserData={userData}
 										review={review}
 									/>
 								))}
@@ -266,6 +270,7 @@ function LecturerModal({
 						courseUniversity={course?.university?.toString()}
 						course={course}
 						handleCloseModal={handleCloseModal}
+						userData={userData}
 					/>
 					<div className='block md:hidden'>
 						<ReviewSection />

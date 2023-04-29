@@ -9,6 +9,7 @@ const LecturerRankingCard = ({
 	reviews,
 	reviewLoading,
 	course,
+	userData,
 }) => {
 	const [showModal, setShowModal] = useState(false)
 	// lecturer.averageRating = 4.5
@@ -67,6 +68,7 @@ const LecturerRankingCard = ({
 					reviews={reviews}
 					course={course}
 					reviewLoading={reviewLoading}
+					userData={userData}
 				/>
 			)}
 		</div>

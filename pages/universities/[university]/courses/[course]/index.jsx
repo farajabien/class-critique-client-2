@@ -12,6 +12,8 @@ import LoadingScreen from '../../../../../components/molecules/LoadingScreen'
 import Link from 'next/link'
 import { getCourseLecturers } from '../../../../../actions/lecturerActions'
 import { getReviewsForCourse } from '../../../../../actions/reviewActions'
+import { useUser } from '@clerk/nextjs'
+import { getUserDetails } from '../../../../../actions/authActions'
 
 const CourseDetails = () => {
 	const router = useRouter()
@@ -29,6 +31,17 @@ const CourseDetails = () => {
 
 	const reviews = useSelector((state) => state.reviewReducer.courseReviews)
 	const reviewLoading = useSelector((state) => state.reviewReducer.loading)
+
+	const { user, isLoading } = useUser()
+	const { userData, error: userDataError } = useSelector(
+		(state) => state.authReducer
+	)
+
+	useEffect(() => {
+		if (user) {
+			dispatch(getUserDetails(user.id))
+		}
+	}, [dispatch, user])
 
 	useEffect(() => {
 		if (uniId && courseId) {
@@ -128,6 +141,7 @@ const CourseDetails = () => {
 									reviewLoading={reviewLoading}
 									lecLoading={lecLoading}
 									course={course}
+									userData={userData}
 								/>
 							</div>
 						</div>
