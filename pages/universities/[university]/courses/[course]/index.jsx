@@ -5,7 +5,6 @@ import { getCourseByUniCourse } from '../../../../../actions/courseActions'
 
 import SearchBar from '../../../../../components/molecules/SearchBar'
 import { FaFileAlt, FaSearch } from 'react-icons/fa'
-import { getUniversity } from '../../../../../actions/uniActions'
 import Rankings from '../../../../../components/lecturers/Rankings'
 import CourseSummary from '../../../../../components/courses/CourseSummary'
 import LoadingScreen from '../../../../../components/molecules/LoadingScreen'
@@ -14,6 +13,7 @@ import { getCourseLecturers } from '../../../../../actions/lecturerActions'
 import { getReviewsForCourse } from '../../../../../actions/reviewActions'
 import { useUser } from '@clerk/nextjs'
 import { getUserDetails } from '../../../../../actions/authActions'
+import { motion } from 'framer-motion'
 
 const CourseDetails = () => {
 	const router = useRouter()
@@ -61,7 +61,11 @@ const CourseDetails = () => {
 
 	return (
 		<div className='bg-gray-100 min-h-screen'>
-			<div className='bg-white py-2'>
+			<motion.div
+				initial={{ opacity: 0 }}
+				animate={{ opacity: 1 }}
+				transition={{ delay: 1, duration: 1 }}
+				className='bg-white py-2'>
 				{courseLoading ? (
 					<LoadingScreen />
 				) : (
@@ -116,10 +120,14 @@ const CourseDetails = () => {
 						</div>
 					</div>
 				)}
-			</div>
+			</motion.div>
 			{/* GRID  */}
 
-			<div className='container mx-auto px-4'>
+			<motion.div
+				initial={{ opacity: 0 }}
+				animate={{ opacity: 1 }}
+				transition={{ delay: 1, duration: 1 }}
+				className='container mx-auto px-4'>
 				<div className='grid grid-cols-12 gap-2 mt-4'>
 					<div className='col-span-12 lg:col-span-5'>
 						<div className='bg-white rounded-lg shadow-lg p-4'>
@@ -161,7 +169,7 @@ const CourseDetails = () => {
 						)}
 					</div>
 				</div>
-			</div>
+			</motion.div>
 		</div>
 	)
 }
