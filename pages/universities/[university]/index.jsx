@@ -239,62 +239,58 @@ export default function UniversityDetails() {
 						)}
 					</>
 				) : (
-					<>
+					<div>
 						{lecLoading ? (
 							<LoadingScreen />
 						) : (
-							<>
+							<div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4'>
 								{sortedLecturers?.map((lecturer, idx) => (
-									<>
-										<div
-											className={`w-full md:w-2/3 lg:w-1/3 mx-auto shadow-lg rounded-lg p-4 mb-2 ${
-												idx + 1 === 1
-													? 'bg-teal-500 hover:bg-teal-600 transition duration-300 ease-in-out'
-													: 'bg-white hover:bg-gray-100 transition duration-300 ease-in-out'
-											} `}
-											// onClick={handleModal}
-										>
-											<div className='flex flex-row items-center justify-between'>
-												<div className='flex items-center'>
-													<div className='flex-shrink-0 font-bold mr-4 text-sm bg-gray-200 rounded-full py-1 px-2'>
-														{idx + 1}
-													</div>
-													<div className='flex flex-col'>
-														<h2
-															className={`font-bold ${
-																idx + 1 === 1 ? 'text-lg' : 'text-base'
-															}`}>
-															{lecturer.name}
-														</h2>
-														<div
-															className={`flex items-center text-gray-500 text-xs ml-1 ${
-																idx + 1 === 1 ? 'text-white' : ''
-															}`}>
-															<FaUser className='inline mr-1' />
-															{/* {reviews.length ?? 0} ratings */}
-														</div>
-													</div>
+									<div
+										key={lecturer.id}
+										className={`shadow-lg rounded-lg p-4 mb-2 ${
+											idx + 1 === 1
+												? 'bg-teal-500 hover:bg-teal-600 transition duration-300 ease-in-out'
+												: 'bg-white hover:bg-gray-100 transition duration-300 ease-in-out'
+										}`}
+										// onClick={handleModal}
+									>
+										<div className='flex flex-row items-center justify-between'>
+											<div className='flex items-center'>
+												<div className='flex-shrink-0 font-bold mr-4 text-sm bg-gray-200 rounded-full py-1 px-2'>
+													{idx + 1}
 												</div>
-												<div className='flex items-center'>
-													<span className='text-yellow-400 text-xs mr-1'>
-														<FaStar />
-													</span>
-													<p
+												<div className='flex flex-col'>
+													<h2
 														className={`font-bold ${
 															idx + 1 === 1 ? 'text-lg' : 'text-base'
 														}`}>
-														{typeof lecturer.avgRating === 'number'
-															? lecturer.avgRating.toFixed(1)
-															: 'N/A'}
-													</p>
+														{lecturer.name}
+													</h2>
+													<div className='flex items-center text-gray-500 text-xs ml-1'>
+														<FaUser className='inline mr-1' />
+														{lecturer.numRatings} ratings
+													</div>
 												</div>
 											</div>
+											<div className='flex items-center'>
+												<span className='text-yellow-400 text-xs mr-1'>
+													<FaStar />
+												</span>
+												<p
+													className={`font-bold ${
+														idx + 1 === 1 ? 'text-lg' : 'text-base'
+													}`}>
+													{typeof lecturer.avgRating === 'number'
+														? lecturer.avgRating.toFixed(1)
+														: 'N/A'}
+												</p>
+											</div>
 										</div>
-									</>
+									</div>
 								))}
-							</>
+							</div>
 						)}
-					</>
+					</div>
 				)}
 			</div>
 		</div>
