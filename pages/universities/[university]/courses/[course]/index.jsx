@@ -25,6 +25,7 @@ const CourseDetails = () => {
 	const lecturers = useSelector(
 		(state) => state.lecturerReducer.courseLecturers
 	)
+
 	const courseLoading = useSelector((state) => state.courseReducer.loading)
 	const lecLoading = useSelector((state) => state.lecturerReducer.loading)
 	const error = useSelector((state) => state.courseReducer.error)
@@ -32,10 +33,38 @@ const CourseDetails = () => {
 	const reviews = useSelector((state) => state.reviewReducer.courseReviews)
 	const reviewLoading = useSelector((state) => state.reviewReducer.loading)
 
+	const [openLecModalFromReview, setOpenLecModalFromReview] = useState(false)
+
 	const { user, isLoading } = useUser()
 	const { userData, error: userDataError } = useSelector(
 		(state) => state.authReducer
 	)
+
+	const sortLecturers = (lecturers) => {
+		const lecturersWithAvgRating = lecturers.map((lecturer) => {
+			// Calculate the average rating for this lecturer
+
+			const totalRating =
+				lecturer.avgCoolness +
+				lecturer.avgGrading +
+				lecturer.avgWorkload +
+				lecturer.avgExpertise +
+				lecturer.avgRWA
+			const avgRating = totalRating / 5
+
+			// Add the average rating to the lecturer object
+			return { ...lecturer, avgRating }
+		})
+
+		// Sort the lecturers by their average rating in descending order
+		const sortedLecturers = lecturersWithAvgRating.sort(
+			(a, b) => b.avgRating - a.avgRating
+		)
+
+		return sortedLecturers
+	}
+
+	const sortedLecturers = sortLecturers(lecturers)
 
 	useEffect(() => {
 		if (user) {
@@ -122,7 +151,6 @@ const CourseDetails = () => {
 				)}
 			</motion.div>
 			{/* GRID  */}
-
 			<motion.div
 				initial={{ opacity: 0 }}
 				animate={{ opacity: 1 }}
@@ -142,7 +170,7 @@ const CourseDetails = () => {
 									{lecLoading ? <LoadingScreen /> : lecturers?.length ?? 0})
 								</h2>
 								<Rankings
-									lecturers={lecturers}
+									sortedLecturers={sortedLecturers}
 									searchQuery={searchQuery}
 									loading={lecLoading}
 									reviews={reviews}
@@ -150,6 +178,8 @@ const CourseDetails = () => {
 									lecLoading={lecLoading}
 									course={course}
 									userData={userData}
+									openLecModalFromReview={openLecModalFromReview}
+									setOpenLecModalFromReview={setOpenLecModalFromReview}
 								/>
 							</div>
 						</div>
@@ -160,11 +190,13 @@ const CourseDetails = () => {
 						) : (
 							<CourseSummary
 								course={course}
-								lecturers={lecturers}
+								sortedLecturers={sortedLecturers}
 								courseLoading={courseLoading}
 								error={error}
 								reviewLoading={reviewLoading}
 								reviews={reviews}
+								userData={userData}
+								setOpenLecModalFromReview={setOpenLecModalFromReview}
 							/>
 						)}
 					</div>

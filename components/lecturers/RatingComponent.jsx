@@ -4,7 +4,7 @@ import { FaStar, FaCheck, FaComment, FaThumbsUp } from 'react-icons/fa'
 import { RiArrowGoBackLine } from 'react-icons/ri'
 import Link from 'next/link'
 import { useSelector } from 'react-redux'
-import { SignIn, useUser } from '@clerk/nextjs'
+import { SignIn, SignInButton, useUser } from '@clerk/nextjs'
 
 function RatingComponent({
 	onSubmit,
@@ -12,7 +12,6 @@ function RatingComponent({
 	attributeNames,
 	lecturerName,
 	course,
-	handleCloseModal,
 	userData,
 }) {
 	const { user, isLoading } = useUser()
@@ -62,8 +61,6 @@ function RatingComponent({
 	const handleSubmit = (event) => {
 		event.preventDefault()
 		if (!user) {
-			// Prompt user to log in
-			alert('Please log in to submit a rating.')
 			return
 		}
 		onSubmit({ ratings, text: comment })
@@ -173,7 +170,13 @@ function RatingComponent({
 										<span className='text-lg font-medium text-gray-800'>
 											Please log in to submit a rating.
 										</span>
-										<SignIn />
+										<SignInButton
+											mode='modal'
+											redirectUrl={`
+												${window.location.pathname}${window.location.search}
+											`}
+											className='rounded-full py-1 px-2 text-sm font-semibold text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2'
+										/>
 									</div>
 								)}
 							</div>{' '}
