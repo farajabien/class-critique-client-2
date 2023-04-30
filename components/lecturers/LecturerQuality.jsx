@@ -1,6 +1,6 @@
-import { FaUsers } from 'react-icons/fa'
 import { CircularProgressbar } from 'react-circular-progressbar'
 import 'react-circular-progressbar/dist/styles.css'
+import { FiUsers } from 'react-icons/fi'
 
 function LecturerQuality({ average, reviews }) {
 	const numReviews = reviews.length
@@ -43,11 +43,10 @@ function LecturerQuality({ average, reviews }) {
 					/>
 					<div className='absolute top-0 left-0 w-full h-full flex items-center justify-center'>
 						<div className='flex items-center'>
-							<div className='text-teal-500 text-3xl mr-2 mt-16'>
-								<FaUsers className='text-teal-500 mt-8' />
-								<span className='text-gray-500 ml-1 text-normal '>
-									{numReviews}
-								</span>
+							<div className='text-teal-500 text-lg mr-2 mt-16'>
+								<FiUsers className='inline-block mr-1 mb-1' />
+								{numReviews}
+								<span className='text-gray-500 ml-1'>reviews</span>
 							</div>
 						</div>
 					</div>

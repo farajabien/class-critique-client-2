@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { addReview } from '../../actions/reviewActions'
 import LoadingScreen from '../molecules/LoadingScreen'
 
-function LecturerModal({
+function LecturerModalFromReview({
 	lecturer,
 	rank,
 	handleCloseModal,
@@ -31,8 +31,6 @@ function LecturerModal({
 	lecReviews.sort((a, b) => {
 		return new Date(b.updatedAt) - new Date(a.updatedAt)
 	})
-
-	const { user, token, error } = useSelector((state) => state.authReducer)
 
 	// Calculate average rating for each attribute
 	const ratings = [
@@ -281,4 +279,4 @@ function LecturerModal({
 	)
 }
 
-export default LecturerModal
+export default LecturerModalFromReview

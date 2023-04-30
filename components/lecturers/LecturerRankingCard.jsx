@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FaStar, FaCommentAlt, FaUser } from 'react-icons/fa'
 import LecturerModal from './LecturerModal'
 import LoadingScreen from '../molecules/LoadingScreen'
@@ -12,28 +12,36 @@ const LecturerRankingCard = ({
 	userData,
 }) => {
 	const [showModal, setShowModal] = useState(false)
-	// lecturer.averageRating = 4.5
 
 	const handleModal = () => {
 		setShowModal(!showModal)
 	}
 
+	useEffect(() => {
+		if (!lecturer) {
+			setShowModal(false)
+		}
+	}, [lecturer])
+
 	return (
 		<div
 			className={`shadow-lg rounded-lg p-4 mb-2 ${
-				rank === 1 ? 'bg-teal-500' : 'bg-white'
-			}`}>
-			<div className='flex flex-col lg:flex-row justify-between items-center'>
-				<div className='flex items-center mb-2 lg:mb-0'>
-					<div className='flex-shrink-0 font-bold mr-4 text-lg bg-gray-200 rounded-full py-2 px-4'>
+				rank === 1
+					? 'bg-teal-500 hover:bg-teal-600 transition duration-300 ease-in-out'
+					: 'bg-white hover:bg-gray-100 transition duration-300 ease-in-out'
+			} cursor-pointer`}
+			onClick={handleModal}>
+			<div className='flex flex-row items-center justify-between'>
+				<div className='flex items-center'>
+					<div className='flex-shrink-0 font-bold mr-4 text-sm bg-gray-200 rounded-full py-1 px-2'>
 						{rank}
 					</div>
-					<div className='flex flex-col justify-center'>
+					<div className='flex flex-col'>
 						<h2 className={`font-bold ${rank === 1 ? 'text-lg' : 'text-base'}`}>
 							{lecturer.name}
 						</h2>
 						<div
-							className={`flex items-center text-gray-500 text-sm ml-1 ${
+							className={`flex items-center text-gray-500 text-xs ml-1 ${
 								rank === 1 ? 'text-white' : ''
 							}`}>
 							<FaUser className='inline mr-1' />
@@ -41,8 +49,8 @@ const LecturerRankingCard = ({
 						</div>
 					</div>
 				</div>
-				<div className='flex flex-col items-center mb-2 lg:mb-0'>
-					<span className='text-yellow-400 text-2xl mb-1'>
+				<div className='flex items-center'>
+					<span className='text-yellow-400 text-xs mr-1'>
 						<FaStar />
 					</span>
 					<p className={`font-bold ${rank === 1 ? 'text-lg' : 'text-base'}`}>
@@ -51,16 +59,10 @@ const LecturerRankingCard = ({
 							: 'N/A'}
 					</p>
 				</div>
-				<button
-					className={`bg-teal-500 text-white text-sm px-3 py-2 rounded-full focus:outline-none ml-0 lg:ml-4 ${
-						rank === 1 ? 'hover:text-teal-100' : 'hover:text-teal-700'
-					}`}
-					onClick={handleModal}>
-					<FaCommentAlt className='inline mr-1' /> View ({reviews.length || 0})
-				</button>
 			</div>
 			{showModal && (
 				<LecturerModal
+					className='fixed top-0 left-0 w-full h-full'
 					lecturer={lecturer}
 					rank={rank}
 					handleCloseModal={() => setShowModal(false)}

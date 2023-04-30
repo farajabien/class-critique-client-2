@@ -12,36 +12,6 @@ import {
 	FaUserTie,
 } from 'react-icons/fa'
 
-const watchListLecsSample = [
-	{
-		_id: '1',
-		name: 'John Doe',
-		email: 'johndoe@example.com',
-		university: {
-			code: 'UCLA',
-		},
-		avgRating: 4.8,
-	},
-	{
-		_id: '2',
-		name: 'Jane Smith',
-		email: 'janesmith@example.com',
-		university: {
-			code: 'MIT',
-		},
-		avgRating: 4.3,
-	},
-	{
-		_id: '3',
-		name: 'Bob Johnson',
-		email: 'bobjohnson@example.com',
-		university: {
-			code: 'Stanford',
-		},
-		avgRating: 4.6,
-	},
-]
-
 const StudentProfile = () => {
 	const { user, isLoading } = useUser()
 	const {
@@ -52,7 +22,7 @@ const StudentProfile = () => {
 	const { userData, error: userDataError } = useSelector(
 		(state) => state.authReducer
 	)
-	const [watchListLecs, setWatchListLecs] = useState(watchListLecsSample)
+	const [watchListLecs, setWatchListLecs] = useState([])
 	const [watchListCourses, setWatchListCourses] = useState([])
 	const [watchListUnis, setWatchListUnis] = useState([])
 	const [selectedUni, setSelectedUni] = useState(null)
