@@ -27,13 +27,8 @@ const LoginPage = () => {
 							path='/auth/login'
 							routing='path'
 							signInUrl='/auth/register'
-							appearance={{
-								elements: {
-									formButtonPrimary:
-										'bg-teal-500 hover:bg-teal-600 text-sm normal-case',
-									footerBackground: 'bg-teal-500',
-								},
-							}}
+							redirectUrl='/auth/profile'
+							afterSignInUrl='/auth/profile'
 						/>
 					</SignedOut>
 				</>

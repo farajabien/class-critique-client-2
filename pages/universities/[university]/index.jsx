@@ -239,13 +239,15 @@ export default function UniversityDetails() {
 						)}
 					</>
 				) : (
-					<div>
+					<motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
 						{lecLoading ? (
 							<LoadingScreen />
 						) : (
-							<div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4'>
+							<motion className=' w-full bg-white p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4'>
 								{sortedLecturers?.map((lecturer, idx) => (
-									<div
+									<motion.div
+										initial={{ opacity: 0 }}
+										animate={{ opacity: 1 }}
 										key={lecturer.id}
 										className={`shadow-lg rounded-lg p-4 mb-2 ${
 											idx + 1 === 1
@@ -286,11 +288,11 @@ export default function UniversityDetails() {
 												</p>
 											</div>
 										</div>
-									</div>
+									</motion.div>
 								))}
-							</div>
+							</motion>
 						)}
-					</div>
+					</motion.div>
 				)}
 			</div>
 		</div>

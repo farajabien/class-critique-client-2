@@ -7,12 +7,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getUniversities } from '../../actions/uniActions'
 
 const RegisterPage = () => {
-	const router = useRouter()
 	const dispatch = useDispatch()
 	const { user, isLoading } = useUser()
-	const { unis: universities, error: uniError } = useSelector(
-		(state) => state.uniReducer
-	)
+
 	useEffect(() => {
 		dispatch(getUniversities())
 	}, [dispatch])
@@ -42,12 +39,8 @@ const RegisterPage = () => {
 							path='/auth/register'
 							routing='path'
 							signInUrl='/auth/login'
-							appearance={{
-								elements: {
-									formButtonPrimary:
-										'bg-teal-500 hover:bg-teal-600 text-sm normal-case',
-								},
-							}}
+							redirectUrl='/auth/profile'
+							afterSignInUrl='/auth/profile'
 						/>
 					</SignedOut>
 				</>

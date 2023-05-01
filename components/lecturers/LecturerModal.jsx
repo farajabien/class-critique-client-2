@@ -31,9 +31,6 @@ function LecturerModal({
 	lecReviews.sort((a, b) => {
 		return new Date(b.updatedAt) - new Date(a.updatedAt)
 	})
-
-	const { user, token, error } = useSelector((state) => state.authReducer)
-
 	// Calculate average rating for each attribute
 	const ratings = [
 		'Coolness',
@@ -133,7 +130,6 @@ function LecturerModal({
 						{lecReviews.length === 0 && (
 							<p className='text-gray-500'>No reviews yet.</p>
 						)}
-
 						<>
 							{lecReviews?.length > 0 &&
 								lecReviews?.map((review, idx) => (

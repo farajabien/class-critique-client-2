@@ -6,7 +6,17 @@ import { ClerkProvider } from '@clerk/nextjs'
 
 function MyApp({ Component, pageProps }) {
 	return (
-		<ClerkProvider>
+		<ClerkProvider
+			appearance={{
+				elements: {
+					formButtonPrimary:
+						'bg-teal-500 hover:bg-teal-600 text-sm normal-case',
+				},
+				variables: {
+					colorPrimary: '#008080',
+					colorBackground: 'white',
+				},
+			}}>
 			<Provider store={store}>
 				<Layout>
 					<Component {...pageProps} />
