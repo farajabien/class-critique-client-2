@@ -11,11 +11,14 @@ import {
 	FaTrash,
 	FaUserTie,
 } from 'react-icons/fa'
+import Link from 'next/link'
+import LoadingScreen from '../../components/molecules/LoadingScreen'
 
 const StudentProfile = () => {
 	const { user, isLoading } = useUser()
 	const {
 		unis: universities,
+		loading: uniLoading,
 		error: uniError,
 		selectedUni: uni,
 	} = useSelector((state) => state.uniReducer)
@@ -78,152 +81,159 @@ const StudentProfile = () => {
 	}))
 
 	return (
-		<div className='bg-gray-100 min-h-screen'>
-			{/* Main content section */}
-			<div className='max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8'>
-				<div className='max-w-3xl mx-auto'>
-					<h1 className='text-2xl font-semibold text-gray-800 mb-4'>
-						My Profile
-					</h1>
-					{uniError && (
-						<div className='bg-red-500 text-white py-2 px-4 rounded-md mb-4'>
-							{uniError}
-						</div>
-					)}
-					{userDataError && (
-						<div className='bg-red-500 text-white py-2 px-4 rounded-md mb-4'>
-							{userDataError}
-						</div>
-					)}
-					{showUniModal && (
-						<div className='fixed overflow-y-auto inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center z-50'>
-							<div
-								className='bg-white rounded-lg p-6 max-w-3xl w-full min-h-96 h-5/6 overflow-hidden overflow-y-scroll '
-								onClick={(e) => e.stopPropagation()}>
-								<div className='bg-white rounded-md border-2 border-gray-200 py-4 px-4 mb-4'>
-									<h2 className='text-lg font-semibold mb-2'>
-										Select Your University
-									</h2>
-									<Select
-										options={universityOptions}
-										onChange={handleUniChange}
-										placeholder='Select university'
-									/>
-									<button
-										className='bg-teal-500 text-white px-4 py-2 rounded-md mt-4'
-										onClick={handleSelectUni}>
-										Save
-									</button>
-								</div>
-							</div>
-						</div>
-					)}
-
-					{/* University info */}
-					{uni && (
-						<div className='bg-white rounded-md border-2 border-gray-200 py-4 px-4 mb-4'>
-							<h2 className='text-lg font-semibold mb-2'>{uni.name}</h2>
-
-							<div className='text-gray-800 mb-2'>Location: {uni.location}</div>
-						</div>
-					)}
-
-					<div className='bg-white rounded-md border-2 border-gray-200 py-4 px-4 mb-4'>
-						<h2 className='text-lg font-semibold mb-2'>My Watchlist</h2>
-
-						{/* Watchlist - Lecturers */}
-						<div className='mb-4'>
-							<div className='flex items-center justify-between mb-2'>
-								<h3 className='text-md font-semibold text-teal-500'>
-									Lecturers
-								</h3>
-								<div className='text-teal-500 cursor-pointer'>
-									<FaPlusSquare />
-								</div>
-							</div>
-
-							{watchListLecs.length > 0 ? (
-								<div className='grid gap-4'>
-									{watchListLecs.map((lecturer) => (
-										<div
-											key={lecturer._id}
-											className='bg-teal-50 rounded-md p-4 flex items-center justify-between'>
-											<div className='flex items-center'>
-												<div className='text-teal-500 mr-2'>
-													<FaUserTie />
-												</div>
-												<div>
-													<div className='font-medium'>{lecturer.name}</div>
-													<div className='text-gray-600'>{lecturer.email}</div>
-													<div className='text-gray-600'>
-														{lecturer.university.code}
-													</div>
-												</div>
+		<>
+			<SignedIn>
+				<div className='bg-gray-100 min-h-screen p-6'>
+					{isLoading && <p>Loading...</p>}
+					{userData && (
+						<>
+							<div className='flex flex-col md:flex-row md:justify-between'>
+								<div className='md:w-1/2 md:pr-6 mb-6 md:mb-0'>
+									<div className='bg-white rounded-md shadow-md p-6'>
+										<div className='flex items-center mb-6'>
+											<div className='flex-shrink-0'>
+												<UserButton />
 											</div>
-											<div className='flex items-center'>
-												<div className='text-teal-500 mr-2'>
-													<FaStar />
-												</div>
-												<div className='text-gray-600'>
-													{lecturer?.avgRating ?? 4.5}
+											<div className='ml-4'>
+												<h2 className='text-lg font-semibold'>
+													{userData.firstName} {userData.lastName}
+												</h2>
+												<p className='text-gray-700 text-sm'>
+													{userData.email}
+												</p>
+												{userData.university ? (
+													<p className='text-gray-700 text-sm'>
+														{uni?.name} ({uni?.abbreviation})
+													</p>
+												) : (
+													<p className='text-gray-700 text-sm'>
+														No university selected
+													</p>
+												)}
+											</div>
+										</div>
+										<div className='flex items-center justify-between'>
+											<div>
+												<h3 className='text-md font-semibold mb-2'>
+													Watched Lectures ({watchListLecs.length})
+												</h3>
+												{watchListLecs.length > 0 ? (
+													watchListLecs.map((lec) => (
+														<p
+															key={lec.id}
+															className='text-gray-700 text-sm mb-2'>
+															{lec.course} - {lec.title}
+														</p>
+													))
+												) : (
+													<p className='text-gray-700 text-sm'>
+														No watched lectures
+													</p>
+												)}
+											</div>
+											<div>
+												<h3 className='text-md font-semibold mb-2'>
+													Watched Courses ({watchListCourses.length})
+												</h3>
+												{watchListCourses.length > 0 ? (
+													watchListCourses.map((course) => (
+														<p
+															key={course.id}
+															className='text-gray-700 text-sm mb-2'>
+															{course.name}
+														</p>
+													))
+												) : (
+													<p className='text-gray-700 text-sm'>
+														No watched courses
+													</p>
+												)}
+											</div>
+										</div>
+									</div>
+								</div>
+								<div className='md:w-1/2 md:pl-6'>
+									<div className='bg-white rounded-md shadow-md p-6'>
+										<div className='flex items-center justify-between mb-6'>
+											<h2 className='text-lg font-semibold'>
+												Profile Settings
+											</h2>
+											<div className='relative'>
+												<UserButton />
+												<div
+													className={`${
+														profileMenuOpen ? 'block' : 'hidden'
+													} absolute right-0 mt-2 py-2 w-32 bg-white rounded-md shadow-lg z-10`}>
+													<SignedIn />
 												</div>
 											</div>
 										</div>
-									))}
-								</div>
-							) : (
-								<div className='text-gray-600'>No lecturers found.</div>
-							)}
-						</div>
-
-						{/* Watchlist - Courses */}
-						<div>
-							<div className='flex items-center justify-between mb-2'>
-								<h3 className='text-md font-semibold text-teal-500'>Courses</h3>
-								<div className='text-teal-500 cursor-pointer'>
-									<FaPlusSquare />
+										<div>
+											<h3 className='text-md font-semibold mb-2'>
+												Watched Universities ({watchListUnis.length})
+											</h3>
+											{watchListUnis.length > 0 ? (
+												watchListUnis.map((uni) => (
+													<p
+														key={uni.id}
+														className='text-gray-700 text-sm mb-2'>
+														{uni.name} ({uni.abbreviation})
+													</p>
+												))
+											) : (
+												<p className='text-gray-700 text-sm'>
+													No watched universities
+												</p>
+											)}
+										</div>
+										{/* display uni info  */}
+										{userData && !uniLoading && !uni ? (
+											<>
+												<div className='bg-white rounded-md border-2 border-gray-200 py-4 px-4 mb-4'>
+													<h2 className='text-lg font-semibold mb-2'>
+														Select Your University
+													</h2>
+													<Select
+														options={universityOptions}
+														onChange={handleUniChange}
+														placeholder='Select university'
+													/>
+													<button
+														className='bg-teal-500 text-white px-4 py-2 rounded-md mt-4'
+														onClick={handleSelectUni}>
+														Save
+													</button>
+												</div>
+											</>
+										) : (
+											<>
+												{uniLoading ? (
+													<LoadingScreen />
+												) : (
+													<Link
+														href={{
+															pathname: '/universities/[university]',
+															query: { university: uni._id },
+														}}
+														className='bg-white rounded-md py-4  mb-4'>
+														<h2 className='text-lg font-semibold mb-2'>
+															Your University
+														</h2>
+														<p className='text-gray-700 text-sm'>
+															{uni.name} ({uni.abbreviation})
+														</p>
+													</Link>
+												)}
+											</>
+										)}
+									</div>
 								</div>
 							</div>
-
-							{watchListCourses.length > 0 ? (
-								<div className='grid gap-4'>
-									{watchListCourses.map((course) => (
-										<div
-											key={course._id}
-											className='bg-teal-50 rounded-md p-4 flex items-center justify-between'>
-											<div className='flex items-center'>
-												<div className='text-teal-500 mr-2'>
-													<FaBook />
-												</div>
-												<div>
-													<div className='font-medium'>{course.name}</div>
-													<div className='text-gray-600'>{course.code}</div>
-													<div className='text-gray-600'>
-														{course.department}
-													</div>
-												</div>
-											</div>
-											<div className='flex items-center'>
-												<div className='text-teal-500 mr-2'>
-													<FaStar />
-												</div>
-												<div className='text-gray-600'>
-													{course?.avgRating ?? 4.5}
-												</div>
-											</div>
-										</div>
-									))}
-								</div>
-							) : (
-								<div className='text-gray-600'>No courses found.</div>
-							)}
-						</div>
-					</div>
-
-					{/* Recommended section */}
+						</>
+					)}
 				</div>
-			</div>
-		</div>
+			</SignedIn>
+		</>
 	)
 }
 
