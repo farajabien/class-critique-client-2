@@ -137,7 +137,10 @@ const CourseDetails = () => {
 								</div>
 							</div>
 
-							<Link href='/past-papers'>
+							<Link
+								href={`
+								/universities/${university?._id}/courses/${course?._id}/past-papers
+							`}>
 								<div className='relative flex items-center space-x-2 py-2 px-3 rounded-lg bg-teal-500 text-white hover:bg-teal-600 transition duration-200'>
 									<FaFileAlt className='text-lg' />
 									<span className='text-sm font-medium'>Past Papers</span>
