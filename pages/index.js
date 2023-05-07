@@ -5,16 +5,19 @@ import UniversityCard from '../components/universities/UniversityCard'
 import SearchBar from '../components/molecules/SearchBar'
 import { FaSearch, FaStar, FaUniversity, FaUserGraduate } from 'react-icons/fa'
 import StatsCard from '../components/molecules/StatsCard'
+import { getReviews } from '../actions/reviewActions'
 
 export default function Home() {
 	const dispatch = useDispatch()
 	const universities = useSelector((state) => state.uniReducer.unis)
+	const reviews = useSelector((state) => state.reviewReducer.reviews)
 	const loading = useSelector((state) => state.uniReducer.loading)
 	const error = useSelector((state) => state.uniReducer.error)
 	const [searchQuery, setSearchQuery] = useState('')
 
 	useEffect(() => {
 		dispatch(getUniversities())
+		dispatch(getReviews())
 	}, [dispatch])
 
 	const handleSearch = (query) => {
@@ -27,7 +30,7 @@ export default function Home() {
 	)
 
 	const totalUniversities = universities.length
-	const totalReviews = 0
+	const totalReviews = reviews.length ?? 0
 	const totalStudents = 0
 
 	//if loading
