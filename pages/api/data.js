@@ -121,6 +121,19 @@ export const getLecturersByUniId = async (uniId) => {
 }
 
 //Reviews
+
+//getAllReviews
+export const getAllReviews = async () => {
+	try {
+		const response = await axios.get(
+			`${process.env.NEXT_PUBLIC_BASE_URL}/reviews`
+		)
+		return response.data
+	} catch (error) {
+		console.error('Error while fetching reviews', error)
+		throw error
+	}
+}
 // getAllReviewsForCourse
 export const getAllReviewsForCourse = async (courseId) => {
 	if (courseId) {

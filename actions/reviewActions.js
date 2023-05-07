@@ -1,6 +1,25 @@
 import { reviewActionTypes } from '../constants'
-import { getAllReviewsForCourse, addNewReview } from '../pages/api/data'
+import { getAllReviews, addNewReview } from '../pages/api/data'
 import { getCourseLecturers } from './lecturerActions'
+
+//getReviews
+export const getReviews = () => async (dispatch) => {
+	try {
+		dispatch({ type: reviewActionTypes.GET_ALL_REVIEWS_REQUEST })
+		const reviews = await getAllReviews()
+
+		dispatch({
+			type: reviewActionTypes.GET_ALL_REVIEWS_SUCCESS,
+			payload: reviews,
+		})
+	} catch (error) {
+		const errorMessage = error.response?.data?.message || 'Something went wrong'
+		dispatch({
+			type: reviewActionTypes.GET_ALL_REVIEWS_FAILURE,
+			payload: errorMessage,
+		})
+	}
+}
 
 export const getReviewsForCourse = (courseId) => async (dispatch) => {
 	if (courseId) {
