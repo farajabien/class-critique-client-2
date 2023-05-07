@@ -38,13 +38,17 @@ function ReviewElement({
 		}
 	}, [loggedInUserData, review])
 
+	const getLec = () => {
+		const lec = sortedLecturers.find((lec) => lec._id === review.lecturer)
+
+		setLecturer(lec)
+	}
+
 	useEffect(() => {
 		if (sortedLecturers) {
-			const lec = sortedLecturers.find((lec) => lec._id === review.lecturer)
-
-			setLecturer(lec)
+			getLec()
 		}
-	}, [sortedLecturers, review.lecturer])
+	}, [sortedLecturers])
 
 	if (!review) return null
 
