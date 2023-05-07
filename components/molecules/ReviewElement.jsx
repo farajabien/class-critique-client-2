@@ -38,14 +38,17 @@ function ReviewElement({
 		}
 	}, [loggedInUserData, review])
 
+	const getLec = () => {
+		const lec = sortedLecturers.find((lec) => lec._id === review.lecturer)
+
+		setLecturer(lec)
+	}
+
 	useEffect(() => {
 		if (sortedLecturers) {
-			const lecturer = sortedLecturers.find(
-				(lecturer) => lecturer._id === review.lecturer
-			)
-			setLecturer(lecturer)
+			getLec()
 		}
-	}, [sortedLecturers, review.lecturer])
+	}, [sortedLecturers])
 
 	if (!review) return null
 
@@ -129,6 +132,17 @@ function ReviewElement({
 											👨
 										</span>
 										<span className='ml-1 mr-2'>Male</span>
+										{/* Render the lecturer information */}
+										{lecturer && (
+											<span className='inline-block ml-auto text-gray-500 text-normal'>
+												<span className='ml-auto mr-1 text-normal'>For</span>
+												<span
+													onClick={handleModal}
+													className='text-teal-500 hover:underline mr-2 cursor-pointer'>
+													{`${lecturer.name}`}
+												</span>
+											</span>
+										)}
 									</>
 								) : loggedInUserData?.gender === 'Female' ? (
 									<>
@@ -163,17 +177,6 @@ function ReviewElement({
 					</div>
 					<div className='mt-2 text-gray-700 text-sm'>{comment}</div>
 				</div>
-				{/* Render the lecturer information */}
-				{lecturer && (
-					<span className='inline-block ml-auto text-gray-500 text-normal'>
-						<span className='ml-auto mr-1 text-normal'>Review for</span>
-						<span
-							onClick={handleModal}
-							className='text-teal-500 hover:underline mr-2 cursor-pointer'>
-							{lecturer.name}
-						</span>
-					</span>
-				)}
 			</div>
 
 			{/* Render the lecturer modal */}

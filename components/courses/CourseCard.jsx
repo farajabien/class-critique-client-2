@@ -69,18 +69,30 @@ const CourseCard = ({ course }) => {
 			</div>
 
 			<div>
-				<div className='flex justify-between items-center p-4'>
+				<div className='flex justify-between items-center px-4 py-2 md:py-4'>
 					<div className='flex items-center text-gray-500'>
-						<IoPerson className='mr-2' />
-						<span>{lecturerCount} Lecturer(s)</span>
+						<div className='flex flex-col items-center md:flex-row'>
+							<IoPerson className='mr-2 lg:mr-1' />
+							<div>
+								<span className='mr-1'>{lecturerCount}</span>
+								<span className='inline-block'> Lecturer(s)</span>
+							</div>
+						</div>
 					</div>
-					<div className='flex items-center'>
-						<FaStar className='mr-2' />
-						<span>{ratingAvg.toFixed(1)}/5.0</span>
+					<div className='flex flex-col items-center md:flex-row'>
+						<FaStar className='inline-block mr-1' />
+						<span className='block lg:inline-block'>
+							{ratingAvg.toFixed(1)}
+						</span>
+						<span className='hidden lg:inline-block'>/5.0</span>
 					</div>
-					<div className='flex items-center'>
-						<MdRateReview className='mr-2' />
-						<span>{reviews?.length ?? 0} Review(s)</span>
+					<div className='flex items-center mx-2'>
+						<div className='flex flex-col items-center md:flex-row'>
+							<div>
+								<span className='mx-1'>{reviews?.length ?? 0}</span>
+								<span className='inline-block'>Review(s)</span>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>

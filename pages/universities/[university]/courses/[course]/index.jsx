@@ -137,12 +137,15 @@ const CourseDetails = () => {
 								</div>
 							</div>
 
-							<Link href='/course-materials'>
+							<Link
+								href={`
+								/universities/${university?._id}/courses/${course?._id}/past-papers
+							`}>
 								<div className='relative flex items-center space-x-2 py-2 px-3 rounded-lg bg-teal-500 text-white hover:bg-teal-600 transition duration-200'>
 									<FaFileAlt className='text-lg' />
 									<span className='text-sm font-medium'>Past Papers</span>
 									<span className='absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white transform translate-x-1/2 -translate-y-1/2 bg-red-500 rounded-full'>
-										5
+										0
 									</span>
 								</div>
 							</Link>

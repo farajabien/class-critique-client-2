@@ -88,12 +88,20 @@ function RatingComponent({
 		}
 		await onSubmit({
 			ratings,
-			text: comment.length > 0 ? comment : 'N/A',
+			text: comment?.length > 0 ? comment : 'N/A',
 		})
 		setSubmitted(true)
 	}
 
 	const ratingLevels = ['Poor', 'Fair', 'Average', 'Good', 'Excellent']
+
+	const getOverallRating = () => {
+		let sum = 0
+		for (const key in ratings) {
+			sum += ratings[key]
+		}
+		return sum / 5
+	}
 
 	return (
 		<div className='flex flex-col items-center bg-gray-100'>
