@@ -7,6 +7,7 @@ import {
 	FaComments,
 } from 'react-icons/fa'
 import Avatar from 'react-avatar'
+import Link from 'next/link'
 
 const cardVariants = {
 	hidden: (custom) => ({
@@ -49,61 +50,63 @@ const progressBarVariants = {
 
 const UniversityCard = ({ uni, index, percentage }) => {
 	return (
-		<motion.div
-			custom={index}
-			variants={cardVariants}
-			initial='hidden'
-			animate='visible'
-			className='bg-white shadow-md rounded-md flex flex-col justify-between h-52'>
-			<div className='p-4 flex justify-between items-center'>
-				<div className='flex items-center'>
-					<Avatar
-						name={uni.name}
-						size={50}
-						round={true}
-						variant='circle'
-						className='mr-4'
-						variants={avatarVariants}
-						initial='hidden'
-						animate='visible'
-					/>
-					<div>
-						<h2 className='text-lg font-medium'>{uni.name}</h2>
-						<div className='flex items-center text-gray-500'>
-							<FaSearch className='mr-1' />
-							<span>{uni.location}</span>
+		<Link href={`/universities/${uni._id}`} className='w-full' key={uni._id}>
+			<motion.div
+				custom={index}
+				variants={cardVariants}
+				initial='hidden'
+				animate='visible'
+				className='bg-white shadow-md rounded-md flex flex-col justify-between h-52'>
+				<div className='p-4 flex justify-between items-center'>
+					<div className='flex items-center'>
+						<Avatar
+							name={uni.name}
+							size={50}
+							round={true}
+							variant='circle'
+							className='mr-4'
+							variants={avatarVariants}
+							initial='hidden'
+							animate='visible'
+						/>
+						<div>
+							<h2 className='text-lg font-medium'>{uni.name}</h2>
+							<div className='flex items-center text-gray-500'>
+								<FaSearch className='mr-1' />
+								<span>{uni.location}</span>
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
 
-			<div>
-				<motion.div
-					className='bg-gray-200 rounded-md h-4'
-					initial='hidden'
-					animate='visible'
-					custom={percentage}
-					variants={progressBarVariants}>
+				<div>
 					<motion.div
-						className='bg-teal-400 h-4 rounded-md'
-						style={{ width: `${percentage}%` }}></motion.div>
-				</motion.div>
-				<div className='flex justify-between items-center p-4'>
-					<div className='flex items-center text-gray-500'>
-						<FaBook className='mr-2' />
-						<span>{uni.courses?.length ?? 0} Course(s)</span>
-					</div>
-					<div className='flex items-center'>
-						<FaChalkboardTeacher className='mr-2' />
-						<span>{uni.lecturers?.length ?? 0} Lecturer(s)</span>
-					</div>
-					<div className='flex items-center'>
-						<FaComments className='mr-2' />
-						<span>{uni.reviews?.length ?? 0} Review(s)</span>
+						className='bg-gray-200 rounded-md h-4'
+						initial='hidden'
+						animate='visible'
+						custom={percentage}
+						variants={progressBarVariants}>
+						<motion.div
+							className='bg-teal-400 h-4 rounded-md'
+							style={{ width: `${percentage}%` }}></motion.div>
+					</motion.div>
+					<div className='flex justify-between items-center p-4'>
+						<div className='flex items-center text-gray-500'>
+							<FaBook className='mr-2' />
+							<span>{uni.courses?.length ?? 0} Course(s)</span>
+						</div>
+						<div className='flex items-center'>
+							<FaChalkboardTeacher className='mr-2' />
+							<span>{uni.lecturers?.length ?? 0} Lecturer(s)</span>
+						</div>
+						<div className='flex items-center'>
+							<FaComments className='mr-2' />
+							<span>{uni.reviews?.length ?? 0} Review(s)</span>
+						</div>
 					</div>
 				</div>
-			</div>
-		</motion.div>
+			</motion.div>
+		</Link>
 	)
 }
 
