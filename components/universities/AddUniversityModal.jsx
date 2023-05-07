@@ -36,7 +36,7 @@ export default function AddUniversityModal({
 		const fetchData = async () => {
 			try {
 				const response = await axios.get(
-					'https://universities.hipolabs.com/search?country=kenya'
+					'http://universities.hipolabs.com/search?country=kenya'
 				)
 				const data = response.data
 					.filter((university, index, self) => {
