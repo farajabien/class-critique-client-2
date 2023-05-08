@@ -1,5 +1,9 @@
 import { reviewActionTypes } from '../constants'
-import { getAllReviews, addNewReview } from '../pages/api/data'
+import {
+	getAllReviews,
+	getAllReviewsForCourse,
+	addNewReview,
+} from '../pages/api/data'
 import { getCourseLecturers } from './lecturerActions'
 
 //getReviews

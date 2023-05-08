@@ -5,7 +5,9 @@ import LoadingScreen from '../../../../../../components/molecules/LoadingScreen'
 import { motion } from 'framer-motion'
 import { useDispatch, useSelector } from 'react-redux'
 import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { MdRateReview } from 'react-icons/md'
+import { getReviewsForCourse } from '../../../../../../actions/reviewActions'
 
 function PastPapersPage() {
 	const router = useRouter()
@@ -21,11 +23,8 @@ function PastPapersPage() {
 	const lecLoading = useSelector((state) => state.lecturerReducer.loading)
 	const error = useSelector((state) => state.courseReducer.error)
 
-	const reviews = useSelector((state) => state.reviewReducer.courseReviews)
-	const reviewLoading = useSelector((state) => state.reviewReducer.loading)
-
 	return (
-		<div className='bg-gray-100 min-h-screen'>
+		<div className='bg-gray-100 min-h-screen mx-3'>
 			<motion.div
 				initial={{ opacity: 0 }}
 				animate={{ opacity: 1 }}
@@ -74,14 +73,12 @@ function PastPapersPage() {
 							</div>
 
 							<Link
-								href={`
-								/universities/${university?._id}/courses/${course?._id}/past-papers
-							`}>
+								href={`/universities/${course?.university}/courses/${course?._id}`}>
 								<div className='relative flex items-center space-x-2 py-2 px-3 rounded-lg bg-teal-500 text-white hover:bg-teal-600 transition duration-200'>
-									<FaFileAlt className='text-lg' />
-									<span className='text-sm font-medium'>Past Papers</span>
+									<MdRateReview className='mr-2 lg:mr-1 text-lg' />
+									<span className='text-sm font-medium'>Course reviews</span>
 									<span className='absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white transform translate-x-1/2 -translate-y-1/2 bg-red-500 rounded-full'>
-										0
+										{course.reviews?.length ?? 0}
 									</span>
 								</div>
 							</Link>
