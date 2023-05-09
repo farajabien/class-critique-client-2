@@ -32,6 +32,7 @@ const CourseDetails = () => {
 
 	const reviews = useSelector((state) => state.reviewReducer.courseReviews)
 	const reviewLoading = useSelector((state) => state.reviewReducer.loading)
+	const reviewError = useSelector((state) => state.reviewReducer.error)
 
 	const [openLecModalFromReview, setOpenLecModalFromReview] = useState(false)
 
@@ -88,6 +89,10 @@ const CourseDetails = () => {
 		return <div className='m-5'>{error}</div>
 	}
 
+	if (userDataError) {
+		return <div className='m-5'>{userDataError}</div>
+	}
+
 	return (
 		<div className='bg-gray-100 min-h-screen'>
 			<motion.div
@@ -139,7 +144,7 @@ const CourseDetails = () => {
 
 							<Link
 								href={`
-								/universities/${university?._id}/courses/${course?._id}/past-papers
+								/universities/${course?.university}/courses/${course?._id}/past-papers
 							`}>
 								<div className='relative flex items-center space-x-2 py-2 px-3 rounded-lg bg-teal-500 text-white hover:bg-teal-600 transition duration-200'>
 									<FaFileAlt className='text-lg' />

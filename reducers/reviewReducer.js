@@ -18,6 +18,8 @@ export const initialState = {
 const reviewReducer = (state = initialState, action) => {
 	switch (action.type) {
 		case reviewActionTypes.GET_ALL_REVIEWS_REQUEST:
+		case reviewActionTypes.GET_ALL_REVIEWS_FOR_UNI_REQUEST:
+		case reviewActionTypes.GET_ALL_REVIEWS_FOR_COURSE_REQUEST:
 		case reviewActionTypes.GET_REVIEW_FOR_UNI_REQUEST:
 		case reviewActionTypes.GET_REVIEW_FOR_COURSE_REQUEST:
 		case reviewActionTypes.GET_REVIEW_FOR_LECTURER_REQUEST:
@@ -83,6 +85,8 @@ const reviewReducer = (state = initialState, action) => {
 			}
 
 		case reviewActionTypes.GET_ALL_REVIEWS_FAILURE:
+		case reviewActionTypes.GET_ALL_REVIEWS_FOR_UNI_FAILURE:
+		case reviewActionTypes.GET_ALL_REVIEWS_FOR_COURSE_FAILURE:
 		case reviewActionTypes.GET_REVIEW_FOR_UNI_FAILURE:
 		case reviewActionTypes.GET_REVIEW_FOR_COURSE_FAILURE:
 		case reviewActionTypes.GET_REVIEW_FOR_LECTURER_FAILURE:

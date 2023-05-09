@@ -8,6 +8,7 @@ import {
 } from 'react-icons/fa'
 import Avatar from 'react-avatar'
 import Link from 'next/link'
+import { MdRateReview } from 'react-icons/md'
 
 const cardVariants = {
 	hidden: (custom) => ({
@@ -100,7 +101,7 @@ const UniversityCard = ({ uni, index, percentage }) => {
 							<span>{uni.lecturers?.length ?? 0} Lecturer(s)</span>
 						</div>
 						<div className='flex items-center'>
-							<FaComments className='mr-2' />
+							<MdRateReview className='mr-2 lg:mr-1' />
 							<span>{uni.reviews?.length ?? 0} Review(s)</span>
 						</div>
 					</div>

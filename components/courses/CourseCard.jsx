@@ -88,6 +88,7 @@ const CourseCard = ({ course }) => {
 					</div>
 					<div className='flex items-center mx-2'>
 						<div className='flex flex-col items-center md:flex-row'>
+							<MdRateReview className='mr-2 lg:mr-1' />
 							<div>
 								<span className='mx-1'>{reviews?.length ?? 0}</span>
 								<span className='inline-block'>Review(s)</span>
