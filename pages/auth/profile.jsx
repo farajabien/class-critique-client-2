@@ -92,7 +92,7 @@ const StudentProfile = () => {
 									<div className='bg-white rounded-md shadow-md p-6'>
 										<div className='flex items-center mb-6'>
 											<div className='flex-shrink-0'>
-												<UserButton />
+												<UserButton afterSignOutUrl='/auth/login' />
 											</div>
 											<div className='ml-4'>
 												<h2 className='text-lg font-semibold'>
@@ -159,7 +159,10 @@ const StudentProfile = () => {
 												Profile Settings
 											</h2>
 											<div className='relative'>
-												<UserButton />
+												<UserButton
+													afterSignOutUrl='/auth/login'
+													onClick={() => setProfileMenuOpen(!profileMenuOpen)}
+												/>
 												<div
 													className={`${
 														profileMenuOpen ? 'block' : 'hidden'

@@ -69,6 +69,7 @@ const Header = () => {
 						<UserButton
 							className='bg-teal-500 hover:bg-teal-600 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 rounded-full py-2 px-6 text-sm font-semibold text-white'
 							size={32}
+							afterSignOutUrl='/auth/login'
 						/>
 					</SignedIn>
 				</div>
