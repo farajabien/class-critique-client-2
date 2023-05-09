@@ -1,15 +1,21 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { addLecturer } from '../../actions/lecturerActions'
+import { addLecturer, updateLecturer } from '../../actions/lecturerActions'
 import Select from 'react-select'
 import { FaTimes } from 'react-icons/fa'
 
-export default function AddLecModal({ handleAddLecModal, uniId, user }) {
+export default function UpdateLecModal({
+	handleUpdateLecModal,
+	uniId,
+	user,
+	lecturer,
+}) {
 	const { uniCourses: courses, error: courseError } = useSelector(
 		(state) => state.courseReducer
 	)
+
 	const { error: lecturerError } = useSelector((state) => state.lecturerReducer)
-	const [newLec, setNewLec] = useState({
+	const [newLecInfo, setNewLecInfo] = useState({
 		fName: '',
 		lName: '',
 		email: '',
@@ -25,9 +31,24 @@ export default function AddLecModal({ handleAddLecModal, uniId, user }) {
 
 	const banner = (
 		<div className='fixed top-0 left-0 w-full bg-teal-500 text-white text-center p-2 py-8 z-50'>
-			New LEC added! {newLec.fName}
+			LEC updated! {newLecInfo.fName}
 		</div>
 	)
+
+	useEffect(() => {
+		if (lecturer) {
+			setNewLecInfo({
+				fName: lecturer.name.split(' ')[0],
+				lName: lecturer.name.split(' ')[1],
+				email: lecturer.email,
+				phone: lecturer.phone,
+				university: uniId,
+				courses: lecturer.courses,
+			})
+
+			setSelectedCourses(lecturer.courses)
+		}
+	}, [lecturer, uniId])
 
 	useEffect(() => {
 		if (courseError) {
@@ -39,18 +60,18 @@ export default function AddLecModal({ handleAddLecModal, uniId, user }) {
 		e.preventDefault()
 		const lecturer = {
 			name:
-				newLec.fName.charAt(0).toUpperCase() +
-				newLec.fName.slice(1) +
+				newLecInfo.fName.charAt(0).toUpperCase() +
+				newLecInfo.fName.slice(1) +
 				' ' +
-				newLec.lName.charAt(0).toUpperCase() +
-				newLec.lName.slice(1),
-			email: newLec.email,
-			phone: newLec.phone,
+				newLecInfo.lName.charAt(0).toUpperCase() +
+				newLecInfo.lName.slice(1),
+			email: newLecInfo.email,
+			phone: newLecInfo.phone,
 			university: uniId,
 
 			courses: selectedCourses,
 		}
-		dispatch(addLecturer(user, uniId, lecturer)).then(() => {
+		dispatch(updateLecturer(user, uniId, lecturer)).then(() => {
 			//check error
 			if (lecturerError) {
 				setErrorMessages((prev) => [...prev, lecturerError])
@@ -58,7 +79,7 @@ export default function AddLecModal({ handleAddLecModal, uniId, user }) {
 			}
 			setIsBannerVisible(true)
 			setTimeout(() => {
-				handleAddLecModal()
+				handleUpdateLecModal()
 			}, 1500)
 
 			setTimeout(() => {
@@ -66,10 +87,6 @@ export default function AddLecModal({ handleAddLecModal, uniId, user }) {
 			}, 5000)
 		})
 	}
-
-	useEffect(() => {
-		console.log('errora', errorMessages)
-	}, [errorMessages])
 
 	const handleSelectChange = (selectedOptions) => {
 		const values = selectedOptions
@@ -87,7 +104,7 @@ export default function AddLecModal({ handleAddLecModal, uniId, user }) {
 		<>
 			<div
 				className='fixed overflow-y-auto inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center z-50'
-				onClick={handleAddLecModal}>
+				onClick={handleUpdateLecModal}>
 				{isBannerVisible && banner}
 				{/* close icon  */}
 
@@ -101,7 +118,7 @@ export default function AddLecModal({ handleAddLecModal, uniId, user }) {
           '>
 						<button
 							className='text-gray-500 hover:text-gray-700'
-							onClick={handleAddLecModal}>
+							onClick={handleUpdateLecModal}>
 							<svg
 								className='h-6 w-6'
 								fill='none'
@@ -119,12 +136,12 @@ export default function AddLecModal({ handleAddLecModal, uniId, user }) {
 					</div>
 
 					<form onSubmit={handleSubmit} className='w-full max-w-md mt-2'>
-						<h1 className='text-3xl font-bold mb-4'>Add a new lecturer</h1>
+						<h1 className='text-3xl font-bold mb-4'>Update lecturer</h1>
 						<div className='mb-4'>
 							<button
 								type='submit'
 								className='bg-teal-800 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline'>
-								Add Lecturer
+								Update Lecturer
 							</button>
 						</div>
 						{errorMessages &&
@@ -160,10 +177,10 @@ export default function AddLecModal({ handleAddLecModal, uniId, user }) {
 								type='text'
 								id='firstName'
 								name='firstName'
-								value={newLec.fName}
+								value={newLecInfo.fName}
 								onChange={(event) => {
-									setNewLec({
-										...newLec,
+									setNewLecInfo({
+										...newLecInfo,
 										fName: event.target.value,
 									})
 								}}
@@ -181,10 +198,10 @@ export default function AddLecModal({ handleAddLecModal, uniId, user }) {
 								type='text'
 								id='lastName'
 								name='lastName'
-								value={newLec.lName}
+								value={newLecInfo.lName}
 								onChange={(event) => {
-									setNewLec({
-										...newLec,
+									setNewLecInfo({
+										...newLecInfo,
 										lName: event.target.value,
 									})
 								}}
@@ -202,14 +219,13 @@ export default function AddLecModal({ handleAddLecModal, uniId, user }) {
 								type='email'
 								id='email'
 								name='email'
-								value={newLec.email}
+								value={newLecInfo.email}
 								onChange={(event) => {
-									setNewLec({
+									setNewLecInfo({
 										...newLec,
 										email: event.target.value,
 									})
 								}}
-								required
 								placeholder='Enter email'
 								className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-900 leading-tight focus:outline-none focus:shadow-outline'
 							/>
@@ -223,9 +239,9 @@ export default function AddLecModal({ handleAddLecModal, uniId, user }) {
 								type='text'
 								id='phone'
 								name='phone'
-								value={newLec.phone}
+								value={newLecInfo.phone}
 								onChange={(event) => {
-									setNewLec({
+									setNewLecInfo({
 										...newLec,
 										phone: event.target.value,
 									})

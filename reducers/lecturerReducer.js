@@ -20,6 +20,7 @@ const lecturerReducer = (state = initialState, action) => {
 		case lecturerActionTypes.GET_LECTURER_FOR_COURSE_REQUEST:
 		case lecturerActionTypes.GET_LECTURER_REQUEST:
 		case lecturerActionTypes.CREATE_LECTURER_REQUEST:
+		case lecturerActionTypes.UPDATE_LECTURER_REQUEST:
 			return {
 				...state,
 				loading: true,
@@ -65,6 +66,14 @@ const lecturerReducer = (state = initialState, action) => {
 			return {
 				...state,
 				uniLecturers: [...state.uniLecturers, action.payload],
+				loading: false,
+			}
+		case lecturerActionTypes.UPDATE_LECTURER_SUCCESS:
+			return {
+				...state,
+				uniLecturers: state.uniLecturers.map((lecturer) =>
+					lecturer._id === action.payload._id ? action.payload : lecturer
+				),
 				loading: false,
 			}
 

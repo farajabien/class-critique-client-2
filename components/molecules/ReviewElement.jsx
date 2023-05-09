@@ -131,7 +131,7 @@ function ReviewElement({
 										<span role='img' aria-label='Male'>
 											👨
 										</span>
-										<span className='ml-1 mr-2'>Male</span>
+										<span className='ml-1 mr-2'>{userData.name}</span>
 										{/* Render the lecturer information */}
 										{lecturer && (
 											<span className='inline-block ml-auto text-gray-500 text-normal'>
@@ -149,14 +149,14 @@ function ReviewElement({
 										<span role='img' aria-label='Female'>
 											👩
 										</span>
-										<span className='ml-1 mr-2'>Female</span>
+										<span className='ml-1 mr-2'>{userData.name}</span>
 									</>
 								) : (
 									<>
 										<span role='img' aria-label='Other'>
 											🧑‍🤝‍🧑
 										</span>
-										<span className='ml-1 mr-2'>Other</span>
+										<span className='ml-1 mr-2'>{userData.name}</span>
 									</>
 								)}
 							</div>

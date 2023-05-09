@@ -57,7 +57,8 @@ const UniversityCard = ({ uni, index, percentage }) => {
 				variants={cardVariants}
 				initial='hidden'
 				animate='visible'
-				className='bg-white shadow-md rounded-md flex flex-col justify-between h-52'>
+				// design it so that content doesnt hide even if it is alot
+				className='bg-white rounded-md shadow-md overflow-hidden mb-4'>
 				<div className='p-4 flex justify-between items-center'>
 					<div className='flex items-center'>
 						<Avatar

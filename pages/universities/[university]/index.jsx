@@ -8,7 +8,7 @@ import SearchBar from '../../../components/molecules/SearchBar'
 import UniversityInfo from '../../../components/universities/UniversityInfo'
 import CourseList from '../../../components/courses/CourseList'
 import LecturerList from '../../../components/lecturers/LecturerList'
-import { IoMdSchool, IoMdPeople } from 'react-icons/io'
+import { IoMdSchool, IoMdPeople, IoMdCreate, IoMdTrash } from 'react-icons/io'
 import {
 	FaFileAlt,
 	FaLocationArrow,
@@ -19,6 +19,7 @@ import {
 } from 'react-icons/fa'
 import LoadingScreen from '../../../components/molecules/LoadingScreen'
 import AddLecturerModal from '../../../components/lecturers/AddLecturerModal'
+import UpdateLecturerModal from '../../../components/lecturers/UpdateLecturerModal'
 import AddCourseModal from '../../../components/courses/AddCourseModal'
 import { motion } from 'framer-motion'
 import { useUser } from '@clerk/nextjs'
@@ -45,6 +46,7 @@ export default function UniversityDetails() {
 	const canAdd = isAdmin || isUniAdmin
 
 	const [showAddLecModal, setShowAddLecModal] = useState(false)
+	const [showUpdateLecModal, setShowUpdateLecModal] = useState(false)
 	const [showAddCourseModal, setShowAddCourseModal] = useState(false)
 
 	const { selectedUni: university, loading: uniLoading } = useSelector(
@@ -60,6 +62,10 @@ export default function UniversityDetails() {
 
 	const handleAddLecModal = () => {
 		setShowAddLecModal(!showAddLecModal)
+	}
+
+	const handleUpdateLecModal = () => {
+		setShowUpdateLecModal(!showUpdateLecModal)
 	}
 
 	const handleAddCourseModal = () => {
@@ -116,6 +122,7 @@ export default function UniversityDetails() {
 	const filteredLecturers = sortedLecturers.filter((lecturer) =>
 		lecturer.name.toLowerCase().includes(searchQuery.toLowerCase())
 	)
+
 	return (
 		<div className='bg-gray-100 min-h-screen'>
 			<div className='bg-white'>
@@ -244,11 +251,11 @@ export default function UniversityDetails() {
 							<LoadingScreen />
 						) : (
 							<motion className=' w-full bg-white p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4'>
-								{sortedLecturers?.map((lecturer, idx) => (
+								{filteredLecturers?.map((lecturer, idx) => (
 									<motion.div
 										initial={{ opacity: 0 }}
 										animate={{ opacity: 1 }}
-										key={lecturer.id}
+										key={lecturer._id}
 										className={`shadow-lg rounded-lg p-4 mb-2 ${
 											idx + 1 === 1
 												? 'bg-teal-500 hover:bg-teal-600 transition duration-300 ease-in-out'
@@ -256,6 +263,15 @@ export default function UniversityDetails() {
 										}`}
 										// onClick={handleModal}
 									>
+										{canAdd && showUpdateLecModal && (
+											<UpdateLecturerModal
+												showUpdateLecModal={showUpdateLecModal}
+												handleUpdateLecModal={handleUpdateLecModal}
+												uniId={uniId}
+												user={user}
+												lecturer={lecturer}
+											/>
+										)}
 										<div className='flex flex-row items-center justify-between'>
 											<div className='flex items-center'>
 												<div className='flex-shrink-0 font-bold mr-4 text-sm bg-gray-200 rounded-full py-1 px-2'>
@@ -286,6 +302,21 @@ export default function UniversityDetails() {
 														? lecturer.avgRating.toFixed(1)
 														: 'N/A'}
 												</p>
+
+												{canAdd && (
+													<div className='ml-4'>
+														<button
+															className='text-gray-500 hover:text-gray-700'
+															onClick={() => handleUpdateLecModal(lecturer)}>
+															<IoMdCreate className='inline-block text-lg' />
+														</button>
+														<button
+															className='text-gray-500 hover:text-gray-700 ml-2'
+															onClick={() => handleDeleteLec(lecturer)}>
+															<IoMdTrash className='inline-block text-lg' />
+														</button>
+													</div>
+												)}
 											</div>
 										</div>
 									</motion.div>
