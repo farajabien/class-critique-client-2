@@ -78,7 +78,7 @@ function PastPapersPage() {
 									<MdRateReview className='mr-2 lg:mr-1 text-lg' />
 									<span className='text-sm font-medium'>Course reviews</span>
 									<span className='absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white transform translate-x-1/2 -translate-y-1/2 bg-red-500 rounded-full'>
-										{course.reviews?.length ?? 0}
+										{course?.reviews?.length ?? 0}
 									</span>
 								</div>
 							</Link>
