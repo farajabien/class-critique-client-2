@@ -221,6 +221,20 @@ export const addNewLecturer = async (user, uniId, lecturer) => {
 	}
 }
 
+//updateSingleLecturer
+export const updateSingleLecturer = async (user, uniId, lecturer) => {
+	try {
+		const response = await axios.put(
+			`${process.env.NEXT_PUBLIC_BASE_URL}/lecturers/${uniId}`,
+			{ user, uniId, lecturer }
+		)
+		return response.data
+	} catch (error) {
+		console.error('Error while updating lecturer', error)
+		throw error
+	}
+}
+
 //addNewCourse
 export const addNewCourse = async (user, uniId, course) => {
 	try {

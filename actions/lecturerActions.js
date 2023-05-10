@@ -3,6 +3,7 @@ import {
 	getAllLecturersForCourse,
 	getLecturersByUniId,
 	addNewLecturer,
+	updateSingleLecturer,
 } from '../pages/api/data'
 
 export const getLecturersByUni = (uniId) => async (dispatch) => {
@@ -63,6 +64,31 @@ export const addLecturer = (user, uniId, lecturer) => async (dispatch) => {
 				error.response.data.error || 'Something went wrong adding new lec'
 			dispatch({
 				type: lecturerActionTypes.CREATE_LECTURER_FAILURE,
+				payload: errorMessage,
+			})
+		}
+	}
+}
+
+//UPDATE LECTURER
+export const updateLecturer = (user, uniId, lecturer) => async (dispatch) => {
+	if (uniId) {
+		try {
+			dispatch({
+				type: lecturerActionTypes.UPDATE_LECTURER_REQUEST,
+			})
+			const courseLecturers = await updateSingleLecturer(user, uniId, lecturer)
+			dispatch({
+				type: lecturerActionTypes.UPDATE_LECTURER_SUCCESS,
+				payload: courseLecturers,
+			})
+
+			dispatch(getLecturersByUni(uniId))
+		} catch (error) {
+			const errorMessage =
+				error.response.data.error || 'Something went wrong updating new lec'
+			dispatch({
+				type: lecturerActionTypes.UPDATE_LECTURER_FAILURE,
 				payload: errorMessage,
 			})
 		}
