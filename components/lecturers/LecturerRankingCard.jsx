@@ -38,7 +38,7 @@ const LecturerRankingCard = ({
 					</div>
 					<div className='flex flex-col'>
 						<h2 className={`font-bold ${rank === 1 ? 'text-lg' : 'text-base'}`}>
-							{lecturer.name}
+							{lecturer?.name}
 						</h2>
 						<div
 							className={`flex items-center text-gray-500 text-xs ml-1 ${
@@ -54,8 +54,8 @@ const LecturerRankingCard = ({
 						<FaStar />
 					</span>
 					<p className={`font-bold ${rank === 1 ? 'text-lg' : 'text-base'}`}>
-						{typeof lecturer.avgRating === 'number'
-							? lecturer.avgRating.toFixed(1)
+						{typeof lecturer?.avgRating === 'number'
+							? lecturer?.avgRating?.toFixed(1) ?? 0
 							: 'N/A'}
 					</p>
 				</div>
