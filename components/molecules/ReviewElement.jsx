@@ -33,7 +33,7 @@ function ReviewElement({
 	const [isCurrentUserReview, setIsCurrentUserReview] = useState(false)
 	// Check if the logged in user wrote this review
 	useEffect(() => {
-		if (loggedInUserData?._id == review.user._id) {
+		if (loggedInUserData?._id == review.user?._id) {
 			setIsCurrentUserReview(true)
 		}
 	}, [loggedInUserData, review])
@@ -156,7 +156,7 @@ function ReviewElement({
 										<span role='img' aria-label='Other'>
 											🧑‍🤝‍🧑
 										</span>
-										<span className='ml-1 mr-2'>{userData.name}</span>
+										<span className='ml-1 mr-2'>{userData?.name}</span>
 									</>
 								)}
 							</div>

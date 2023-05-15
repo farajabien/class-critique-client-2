@@ -27,7 +27,7 @@ function RatingComponent({
 	)
 
 	const userReview =
-		courseReviews.find((review) => review.user._id === userData?._id) ?? null
+		courseReviews.find((review) => review.user?._id === userData?._id) ?? null
 
 	const [ratings, setRatings] = useState({
 		coolness: 0,
@@ -52,11 +52,11 @@ function RatingComponent({
 	useEffect(() => {
 		if (userReview) {
 			setRatings({
-				coolness: userReview.rating.coolness,
-				grading: userReview.rating.grading,
-				workload: userReview.rating.workload,
-				expertise: userReview.rating.expertise,
-				rwa: userReview.rating.rwa,
+				coolness: userReview.rating?.coolness,
+				grading: userReview.rating?.grading,
+				workload: userReview.rating?.workload,
+				expertise: userReview.rating?.expertise,
+				rwa: userReview.rating?.rwa,
 			})
 			setComment(userReview.text)
 		}

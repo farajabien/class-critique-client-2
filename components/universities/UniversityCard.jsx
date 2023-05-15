@@ -51,14 +51,14 @@ const progressBarVariants = {
 
 const UniversityCard = ({ uni, index, percentage }) => {
 	return (
-		<Link href={`/universities/${uni._id}`} className='w-full' key={uni._id}>
-			<motion.div
-				custom={index}
-				variants={cardVariants}
-				initial='hidden'
-				animate='visible'
-				// design it so that content doesnt hide even if it is alot
-				className='bg-white rounded-md shadow-md overflow-hidden mb-4'>
+		<motion.div
+			custom={index}
+			variants={cardVariants}
+			initial='hidden'
+			animate='visible'
+			// design it so that content doesnt hide even if it is alot
+			className='bg-white rounded-md shadow-md overflow-hidden mb-4'>
+			<Link href={`/universities/${uni._id}`} className='w-full' key={uni._id}>
 				<div className='p-4 flex justify-between items-center'>
 					<div className='flex items-center'>
 						<Avatar
@@ -107,8 +107,8 @@ const UniversityCard = ({ uni, index, percentage }) => {
 						</div>
 					</div>
 				</div>
-			</motion.div>
-		</Link>
+			</Link>
+		</motion.div>
 	)
 }
 

@@ -40,11 +40,11 @@ function CourseSummary({
 		if (reviews?.length > 0) {
 			const ratings = reviews.reduce(
 				(acc, curr) => {
-					acc.coolness += curr.rating.coolness
-					acc.grading += curr.rating.grading
-					acc.workload += curr.rating.workload
-					acc.expertise += curr.rating.expertise
-					acc.realWorldApplication += curr.rating.rwa
+					acc.coolness += curr.rating?.coolness
+					acc.grading += curr.rating?.grading
+					acc.workload += curr.rating?.workload
+					acc.expertise += curr.rating?.expertise
+					acc.realWorldApplication += curr.rating?.rwa
 					return acc
 				},
 				{
